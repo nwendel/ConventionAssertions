@@ -3,9 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConventionAsserts", "ConventionAsserts\ConventionAsserts.csproj", "{75CF02F3-37DC-4B63-AE4F-0235AF15AA2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConventionAsserts", "ConventionAsserts\ConventionAsserts.csproj", "{75CF02F3-37DC-4B63-AE4F-0235AF15AA2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConventionAsserts.Tests", "ConventionAsserts.Tests\ConventionAsserts.Tests.csproj", "{70D1060D-F8D4-4267-A480-476C5E9956EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConventionAsserts.Tests", "ConventionAsserts.Tests\ConventionAsserts.Tests.csproj", "{70D1060D-F8D4-4267-A480-476C5E9956EE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B77560D4-BA7F-4CE3-AE3E-7E2FEE3FDAF6}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,6 +1,6 @@
 ﻿namespace ConventionAsserts.Infrastructure.TestFrameworks;
 
-internal class UnknownTestFramework : ITestFramework
+internal sealed class UnknownTestFramework : ITestFramework
 {
     public bool IsAvailable => true;
 

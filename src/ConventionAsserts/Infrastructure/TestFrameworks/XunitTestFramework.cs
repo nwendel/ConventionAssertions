@@ -2,7 +2,7 @@
 
 namespace ConventionAsserts.Infrastructure.TestFrameworks;
 
-internal class XunitTestFramework : ITestFramework
+internal sealed class XunitTestFramework : ITestFramework
 {
     private readonly Assembly? _xunitAssembly;
     private readonly Type? _exceptionType;
