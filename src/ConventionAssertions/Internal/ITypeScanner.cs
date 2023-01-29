@@ -1,6 +1,6 @@
 ﻿namespace ConventionAssertions.Internal;
 
-public interface ITypeScanner
+public interface ITypeScanner : IFluentInterface
 {
     ITypeScannerFilter FromAssemblyContaining<T>();
 }

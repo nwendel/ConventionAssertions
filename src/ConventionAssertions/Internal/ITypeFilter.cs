@@ -1,6 +1,6 @@
 ﻿namespace ConventionAssertions.Internal;
 
-public interface ITypeFilter
+public interface ITypeFilter : IFluentInterface
 {
     Type Type { get; }
 

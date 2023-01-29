@@ -1,6 +1,6 @@
 ﻿namespace ConventionAssertions.Internal;
 
-public interface ITypeScannerFilter
+public interface ITypeScannerFilter : IFluentInterface
 {
     ITypeScannerFilter Where(Func<ITypeFilter, bool> predicate);
 }

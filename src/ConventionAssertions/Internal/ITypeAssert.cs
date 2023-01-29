@@ -1,6 +1,6 @@
 ﻿namespace ConventionAssertions.Internal;
 
-public interface ITypeAssert
+public interface ITypeAssert : IFluentInterface
 {
     void Assert<T>()
         where T : ITypeConvention, new();
