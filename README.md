@@ -1,2 +1,2 @@
-# ConventionAsserts
-ConventionAsserts
+# ConventionAssertions
+ConventionAssertions
