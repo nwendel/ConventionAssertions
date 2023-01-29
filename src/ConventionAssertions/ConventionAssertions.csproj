@@ -8,15 +8,36 @@
 		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
 		<EnableCodeStyleInBuild>true</EnableCodeStyleInBuild>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
 
-	<ItemGroup>
+  <PropertyGroup>
+    <PackageId>ConventionAssertions</PackageId>
+    <Title>ConventionAssertions</Title>
+    <Version>0.1.0</Version>
+    <Copyright>Niklas Wendel 2023</Copyright>
+    <Authors>Niklas Wendel</Authors>
+    <PackageTags></PackageTags>
+    <PackageProjectUrl>https://github.com/nwendel/ConventionAssertions</PackageProjectUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/nwendel/ConventionAssertions</RepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
 		<AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="StyleCop.Analyzers.Unstable" Version="1.2.0.435">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="StyleCop.Analyzers.Unstable" Version="1.2.0.435">
 	    <PrivateAssets>all</PrivateAssets>
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>
