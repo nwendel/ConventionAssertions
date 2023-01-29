@@ -4,6 +4,15 @@ namespace ConventionAssertions;
 
 public static class Convention
 {
+    public static ConventionTypeSource ForTypes(Action<ITypeScanner> scanner)
+    {
+        GuardAgainst.Null(scanner);
+
+        var typeSource = new TypeScanner();
+        scanner(typeSource);
+        return typeSource;
+    }
+
     public static void ForTypes(
         Action<ITypeScanner> scanner,
         Action<ITypeAssert> assert)
@@ -20,14 +29,5 @@ public static class Convention
 
         var typeAssert = new TypeAssert(typeSource);
         assert(typeAssert);
-    }
-
-    public static ConventionTypeSource ForTypes(Action<ITypeScanner> scanner)
-    {
-        GuardAgainst.Null(scanner);
-
-        var typeSource = new TypeScanner();
-        scanner(typeSource);
-        return typeSource;
     }
 }
