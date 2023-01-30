@@ -24,7 +24,7 @@ jobs:
       run: dotnet restore $SOLUTION_FILE
 
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build $SOLUTION_FILE --no-restore
 
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test $SOLUTION_FILE --no-build --verbosity normal 
