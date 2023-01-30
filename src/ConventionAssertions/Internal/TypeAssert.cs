@@ -6,6 +6,8 @@ public class TypeAssert : ITypeAssert
 
     public TypeAssert(ConventionTypeSource typeSource)
     {
+        GuardAgainst.Null(typeSource);
+
         _typeSource = typeSource;
     }
 
