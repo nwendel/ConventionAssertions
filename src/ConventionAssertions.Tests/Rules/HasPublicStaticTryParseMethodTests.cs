@@ -44,7 +44,6 @@ public class HasPublicStaticTryParseMethodTests
         Assert.Single(_context.Messages);
     }
 
-
     [Fact]
     public void Throws_on_assert_wrong_argument_type()
     {
@@ -55,7 +54,7 @@ public class HasPublicStaticTryParseMethodTests
     [Fact]
     public void Throws_on_assert_wrong_return_type()
     {
-        Assert.Throws<ConventionFailedException>(() => _tested.Assert(typeof(WrongReturnType), _context));
+        Assert.Throws<ConventionFailedException>(() => _tested.Assert(typeof(WrongResultType), _context));
         Assert.Single(_context.Messages);
     }
 
@@ -83,7 +82,6 @@ public class HasPublicStaticTryParseMethodTests
     {
         public static bool Parse(int value, object? result) => throw new NotImplementedException();
     }
-
 
     private class WrongReturnType
     {

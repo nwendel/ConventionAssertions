@@ -30,7 +30,7 @@ public class NoPublicConstructorsTests
         }
     }
 
-    public class PublicConstructor
+    private class PublicConstructor
     {
         public PublicConstructor()
         {
