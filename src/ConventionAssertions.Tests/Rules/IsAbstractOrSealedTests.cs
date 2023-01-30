@@ -25,7 +25,7 @@ public class IsAbstractOrSealedTests
     }
 
     [Fact]
-    public void Can_assert_non_abstract_or_sealed()
+    public void Throws_on_assert_non_abstract_or_sealed()
     {
         Assert.Throws<ConventionFailedException>(() => _tested.Assert(typeof(NonAbstractOrSealedClass), _context));
         Assert.Single(_context.Messages);

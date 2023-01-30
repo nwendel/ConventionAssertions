@@ -1,5 +1,7 @@
 ﻿namespace ConventionAssertions.Rules;
 
+// TODO: This rule shold be merged with HasPublicStaticTryParseMethod?
+//       Make the rule configurable for scenarios where we only want to check one?
 public class HasPublicStaticTryParseMethod : ITypeConvention
 {
     private const string _methodName = nameof(int.TryParse);
