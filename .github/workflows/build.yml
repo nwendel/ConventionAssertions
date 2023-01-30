@@ -3,7 +3,7 @@
 
 name: .NET
 
-on: [push, pull_request]
+on: push
 
 env:
     SOLUTION_FILE: src/ConventionAssertions.sln
