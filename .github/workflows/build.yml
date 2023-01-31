@@ -22,7 +22,7 @@ jobs:
       run: dotnet build $SOLUTION_FILE --no-restore
 
     - name: Test
-      run: dotnet test $SOLUTION_FILE --no-build --verbosity normal
+      run: dotnet test $SOLUTION_FILE --no-build --verbosity normal --collect:"XPlat Code Coverage"
 
     - name: Update codecov
       uses: codecov/codecov-action@v3
