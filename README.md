@@ -1,3 +1,3 @@
-# ConventionAssertions ![Build](https://github.com/nwendel/fluentassertions/actions/workflows/build.yml/badge.svg)
+# ConventionAssertions ![Build](https://github.com/nwendel/conventionassertions/actions/workflows/build.yml/badge.svg)
 
 ConventionAssertions
