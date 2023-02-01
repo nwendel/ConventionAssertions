@@ -7,7 +7,7 @@ public class TestFrameworkTests
 {
     public TestFrameworkTests()
     {
-        TestFramework.Reset(Array.Empty<ITestFramework>());
+        TestFramework.Reset(Array.Empty<IDetectableTestFramework>());
     }
 
     [Fact]
