@@ -1,6 +1,6 @@
-﻿namespace ConventionAssertions.Tests.Rules.TestHelpers;
+﻿namespace ConventionAssertions.Tests.TestHelpers;
 
-public class PublicDeclaringClass
+internal class InternalDeclaringClass
 {
     public class NestedPublicClass
     {
