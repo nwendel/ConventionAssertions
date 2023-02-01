@@ -1,5 +1,6 @@
 ﻿using ConventionAssertions.Internal;
 using ConventionAssertions.Rules;
+using ConventionAssertions.Tests.TestHelpers;
 
 namespace ConventionAssertions.Tests;
 
@@ -50,13 +51,5 @@ public class ConventionTests
 
         var type = Assert.Single(asserted);
         Assert.Same(typeof(DummyTypeSource), type);
-    }
-
-    private class DummyTypeSource : ConventionTypeSource
-    {
-        public DummyTypeSource()
-        {
-            Types = new[] { typeof(DummyTypeSource) };
-        }
     }
 }
