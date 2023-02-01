@@ -11,13 +11,13 @@ public class TypeAssertTests
     [Fact]
     public void Can_assert_generic_overload()
     {
-        Assert.Throws<XunitException>(() => _tested.Assert<DummyTypeConvention>());
+        _tested.Assert<DummyTypeConvention>();
     }
 
     [Fact]
     public void Can_assert_instance_overload()
     {
-        Assert.Throws<XunitException>(() => _tested.Assert(new DummyTypeConvention()));
+        _tested.Assert(new DummyTypeConvention());
     }
 
     [Fact]
