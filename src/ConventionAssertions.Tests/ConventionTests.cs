@@ -52,4 +52,30 @@ public class ConventionTests
         var type = Assert.Single(asserted);
         Assert.Same(typeof(DummyTypeSource), type);
     }
+
+    [Fact]
+    public void Can_create_type_source()
+    {
+        var typeSource = Convention.ForTypes(s => s
+            .FromAssemblyContaining<ConventionTests>()
+            .Where(t => t.Type == typeof(ConventionTests)));
+
+        var type = Assert.Single(typeSource.Types);
+        Assert.Same(typeof(ConventionTests), type);
+    }
+
+    [Fact]
+    public void Can_scan_and_assert()
+    {
+        var convention = new DummyTypeConvention();
+
+        Convention.ForTypes(
+            s => s
+                .FromAssemblyContaining<ConventionTests>()
+                .Where(t => t.Type == typeof(ConventionTests)),
+            x => x.Assert(convention));
+
+        var type = Assert.Single(convention.AssertedTypes);
+        Assert.Same(typeof(ConventionTests), type);
+    }
 }
