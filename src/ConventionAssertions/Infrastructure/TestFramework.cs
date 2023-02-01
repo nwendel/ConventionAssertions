@@ -4,14 +4,14 @@ namespace ConventionAssertions.Infrastructure;
 
 internal static class TestFramework
 {
-    private static readonly ITestFramework[] _frameworks = new[]
+    private static IEnumerable<ITestFramework> _frameworks = new[]
     {
         new XunitTestFramework(),
     };
 
     private static ITestFramework? _detectedFramework;
 
-    private static ITestFramework Detected
+    public static ITestFramework Detected
     {
         get
         {
@@ -23,6 +23,14 @@ internal static class TestFramework
 
             return _detectedFramework;
         }
+    }
+
+    public static void Reset(IEnumerable<ITestFramework> frameworks)
+    {
+        GuardAgainst.Null(frameworks);
+
+        _frameworks = frameworks;
+        _detectedFramework = null;
     }
 
     [DoesNotReturn]

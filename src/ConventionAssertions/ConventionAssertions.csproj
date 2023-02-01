@@ -28,6 +28,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <InternalsVisibleTo Include="ConventionAssertions.Tests" />
+    <InternalsVisibleTo Include="ConventionAssertions.Tests.XunitFramework" />
+    <InternalsVisibleTo Include="ConventionAssertions.Tests.UnknownFramework" />
+  </ItemGroup>
+
+  <ItemGroup>
 		<AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
     <None Include="..\..\README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
