@@ -4,7 +4,7 @@ namespace ConventionAssertions.Infrastructure;
 
 internal static class TestFramework
 {
-    private static IEnumerable<ITestFramework> _frameworks = new[]
+    private static IEnumerable<IDetectableTestFramework> _frameworks = new[]
     {
         new XunitTestFramework(),
     };
@@ -25,7 +25,7 @@ internal static class TestFramework
         }
     }
 
-    public static void Reset(IEnumerable<ITestFramework> frameworks)
+    public static void Reset(IEnumerable<IDetectableTestFramework> frameworks)
     {
         GuardAgainst.Null(frameworks);
 

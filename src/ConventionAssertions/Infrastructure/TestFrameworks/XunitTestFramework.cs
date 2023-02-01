@@ -2,27 +2,27 @@
 
 namespace ConventionAssertions.Infrastructure.TestFrameworks;
 
-internal sealed class XunitTestFramework : ITestFramework
+internal sealed class XunitTestFramework : IDetectableTestFramework
 {
-    private readonly Assembly? _xunitAssembly;
+    private readonly Assembly? _assembly;
     private readonly Type? _exceptionType;
 
     public XunitTestFramework()
     {
-        _xunitAssembly = AppDomain.CurrentDomain.GetAssemblies()
-            .Where(x => x.GetName().Name == "xunit.assert")
-            .OrderByDescending(x => x.GetName().Version)
-            .FirstOrDefault();
+        _assembly = AppDomain.CurrentDomain.GetAssemblies()
+            .SingleOrDefault(x => x.GetName().Name == "xunit.assert");
 
-        _exceptionType = _xunitAssembly?.GetType("Xunit.Sdk.XunitException");
+        _exceptionType = _assembly?.GetType("Xunit.Sdk.XunitException");
     }
 
-    public bool IsAvailable => _xunitAssembly != null;
+    public bool IsAvailable =>
+        _assembly != null &&
+        _exceptionType != null;
 
     [DoesNotReturn]
     public void Throw(string message)
     {
-        if (_xunitAssembly == null)
+        if (_assembly == null)
         {
             throw new InvalidOperationException("TestFramework assembly not found");
         }
