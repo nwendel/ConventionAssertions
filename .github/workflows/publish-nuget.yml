@@ -21,13 +21,16 @@ jobs:
       run: dotnet restore $SOLUTION_FILE
 
     - name: Build
-      run: dotnet build $SOLUTION_FILE --no-restore --configuration Release
+      run: dotnet build $SOLUTION_FILE --no-restore
 
-#    - name: Test
-#      run: dotnet test $SOLUTION_FILE --no-build --verbosity normal
+    - name: Test
+      run: dotnet test $SOLUTION_FILE --no-build --verbosity normal
 
     - name: Pack
-      run: dotnet pack $SOLUTION_FILE
+      run: dotnet pack $SOLUTION_FILE --configuration Release
 
     - name: Publish
-      run: nuget push **\*.*nupkg -Source 'https://api.nuget.org/v3/index.json' -ApiKey ${{secrets.NUGET_API_KEY}}
+      run: nuget push **\*.nupkg -Source 'https://api.nuget.org/v3/index.json' -ApiKey ${{secrets.NUGET_API_KEY}}
+
+    - name: Publish Symbols
+      run: nuget push **\*.snupkg -Source 'https://api.nuget.org/v3/index.json' -ApiKey ${{secrets.NUGET_API_KEY}}
