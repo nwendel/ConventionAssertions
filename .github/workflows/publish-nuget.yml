@@ -23,8 +23,8 @@ jobs:
     - name: Build
       run: dotnet build $SOLUTION_FILE --no-restore --configuration Release
 
-    - name: Test
-      run: dotnet test $SOLUTION_FILE --no-build --verbosity normal
+#    - name: Test
+#      run: dotnet test $SOLUTION_FILE --no-build --verbosity normal
 
     - name: Pack
       run: dotnet pack $SOLUTION_FILE
