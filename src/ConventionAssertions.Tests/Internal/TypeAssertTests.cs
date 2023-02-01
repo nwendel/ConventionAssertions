@@ -31,20 +31,4 @@ public class TypeAssertTests
     {
         Assert.Throws<XunitException>(() => _tested.Assert(new FailingTypeConvention()));
     }
-
-    private class DummyTypeConvention : ITypeConvention
-    {
-        public void Assert(Type type, ConventionContext context)
-        {
-            // Convetion should always succeed
-        }
-    }
-
-    private class FailingTypeConvention : ITypeConvention
-    {
-        public void Assert(Type type, ConventionContext context)
-        {
-            context.Fail(type, "always fails");
-        }
-    }
 }
