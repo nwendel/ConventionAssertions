@@ -11,5 +11,9 @@ public class TypeFilter : ITypeFilter
 
     public Type Type { get; }
 
-    public bool AssignableTo<T>() => Type.IsAssignableTo(typeof(T));
+    public bool IsAssignableTo<T>() => Type.IsAssignableTo(typeof(T));
+
+    public bool IsInSameNamespaceAs<T>() => Type.Namespace == typeof(T).Namespace;
+
+    public bool IsInterface() => Type.IsInterface;
 }

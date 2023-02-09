@@ -20,7 +20,7 @@ public class TypeScannerTests
     {
         _tested
             .FromAssemblyContaining<TypeScannerTests>()
-            .Where(t => t.AssignableTo<TypeScannerTests>());
+            .Where(t => t.IsAssignableTo<TypeScannerTests>());
 
         var type = Assert.Single(_tested.Types);
         Assert.Same(typeof(TypeScannerTests), type);

@@ -4,5 +4,9 @@ public interface ITypeFilter : IFluentInterface
 {
     Type Type { get; }
 
-    bool AssignableTo<T>();
+    bool IsAssignableTo<T>();
+
+    bool IsInSameNamespaceAs<T>();
+
+    bool IsInterface();
 }
