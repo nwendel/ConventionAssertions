@@ -13,6 +13,20 @@ public class TypeFilter : ITypeFilter
 
     public Type Type { get; }
 
+    public bool IsClass
+    {
+        get => Type.IsClass;
+    }
+
+    public bool IsInterface
+    {
+        get => Type.IsInterface;
+    }
+
+    public bool HasAttribute<T>()
+        where T : Attribute
+        => Type.GetCustomAttribute<T>() != null;
+
     public bool IsAssignableTo<T>()
         => IsAssignableToCore(typeof(T));
 
@@ -24,13 +38,6 @@ public class TypeFilter : ITypeFilter
 
     public bool IsInSameNamespaceAs<T>()
         => Type.Namespace == typeof(T).Namespace;
-
-    public bool IsInterface()
-        => Type.IsInterface;
-
-    public bool HasAttribute<T>()
-        where T : Attribute
-        => Type.GetCustomAttribute<T>() != null;
 
     private bool IsAssignableToCore(Type type)
     {
