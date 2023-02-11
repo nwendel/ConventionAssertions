@@ -34,6 +34,8 @@ public class TypeFilter : ITypeFilter
 
     private bool IsAssignableToCore(Type type)
     {
+        GuardAgainst.Null(type);
+
         if (type.IsGenericTypeDefinition)
         {
             if (type.IsInterface)
