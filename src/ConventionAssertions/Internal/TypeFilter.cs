@@ -13,9 +13,19 @@ public class TypeFilter : ITypeFilter
 
     public Type Type { get; }
 
+    public bool IsAbstract
+    {
+        get => Type.IsAbstract;
+    }
+
     public bool IsClass
     {
         get => Type.IsClass;
+    }
+
+    public bool IsConcrete
+    {
+        get => !Type.IsAbstract;
     }
 
     public bool IsInterface

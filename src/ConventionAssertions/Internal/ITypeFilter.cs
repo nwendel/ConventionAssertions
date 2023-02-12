@@ -4,7 +4,11 @@ public interface ITypeFilter : IFluentInterface
 {
     Type Type { get; }
 
+    bool IsAbstract { get; }
+
     bool IsClass { get; }
+
+    bool IsConcrete { get; }
 
     bool IsInterface { get; }
 
