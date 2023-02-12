@@ -4,7 +4,7 @@ namespace ConventionAssertions.Tests;
 
 public class ConventionContextTests
 {
-    private readonly ConventionContext _tested = new("some-id");
+    private readonly ConventionContext _tested = new();
 
     [Fact]
     public void Throws_on_fail_null_type()

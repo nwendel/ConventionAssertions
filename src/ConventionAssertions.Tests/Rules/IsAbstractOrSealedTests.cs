@@ -6,7 +6,7 @@ namespace ConventionAssertions.Tests.Rules;
 public class IsAbstractOrSealedTests
 {
     private readonly IsAbstractOrSealed _tested = new();
-    private readonly ConventionContext _context = new("some-id");
+    private readonly ConventionContext _context = new();
 
     [Fact]
     public void Can_assert_abstract()

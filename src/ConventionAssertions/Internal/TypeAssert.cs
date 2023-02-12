@@ -24,7 +24,7 @@ public class TypeAssert : ITypeAssert
     {
         GuardAgainst.Null(convention);
 
-        var context = new ConventionContext(convention.Id);
+        var context = new ConventionContext();
         foreach (var type in _typeSource.Types)
         {
             var suppressions = type.GetCustomAttributes<SuppressConventionAttribute>();
