@@ -7,5 +7,5 @@ public interface ITypeAssert : IFluentInterface
 
     void Assert(ITypeConvention convention);
 
-    void Assert(Action<Type, ConventionContext> assert);
+    void Assert(string conventionId, Action<Type, ConventionContext> assert);
 }
