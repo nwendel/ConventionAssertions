@@ -1,4 +1,6 @@
-﻿namespace ConventionAssertions.Internal;
+﻿using System.Reflection;
+
+namespace ConventionAssertions.Internal;
 
 public class TypeAssert : ITypeAssert
 {
@@ -22,9 +24,15 @@ public class TypeAssert : ITypeAssert
     {
         GuardAgainst.Null(convention);
 
-        var context = new ConventionContext();
+        var context = new ConventionContext(convention.Id);
         foreach (var type in _typeSource.Types)
         {
+            var suppressions = type.GetCustomAttributes<SuppressConventionAttribute>();
+            if (suppressions.Any(x => x.Id == convention.Id))
+            {
+                continue;
+            }
+
             try
             {
                 convention.Assert(type, context);
@@ -44,9 +52,9 @@ public class TypeAssert : ITypeAssert
         }
     }
 
-    public void Assert(Action<Type, ConventionContext> assert)
+    public void Assert(string conventionId, Action<Type, ConventionContext> assert)
     {
-        var convention = new TypeConventionAction(assert);
+        var convention = new TypeConventionAction(conventionId, assert);
         Assert(convention);
     }
 }

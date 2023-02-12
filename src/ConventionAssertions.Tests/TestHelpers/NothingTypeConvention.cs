@@ -1,6 +1,6 @@
 ﻿namespace ConventionAssertions.Tests.TestHelpers;
 
-public class DummyTypeConvention : ITypeConvention
+public class NothingTypeConvention : ITypeConvention
 {
     private readonly List<Type> _assertedTypes = new();
 

@@ -14,24 +14,16 @@ public class TypeFilter : ITypeFilter
     public Type Type { get; }
 
     public bool IsAbstract
-    {
-        get => Type.IsAbstract;
-    }
+        => Type.IsAbstract;
 
     public bool IsClass
-    {
-        get => Type.IsClass;
-    }
+        => Type.IsClass;
 
     public bool IsConcrete
-    {
-        get => !Type.IsAbstract;
-    }
+        => !Type.IsAbstract;
 
     public bool IsInterface
-    {
-        get => Type.IsInterface;
-    }
+        => Type.IsInterface;
 
     public bool HasAttribute<T>()
         where T : Attribute

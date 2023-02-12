@@ -7,7 +7,7 @@ namespace ConventionAssertions.Tests.Rules;
 public class IsNotNestedInternalTests
 {
     private readonly IsNotNestedInternal _tested = new();
-    private readonly ConventionContext _context = new();
+    private readonly ConventionContext _context = new("some-id");
 
     [Fact]
     public void Can_assert_internal()
