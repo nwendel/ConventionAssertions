@@ -6,7 +6,7 @@ public class ConventionContext
 {
     private readonly List<string> _messages = new();
 
-    public IEnumerable<string> Messages => _messages;
+    public IEnumerable<string> Messages => _messages.AsReadOnly();
 
     [DoesNotReturn]
     public void Fail(Type type, string message)

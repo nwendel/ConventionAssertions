@@ -47,7 +47,9 @@ public class ConventionTests
 
         Convention.ForTypes(
             new DummyTypeSource(),
-            x => x.Assert((type, context) => asserted.Add(type)));
+            x => x.Assert(
+                nameof(Can_assert_type_source_single_type),
+                (type, context) => asserted.Add(type)));
 
         var type = Assert.Single(asserted);
         Assert.Same(typeof(DummyTypeSource), type);
@@ -67,7 +69,7 @@ public class ConventionTests
     [Fact]
     public void Can_scan_and_assert()
     {
-        var convention = new DummyTypeConvention();
+        var convention = new NothingTypeConvention();
 
         Convention.ForTypes(
             s => s
