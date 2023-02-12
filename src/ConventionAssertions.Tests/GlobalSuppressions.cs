@@ -10,3 +10,4 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage("Performance", "CA1852:Seal internal types", Justification = "Required by some unit tests")]
 [assembly: SuppressMessage("Design", "CA1052:Static holder types should be Static or NotInheritable", Justification = "Required by some unit tests")]
 [assembly: SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "Required by some unit tests")]
+[assembly: SuppressMessage("Design", "CA1040:Avoid empty interfaces", Justification = "Required by some unit tests")]
