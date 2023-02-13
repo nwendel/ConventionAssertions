@@ -1,4 +1,5 @@
 ﻿using ConventionAssertions.Internal;
+using ConventionAssertions.Reflection;
 
 namespace ConventionAssertions;
 
@@ -14,7 +15,7 @@ public class ConventionContext
         GuardAgainst.Null(type);
         GuardAgainst.NullOrWhiteSpace(message);
 
-        _messages.Add($"Type {type.Name} {message}");
+        _messages.Add($"Type {type.DisplayName()} {message}");
         throw new ConventionFailedException();
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace ConventionAssertions.Rules;
+﻿using ConventionAssertions.Reflection;
+
+namespace ConventionAssertions.Rules;
 
 public class HasPublicStaticParseMethod : ITypeConvention
 {
@@ -12,7 +14,7 @@ public class HasPublicStaticParseMethod : ITypeConvention
         var method = type.GetMethod(_methodName, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static, new[] { typeof(string) });
         if (method == null || method.ReturnType != type)
         {
-            context.Fail(type, $"must have a public static method with signature: {type.Name} {_methodName}({nameof(String)})");
+            context.Fail(type, $"must have a public static method with signature: {type.DisplayName()} {_methodName}({typeof(string).DisplayName()})");
         }
     }
 }
