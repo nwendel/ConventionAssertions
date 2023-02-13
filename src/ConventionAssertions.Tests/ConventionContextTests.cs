@@ -25,6 +25,6 @@ public class ConventionContextTests
     {
         _ = Assert.Throws<ConventionFailedException>(() => _tested.Fail(typeof(object), "some-message"));
         var message = Assert.Single(_tested.Messages);
-        Assert.Equal("Type Object some-message", message);
+        Assert.Equal("Type object some-message", message);
     }
 }
