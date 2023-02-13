@@ -8,6 +8,14 @@ public class TypeScanner : ConventionTypeSource, ITypeScanner, ITypeScannerFilte
         return this;
     }
 
+    public ITypeScannerFilter FromTypeSource(ConventionTypeSource typeSource)
+    {
+        GuardAgainst.Null(typeSource);
+
+        Types = typeSource.Types;
+        return this;
+    }
+
     public ITypeScannerFilter Where(Func<ITypeFilter, bool> predicate)
     {
         GuardAgainst.Null(predicate);
