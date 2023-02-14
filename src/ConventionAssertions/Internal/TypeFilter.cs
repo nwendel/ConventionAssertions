@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using ConventionAssertions.Reflection;
 
 namespace ConventionAssertions.Internal;
 
@@ -52,7 +53,7 @@ public class TypeFilter : ITypeFilter
                 return AssignableToGenericInterface(type);
             }
 
-            return AssignableToGenericClass(type);
+            return Type.TryGetGenericAncestorClass(type, out _);
         }
 
         return Type.IsAssignableTo(type);
@@ -67,22 +68,6 @@ public class TypeFilter : ITypeFilter
             {
                 return true;
             }
-        }
-
-        return false;
-    }
-
-    private bool AssignableToGenericClass(Type type)
-    {
-        var candidateType = Type;
-        while (candidateType != null)
-        {
-            if (candidateType.IsGenericType && candidateType.GetGenericTypeDefinition() == type)
-            {
-                return true;
-            }
-
-            candidateType = candidateType.BaseType;
         }
 
         return false;

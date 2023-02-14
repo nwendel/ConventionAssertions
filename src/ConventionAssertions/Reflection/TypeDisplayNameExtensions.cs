@@ -2,21 +2,25 @@
 
 namespace ConventionAssertions.Reflection;
 
-public static class TypeExtensions
+public static class TypeDisplayNameExtensions
 {
     // TODO: More?
     private static Dictionary<Type, string> _simpleNames = new()
     {
-        [typeof(int)] = "int",
-        [typeof(string)] = "string",
         [typeof(bool)] = "bool",
-        [typeof(long)] = "long",
-        [typeof(float)] = "float",
+        [typeof(byte)] = "byte",
+        [typeof(decimal)] = "decimal",
         [typeof(double)] = "double",
+        [typeof(float)] = "float",
+        [typeof(int)] = "int",
+        [typeof(long)] = "long",
         [typeof(object)] = "object",
+        [typeof(short)] = "short",
+        [typeof(string)] = "string",
     };
 
     // TODO: Will this handle nested types correctly?
+    // TODO: Will this handle open generic types correctly?
     public static string DisplayName(this Type self)
     {
         GuardAgainst.Null(self);
