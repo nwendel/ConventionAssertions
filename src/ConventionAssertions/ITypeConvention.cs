@@ -2,7 +2,7 @@
 
 public interface ITypeConvention
 {
-    string Id => GetType().Name;
+    string CheckId => GetType().Name;
 
     void Assert(Type type, ConventionContext context);
 }

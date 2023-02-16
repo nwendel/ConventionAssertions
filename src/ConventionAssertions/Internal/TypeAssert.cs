@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace ConventionAssertions.Internal;
+﻿namespace ConventionAssertions.Internal;
 
 public class TypeAssert : ITypeAssert
 {
@@ -27,8 +25,7 @@ public class TypeAssert : ITypeAssert
         var context = new ConventionContext();
         foreach (var type in _typeSource.Types)
         {
-            var suppressions = type.GetCustomAttributes<SuppressConventionAttribute>();
-            if (suppressions.Any(x => x.Id == convention.Id))
+            if (HasSuppression(type, convention.CheckId))
             {
                 continue;
             }
@@ -52,9 +49,21 @@ public class TypeAssert : ITypeAssert
         }
     }
 
-    public void Assert(string conventionId, Action<Type, ConventionContext> assert)
+    public void Assert(string checkId, Action<Type, ConventionContext> assert)
     {
-        var convention = new TypeConventionAction(conventionId, assert);
+        var convention = new TypeConventionAction(checkId, assert);
         Assert(convention);
+    }
+
+    private static bool HasSuppression(Type type, string checkId)
+    {
+        var attributes = type.GetCustomAttributes(false);
+        var filtered = attributes
+            .Select(x => (Attribute: x, TypeName: x.GetType().Name, PropertyInfo: x.GetType().GetProperty(nameof(ITypeConvention.CheckId))))
+            .Where(x => x.TypeName == "SuppressConventionAttribute" && x.PropertyInfo != null)
+            .ToList();
+        var hasSuppression = filtered
+            .Any(x => (string?)x.PropertyInfo!.GetValue(x.Attribute) == checkId);
+        return hasSuppression;
     }
 }
