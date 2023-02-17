@@ -3,9 +3,9 @@ using ConventionAssertions.Rules;
 
 namespace ConventionAssertions.Tests.Rules;
 
-public class NoPublicConstructorsTests
+public class HasNoPublicConstructorsTests
 {
-    private readonly NoPublicConstructors _tested = new();
+    private readonly HasNoPublicConstructors _tested = new();
     private readonly ConventionContext _context = new();
 
     [Fact]

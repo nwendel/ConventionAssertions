@@ -1,6 +1,6 @@
 ﻿namespace ConventionAssertions.Rules;
 
-public class NoPublicConstructors : ITypeConvention
+public class HasNoPublicConstructors : ITypeConvention
 {
     public void Assert(Type type, ConventionContext context)
     {

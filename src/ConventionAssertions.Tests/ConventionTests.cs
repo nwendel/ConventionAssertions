@@ -11,7 +11,7 @@ public class ConventionTests
     {
         var ex = Assert.Throws<ArgumentNullException>(() => Convention.ForTypes(
             (Action<ITypeScanner>)null!,
-            x => x.Assert<NoPublicConstructors>()));
+            x => x.Assert<HasNoPublicConstructors>()));
         Assert.Equal("scanner", ex.ParamName);
     }
 
@@ -27,7 +27,7 @@ public class ConventionTests
     {
         var ex = Assert.Throws<ArgumentNullException>(() => Convention.ForTypes(
             (ConventionTypeSource)null!,
-            x => x.Assert<NoPublicConstructors>()));
+            x => x.Assert<HasNoPublicConstructors>()));
         Assert.Equal("typeSource", ex.ParamName);
     }
 
