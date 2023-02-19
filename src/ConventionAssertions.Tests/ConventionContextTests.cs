@@ -9,7 +9,7 @@ public class ConventionContextTests
     [Fact]
     public void Throws_on_fail_null_type()
     {
-        var ex = Assert.Throws<ArgumentNullException>(() => _tested.Fail(null!, "message"));
+        var ex = Assert.Throws<ArgumentNullException>(() => _tested.Fail((Type)null!, "message"));
         Assert.Equal("type", ex.ParamName);
     }
 
