@@ -1,4 +1,7 @@
-﻿namespace ConventionAssertions.Internal;
+﻿using System.Diagnostics;
+using System.Reflection;
+
+namespace ConventionAssertions.Internal;
 
 public class TypeAssert : ITypeAssert
 {
@@ -22,10 +25,12 @@ public class TypeAssert : ITypeAssert
     {
         GuardAgainst.Null(convention);
 
+        var suppressions = FindSuppressions();
+
         var context = new ConventionContext();
         foreach (var type in _typeSource.Types)
         {
-            if (HasSuppression(type, convention.CheckId))
+            if (suppressions.Contains(type))
             {
                 continue;
             }
@@ -49,21 +54,25 @@ public class TypeAssert : ITypeAssert
         }
     }
 
-    public void Assert(string checkId, Action<Type, ConventionContext> assert)
+    public void Assert(Action<Type, ConventionContext> assert)
     {
-        var convention = new TypeConventionAction(checkId, assert);
+        var convention = new TypeConventionAction(assert);
         Assert(convention);
     }
 
-    private static bool HasSuppression(Type type, string checkId)
+    private static HashSet<Type> FindSuppressions()
     {
-        var attributes = type.GetCustomAttributes(false);
-        var filtered = attributes
-            .Select(x => (Attribute: x, TypeName: x.GetType().Name, PropertyInfo: x.GetType().GetProperty(nameof(ITypeConvention.CheckId))))
-            .Where(x => x.TypeName == "SuppressConventionAttribute" && x.PropertyInfo != null)
-            .ToList();
-        var hasSuppression = filtered
-            .Any(x => (string?)x.PropertyInfo!.GetValue(x.Attribute) == checkId);
-        return hasSuppression;
+        // TODO: This assumes first method found here has the suppression attributes,
+        //       not sure what to do long term
+        var frame = new StackTrace().GetFrames()
+            .SkipWhile(x => x.GetMethod()?.DeclaringType?.Assembly == typeof(Convention).Assembly)
+            .First();
+        var method = frame.GetMethod()!;
+        var attributes = method.GetCustomAttributes<SuppressConventionAttribute>();
+
+        var types = attributes
+            .Select(x => x.TargetType)
+            .ToHashSet();
+        return types;
     }
 }

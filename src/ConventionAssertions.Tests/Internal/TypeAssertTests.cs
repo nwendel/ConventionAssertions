@@ -33,10 +33,10 @@ public class TypeAssertTests
     }
 
     [Fact]
+    [SuppressConvention(TargetType = typeof(DummyTypeSource), Justification = "For testing")]
     public void Can_suppress_convention()
     {
         _tested.Assert(
-            nameof(Can_suppress_convention),
             (type, context) =>
             {
                 context.Fail(type, "always failes");

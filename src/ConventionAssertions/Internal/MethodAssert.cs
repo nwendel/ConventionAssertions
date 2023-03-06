@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics;
+using System.Reflection;
 
 namespace ConventionAssertions.Internal;
 
@@ -20,22 +21,23 @@ public class MethodAssert : IMethodAssert
         Assert(convention);
     }
 
-    // TODO: This is also mostly duplicated...
     public void Assert(IMethodConvention convention)
     {
         GuardAgainst.Null(convention);
 
+        var suppressions = FindSuppressions();
+
         var context = new ConventionContext();
-        foreach (var type in _methodSource.Methods)
+        foreach (var method in _methodSource.Methods)
         {
-            if (HasSuppression(type, convention.CheckId))
+            if (suppressions.Contains((method.DeclaringType!, method.Name)))
             {
                 continue;
             }
 
             try
             {
-                convention.Assert(type, context);
+                convention.Assert(method, context);
             }
             catch (ConventionFailedException)
             {
@@ -52,16 +54,20 @@ public class MethodAssert : IMethodAssert
         }
     }
 
-    // TODO: This almost duplicated...
-    private static bool HasSuppression(MethodInfo methodInfo, string checkId)
+    // TODO: This method is very similar to the one in TypeAssert, refactor?
+    private static HashSet<(Type Type, string? MethodName)> FindSuppressions()
     {
-        var attributes = methodInfo.GetCustomAttributes(false);
-        var filtered = attributes
-            .Select(x => (Attribute: x, TypeName: x.GetType().Name, PropertyInfo: x.GetType().GetProperty(nameof(ITypeConvention.CheckId))))
-            .Where(x => x.TypeName == "SuppressConventionAttribute" && x.PropertyInfo != null)
-            .ToList();
-        var hasSuppression = filtered
-            .Any(x => (string?)x.PropertyInfo!.GetValue(x.Attribute) == checkId);
-        return hasSuppression;
+        // TODO: This assumes first method found here has the suppression attributes,
+        //       not sure what to do long term
+        var frame = new StackTrace().GetFrames()
+            .SkipWhile(x => x.GetMethod()?.DeclaringType?.Assembly == typeof(Convention).Assembly)
+            .First();
+        var method = frame.GetMethod()!;
+        var attributes = method.GetCustomAttributes<SuppressConventionAttribute>();
+
+        var types = attributes
+            .Select(x => (x.TargetType, x.MethodName))
+            .ToHashSet();
+        return types;
     }
 }

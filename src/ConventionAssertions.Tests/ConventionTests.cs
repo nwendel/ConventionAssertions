@@ -48,7 +48,6 @@ public class ConventionTests
         Convention.ForTypes(
             new DummyTypeSource(),
             x => x.Assert(
-                nameof(Can_assert_type_source_single_type),
                 (type, context) => asserted.Add(type)));
 
         var type = Assert.Single(asserted);
