@@ -3,9 +3,7 @@
 [AttributeUsage(AttributeTargets.Method, Inherited = false, AllowMultiple = true)]
 public sealed class SuppressConventionAttribute : Attribute
 {
-    required public Type TargetType { get; set; }
+    required public string Target { get; init; }
 
-    public string? MethodName { get; set; }
-
-    required public string Justification { get; set; }
+    required public string Justification { get; init; }
 }

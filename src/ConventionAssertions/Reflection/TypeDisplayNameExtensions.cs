@@ -35,6 +35,7 @@ public static class TypeDisplayNameExtensions
             return $"{self.GetElementType()!.DisplayName()}[{new string(',', self.GetArrayRank() - 1)}]";
         }
 
+        // TODO: Also check nullable reference types here?
         var nullableType = Nullable.GetUnderlyingType(self);
         if (nullableType != null)
         {

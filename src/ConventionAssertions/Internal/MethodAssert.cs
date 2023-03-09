@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Reflection;
+﻿using ConventionAssertions.Reflection;
 
 namespace ConventionAssertions.Internal;
 
@@ -25,12 +24,12 @@ public class MethodAssert : IMethodAssert
     {
         GuardAgainst.Null(convention);
 
-        var suppressions = FindSuppressions();
-
         var context = new ConventionContext();
+        var suppressions = AssertHelper.FindSuppressions();
+
         foreach (var method in _methodSource.Methods)
         {
-            if (suppressions.Contains((method.DeclaringType!, method.Name)))
+            if (suppressions.Contains(method.DisplayName()))
             {
                 continue;
             }
@@ -52,22 +51,5 @@ public class MethodAssert : IMethodAssert
 
             TestFramework.Throw(message);
         }
-    }
-
-    // TODO: This method is very similar to the one in TypeAssert, refactor?
-    private static HashSet<(Type Type, string? MethodName)> FindSuppressions()
-    {
-        // TODO: This assumes first method found here has the suppression attributes,
-        //       not sure what to do long term
-        var frame = new StackTrace().GetFrames()
-            .SkipWhile(x => x.GetMethod()?.DeclaringType?.Assembly == typeof(Convention).Assembly)
-            .First();
-        var method = frame.GetMethod()!;
-        var attributes = method.GetCustomAttributes<SuppressConventionAttribute>();
-
-        var types = attributes
-            .Select(x => (x.TargetType, x.MethodName))
-            .ToHashSet();
-        return types;
     }
 }

@@ -33,7 +33,7 @@ public class TypeAssertTests
     }
 
     [Fact]
-    [SuppressConvention(TargetType = typeof(DummyTypeSource), Justification = "For testing")]
+    [SuppressConvention(Target = "ConventionAssertions.Tests.TestHelpers.DummyTypeSource", Justification = "For testing")]
     public void Can_suppress_convention()
     {
         _tested.Assert(
