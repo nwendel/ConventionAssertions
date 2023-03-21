@@ -1,17 +1,16 @@
 ﻿using ConventionAssertions.Internal;
-using ConventionAssertions.Rules;
 using ConventionAssertions.Tests.TestHelpers;
 
 namespace ConventionAssertions.Tests;
 
-public class ConventionTests
+public class ConventionTests_Types
 {
     [Fact]
     public void Throws_on_null_scanner()
     {
         var ex = Assert.Throws<ArgumentNullException>(() => Convention.ForTypes(
             (Action<ITypeScanner>)null!,
-            x => x.Assert<HasNoPublicConstructors>()));
+            x => x.Assert<NothingTypeConvention>()));
         Assert.Equal("typeScanner", ex.ParamName);
     }
 
@@ -27,7 +26,7 @@ public class ConventionTests
     {
         var ex = Assert.Throws<ArgumentNullException>(() => Convention.ForTypes(
             (ConventionTypeSource)null!,
-            x => x.Assert<HasNoPublicConstructors>()));
+            x => x.Assert<NothingTypeConvention>()));
         Assert.Equal("typeSource", ex.ParamName);
     }
 
@@ -58,11 +57,11 @@ public class ConventionTests
     public void Can_create_type_source()
     {
         var typeSource = Convention.ForTypes(s => s
-            .FromAssemblyContaining<ConventionTests>()
-            .Where(t => t.Type == typeof(ConventionTests)));
+            .FromAssemblyContaining<ConventionTests_Types>()
+            .Where(t => t.Type == typeof(ConventionTests_Types)));
 
         var type = Assert.Single(typeSource.Types);
-        Assert.Same(typeof(ConventionTests), type);
+        Assert.Same(typeof(ConventionTests_Types), type);
     }
 
     [Fact]
@@ -72,11 +71,11 @@ public class ConventionTests
 
         Convention.ForTypes(
             s => s
-                .FromAssemblyContaining<ConventionTests>()
-                .Where(t => t.Type == typeof(ConventionTests)),
+                .FromAssemblyContaining<ConventionTests_Types>()
+                .Where(t => t.Type == typeof(ConventionTests_Types)),
             x => x.Assert(convention));
 
         var type = Assert.Single(convention.AssertedTypes);
-        Assert.Same(typeof(ConventionTests), type);
+        Assert.Same(typeof(ConventionTests_Types), type);
     }
 }
