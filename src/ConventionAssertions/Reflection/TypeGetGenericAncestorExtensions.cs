@@ -2,11 +2,6 @@
 
 public static class TypeGetGenericAncestorExtensions
 {
-    public static Type GetGenericAncestorClass(this Type self, Type genericAncestorType)
-        => self.TryGetGenericAncestorClass(genericAncestorType, out var ancestorType)
-            ? ancestorType
-            : throw new ArgumentException($"{self.DisplayName()} does not implement {genericAncestorType.DisplayName()}");
-
     public static bool TryGetGenericAncestorClass(this Type self, Type genericAncestorType, [NotNullWhen(true)] out Type? ancestorType)
     {
         GuardAgainst.Null(self);
