@@ -5,8 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ConventionAssertions.Rules;
 
 // TODO: This adds a AspNetCore reference, perhaps move to a different assembly?
-// TODO: Name of this rule? HasControllerAuthorization/HasAspNetCoreAuthorization?
-public class HasAuthorization : IMethodConvention
+public class HasControllerAuthorization : IMethodConvention
 {
     public void Assert(MethodInfo method, ConventionContext context)
     {
@@ -26,7 +25,7 @@ public class HasAuthorization : IMethodConvention
 
         if (!HasAnyAttribute(method, typeof(AuthorizeAttribute), typeof(AllowAnonymousAttribute)))
         {
-            context.Fail(method, "No auth for controller method");
+            context.Fail(method, "no authorization specified for method");
         }
     }
 
