@@ -1,4 +1,5 @@
-﻿using ConventionAssertions.Reflection;
+﻿using System.Reflection;
+using ConventionAssertions.Reflection;
 
 namespace ConventionAssertions.Internal;
 
@@ -51,5 +52,11 @@ public class MethodAssert : IMethodAssert
 
             TestFramework.Throw(message);
         }
+    }
+
+    public void Assert(Action<MethodInfo, ConventionContext> assert)
+    {
+        var convention = new MethodConventionAction(assert);
+        Assert(convention);
     }
 }

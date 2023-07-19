@@ -31,4 +31,15 @@ public class MethodAssertTests
     {
         Assert.Throws<XunitException>(() => _tested.Assert(new FailingMethodConvention()));
     }
+
+    [Fact]
+    [SuppressConvention(Target = "ConventionAssertions.Tests.TestHelpers.DummyMethodSource.SomeMethod()", Justification = "For testing")]
+    public void Can_suppress_convention()
+    {
+        _tested.Assert(
+            (type, context) =>
+            {
+                context.Fail(type, "always fails");
+            });
+    }
 }
