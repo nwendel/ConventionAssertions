@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ConventionAssertions.Tests.Rules;
 
-public class HasControllerAuthorizationTests
+public class ControllerActionHasAuthorizationTests
 {
-    private readonly HasControllerAuthorization _tested = new();
+    private readonly ControllerActionHasAuthorization _tested = new();
     private readonly ConventionContext _context = new();
 
     [Fact]

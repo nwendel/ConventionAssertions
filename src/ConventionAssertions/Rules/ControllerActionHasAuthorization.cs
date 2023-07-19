@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ConventionAssertions.Rules;
 
 // TODO: This adds a AspNetCore reference, perhaps move to a different assembly?
-public class HasControllerAuthorization : IMethodConvention
+public class ControllerActionHasAuthorization : IMethodConvention
 {
     public void Assert(MethodInfo method, ConventionContext context)
     {
