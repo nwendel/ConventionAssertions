@@ -2,7 +2,7 @@
 
 namespace ConventionAssertions.Rules;
 
-// TODO: This rule shold be merged with HasPublicStaticTryParseMethod?
+// TODO: This rule should be merged with HasPublicStaticTryParseMethod?
 //       Make the rule configurable for scenarios where we only want to check one?
 public class HasPublicStaticTryParseMethod : ITypeConvention
 {
