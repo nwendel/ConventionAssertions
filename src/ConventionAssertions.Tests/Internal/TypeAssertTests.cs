@@ -39,7 +39,7 @@ public class TypeAssertTests
         _tested.Assert(
             (type, context) =>
             {
-                context.Fail(type, "always failes");
+                context.Fail(type, "always fails");
             });
     }
 }
