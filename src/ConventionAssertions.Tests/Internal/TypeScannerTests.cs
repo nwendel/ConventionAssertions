@@ -22,7 +22,7 @@ public class TypeScannerTests
             .FromAssemblyContaining<TypeScannerTests>()
             .Where(t => t.IsAssignableTo<TypeScannerTests>());
 
-        var type = Assert.Single(_tested.Types);
-        Assert.Same(typeof(TypeScannerTests), type);
+        Assert.Single(_tested.Types);
+        Assert.Contains(typeof(TypeScannerTests), _tested.Types);
     }
 }
