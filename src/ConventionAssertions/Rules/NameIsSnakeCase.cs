@@ -27,8 +27,10 @@ public class NameIsSnakeCase : ITypeConvention, IMethodConvention
     }
 
     // TODO: Is this correct?
-    private static bool IsNotSnakeCase(string name)
-        => name.Any(x => (!char.IsAsciiLetterOrDigit(x) && x != '_') ||
-                         (char.IsLetter(x) && char.IsUpper(x))) ||
-            name.Contains("__", StringComparison.Ordinal);
+    private static bool IsNotSnakeCase(string name) =>
+        name.Any(x => (!char.IsAsciiLetterOrDigit(x) && x != '_') ||
+                      (char.IsLetter(x) && char.IsUpper(x))) ||
+        name.Contains("__", StringComparison.Ordinal) ||
+        name.First() == '_' ||
+        name.Last() == '_';
 }
