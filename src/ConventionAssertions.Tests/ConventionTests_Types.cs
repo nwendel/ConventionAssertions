@@ -22,7 +22,7 @@ public class ConventionTests_Types
     }
 
     [Fact]
-    public void Throws_on_null_typesource()
+    public void Throws_on_null_type_source()
     {
         var ex = Assert.Throws<ArgumentNullException>(() => Convention.ForTypes(
             (ConventionTypeSource)null!,
