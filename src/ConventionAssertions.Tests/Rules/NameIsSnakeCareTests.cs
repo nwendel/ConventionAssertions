@@ -32,6 +32,13 @@ public class NameIsSnakeCareTests
     }
 
     [Fact]
+    public void Throws_on_assert_pascal_case_method()
+    {
+        Assert.Throws<ConventionFailedException>(() => _tested.Assert(typeof(snake_case).GetMethod(nameof(snake_case.PascalCaseMethod))!, _context));
+        Assert.Single(_context.Messages);
+    }
+
+    [Fact]
     public void Throws_on_assert_double_underscore()
     {
         Assert.Throws<ConventionFailedException>(() => _tested.Assert(typeof(double__underscore), _context));
@@ -56,6 +63,10 @@ public class NameIsSnakeCareTests
     private class snake_case
     {
         public static void snake_case_method()
+        {
+        }
+
+        public static void PascalCaseMethod()
         {
         }
     }
