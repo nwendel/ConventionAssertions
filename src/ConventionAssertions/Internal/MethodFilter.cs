@@ -13,7 +13,16 @@ public class MethodFilter : IMethodFilter
 
     public MethodInfo Method { get; }
 
-    public bool HasAttribute<T>()
+    public bool IsPublic => Method.IsPublic;
+
+    public bool IsSpecialName => Method.IsSpecialName;
+
+    public bool HasCustomAttribute<T>()
         where T : Attribute
         => Method.GetCustomAttribute<T>() != null;
+
+    public bool HasCustomAttribute(Func<Attribute, bool> predicate) =>
+        Method.GetCustomAttributes(true)
+            .OfType<Attribute>()
+            .Any(a => predicate(a));
 }
