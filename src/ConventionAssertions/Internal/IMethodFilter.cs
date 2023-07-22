@@ -6,6 +6,12 @@ public interface IMethodFilter : IFluentInterface
 {
     MethodInfo Method { get; }
 
-    bool HasAttribute<T>()
+    bool IsPublic { get; }
+
+    bool IsSpecialName { get; }
+
+    bool HasCustomAttribute<T>()
         where T : Attribute;
+
+    bool HasCustomAttribute(Func<Attribute, bool> predicate);
 }
