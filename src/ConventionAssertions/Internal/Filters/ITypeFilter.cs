@@ -1,4 +1,4 @@
-﻿namespace ConventionAssertions.Internal;
+﻿namespace ConventionAssertions.Internal.Filters;
 
 public interface ITypeFilter : IFluentInterface
 {

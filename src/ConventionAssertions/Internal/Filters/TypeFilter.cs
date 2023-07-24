@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using ConventionAssertions.Reflection;
 
-namespace ConventionAssertions.Internal;
+namespace ConventionAssertions.Internal.Filters;
 
 public class TypeFilter : ITypeFilter
 {
