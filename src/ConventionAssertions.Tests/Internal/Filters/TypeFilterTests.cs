@@ -1,7 +1,7 @@
-﻿using ConventionAssertions.Internal;
+﻿using ConventionAssertions.Internal.Filters;
 using ConventionAssertions.Tests.TestHelpers;
 
-namespace ConventionAssertions.Tests.Internal;
+namespace ConventionAssertions.Tests.Internal.Filters;
 
 public class TypeFilterTests
 {

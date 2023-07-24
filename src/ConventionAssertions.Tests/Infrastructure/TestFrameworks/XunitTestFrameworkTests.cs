@@ -2,6 +2,7 @@
 using ConventionAssertions.Infrastructure.TestFrameworks;
 
 namespace ConventionAssertions.Tests.Infrastructure.TestFrameworks;
+
 public class XunitTestFrameworkTests
 {
     private readonly XunitTestFramework _tested = new();

@@ -2,5 +2,6 @@
 
 public abstract class ConventionTypeSource
 {
-    public IEnumerable<Type> Types { get; protected set; } = new List<Type>();
+    // TODO: How to design this to avoid the bang operator?
+    public IEnumerable<Type> Types { get; protected set; } = null!;
 }
