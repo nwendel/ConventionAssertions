@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace ConventionAssertions.Internal;
+namespace ConventionAssertions.Internal.Filters;
 
 public class MethodFilter : IMethodFilter
 {
