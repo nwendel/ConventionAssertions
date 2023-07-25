@@ -2,7 +2,7 @@
 
 namespace ConventionAssertions.Internal.Filters;
 
-public class MethodFilter : IMethodFilter
+public class MethodFilter : MemberFilter, IMethodFilter
 {
     public MethodFilter(MethodInfo method)
     {
@@ -15,14 +15,5 @@ public class MethodFilter : IMethodFilter
 
     public bool IsPublic => Method.IsPublic;
 
-    public bool IsSpecialName => Method.IsSpecialName;
-
-    public bool HasCustomAttribute<T>()
-        where T : Attribute
-        => Method.GetCustomAttribute<T>() != null;
-
-    public bool HasCustomAttribute(Func<Attribute, bool> predicate) =>
-        Method.GetCustomAttributes(true)
-            .OfType<Attribute>()
-            .Any(a => predicate(a));
+    protected override MemberInfo Member => Method;
 }

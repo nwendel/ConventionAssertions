@@ -2,16 +2,9 @@
 
 namespace ConventionAssertions.Internal.Filters;
 
-public interface IMethodFilter : IFluentInterface
+public interface IMethodFilter : IMemberFilter
 {
     MethodInfo Method { get; }
 
     bool IsPublic { get; }
-
-    bool IsSpecialName { get; }
-
-    bool HasCustomAttribute<T>()
-        where T : Attribute;
-
-    bool HasCustomAttribute(Func<Attribute, bool> predicate);
 }
