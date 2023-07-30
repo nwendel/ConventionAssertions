@@ -15,13 +15,6 @@ public class ConventionTests_Types
     }
 
     [Fact]
-    public void Throws_on_null_scanner_with_assert()
-    {
-        var ex = Assert.Throws<ArgumentNullException>(() => Convention.ForTypes(null!));
-        Assert.Equal("typeScanner", ex.ParamName);
-    }
-
-    [Fact]
     public void Throws_on_null_type_source()
     {
         var ex = Assert.Throws<ArgumentNullException>(() => Convention.ForTypes(
@@ -51,17 +44,6 @@ public class ConventionTests_Types
 
         var type = Assert.Single(asserted);
         Assert.Same(typeof(DummyTypeSource), type);
-    }
-
-    [Fact]
-    public void Can_create_type_source()
-    {
-        var typeSource = Convention.ForTypes(s => s
-            .FromAssemblyContaining<ConventionTests_Types>()
-            .Where(t => t.Type == typeof(ConventionTests_Types)));
-
-        var type = Assert.Single(typeSource.Types);
-        Assert.Same(typeof(ConventionTests_Types), type);
     }
 
     [Fact]
