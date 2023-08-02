@@ -6,7 +6,7 @@ namespace ConventionAssertions.Tests.Internal;
 
 public class TypeAssertTests
 {
-    private readonly TypeAssert _tested = new(new DummyTypeTargets());
+    private readonly ConventionAssert<Type> _tested = new(new DummyTypeTargets());
 
     [Fact]
     public void Can_assert_generic_overload()

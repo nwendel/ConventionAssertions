@@ -19,7 +19,7 @@ public static class Convention
     {
         GuardAgainst.Null(assert);
 
-        var typeAssert = new TypeAssert(targets);
+        var typeAssert = new ConventionAssert<Type>(targets);
         assert(typeAssert);
     }
 
@@ -43,7 +43,7 @@ public static class Convention
 
         var methodSource = new MethodScanner(targets.Targets);
         methodScanner(methodSource);
-        var methodAssert = new MethodAssert(methodSource);
+        var methodAssert = new ConventionAssert<MethodInfo>(methodSource);
         assert(methodAssert);
     }
 
@@ -67,7 +67,7 @@ public static class Convention
 
         var propertySource = new PropertyScanner(targets.Targets);
         propertyScanner(propertySource);
-        var propertyAssert = new PropertyAssert(propertySource);
+        var propertyAssert = new ConventionAssert<PropertyInfo>(propertySource);
         assert(propertyAssert);
     }
 }
