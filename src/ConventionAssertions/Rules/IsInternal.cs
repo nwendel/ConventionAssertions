@@ -1,16 +1,16 @@
 ﻿namespace ConventionAssertions.Rules;
 
-public class IsInternal : ITypeConvention
+public class IsInternal : IConvention<Type>
 {
-    public void Assert(Type type, ConventionContext context)
+    public void Assert(Type target, ConventionContext context)
     {
-        GuardAgainst.Null(type);
+        GuardAgainst.Null(target);
         GuardAgainst.Null(context);
 
-        var isInternal = type.IsNotPublic || type.IsNestedAssembly;
+        var isInternal = target.IsNotPublic || target.IsNestedAssembly;
         if (!isInternal)
         {
-            context.Fail(type, "must be internal");
+            context.Fail(target, "must be internal");
         }
     }
 }

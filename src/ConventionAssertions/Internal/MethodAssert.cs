@@ -3,7 +3,7 @@ using ConventionAssertions.Reflection;
 
 namespace ConventionAssertions.Internal;
 
-public class MethodAssert : IMethodAssert
+public class MethodAssert : IConventionAssert<MethodInfo>
 {
     private readonly IConventionTargets<MethodInfo> _methodSource;
 
@@ -15,13 +15,13 @@ public class MethodAssert : IMethodAssert
     }
 
     public void Assert<T>()
-        where T : IMethodConvention, new()
+        where T : IConvention<MethodInfo>, new()
     {
         var convention = new T();
         Assert(convention);
     }
 
-    public void Assert(IMethodConvention convention)
+    public void Assert(IConvention<MethodInfo> convention)
     {
         GuardAgainst.Null(convention);
 
@@ -60,7 +60,7 @@ public class MethodAssert : IMethodAssert
         Assert(convention);
     }
 
-    private sealed class MethodConventionAction : IMethodConvention
+    private sealed class MethodConventionAction : IConvention<MethodInfo>
     {
         private readonly Action<MethodInfo, ConventionContext> _action;
 

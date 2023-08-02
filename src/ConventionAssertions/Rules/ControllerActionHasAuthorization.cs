@@ -5,27 +5,27 @@ using Microsoft.AspNetCore.Mvc;
 namespace ConventionAssertions.Rules;
 
 // TODO: This adds a AspNetCore reference, perhaps move to a different assembly?
-public class ControllerActionHasAuthorization : IMethodConvention
+public class ControllerActionHasAuthorization : IConvention<MethodInfo>
 {
-    public void Assert(MethodInfo method, ConventionContext context)
+    public void Assert(MethodInfo target, ConventionContext context)
     {
-        GuardAgainst.Null(method);
+        GuardAgainst.Null(target);
         GuardAgainst.Null(context);
 
-        if (method.DeclaringType != null &&
-            HasAnyAttribute(method.DeclaringType, typeof(AuthorizeAttribute), typeof(AllowAnonymousAttribute)))
+        if (target.DeclaringType != null &&
+            HasAnyAttribute(target.DeclaringType, typeof(AuthorizeAttribute), typeof(AllowAnonymousAttribute)))
         {
             return;
         }
 
-        if (HasAnyAttribute(method, typeof(NonActionAttribute)))
+        if (HasAnyAttribute(target, typeof(NonActionAttribute)))
         {
             return;
         }
 
-        if (!HasAnyAttribute(method, typeof(AuthorizeAttribute), typeof(AllowAnonymousAttribute)))
+        if (!HasAnyAttribute(target, typeof(AuthorizeAttribute), typeof(AllowAnonymousAttribute)))
         {
-            context.Fail(method, "no authorization specified for method");
+            context.Fail(target, "no authorization specified for method");
         }
     }
 

@@ -1,4 +1,5 @@
-﻿using ConventionAssertions.Internal;
+﻿using System.Reflection;
+using ConventionAssertions.Internal;
 
 namespace ConventionAssertions;
 
@@ -6,7 +7,7 @@ public static class Convention
 {
     public static void ForTypes(
         Action<ITypeScanner> typeScanner,
-        Action<ITypeAssert> assert)
+        Action<IConventionAssert<Type>> assert)
     {
         var typeSource = ConventionTargets.FromTypes(typeScanner);
         ForTypes(typeSource, assert);
@@ -14,7 +15,7 @@ public static class Convention
 
     public static void ForTypes(
         IConventionTargets<Type> targets,
-        Action<ITypeAssert> assert)
+        Action<IConventionAssert<Type>> assert)
     {
         GuardAgainst.Null(assert);
 
@@ -25,7 +26,7 @@ public static class Convention
     public static void ForMethods(
         Action<ITypeScanner> typeScanner,
         Action<IMethodScanner> methodScanner,
-        Action<IMethodAssert> assert)
+        Action<IConventionAssert<MethodInfo>> assert)
     {
         var typeSource = ConventionTargets.FromTypes(typeScanner);
         ForMethods(typeSource, methodScanner, assert);
@@ -34,7 +35,7 @@ public static class Convention
     public static void ForMethods(
         IConventionTargets<Type> targets,
         Action<IMethodScanner> methodScanner,
-        Action<IMethodAssert> assert)
+        Action<IConventionAssert<MethodInfo>> assert)
     {
         GuardAgainst.Null(targets);
         GuardAgainst.Null(methodScanner);
@@ -49,7 +50,7 @@ public static class Convention
     public static void ForProperties(
         Action<ITypeScanner> typeScanner,
         Action<IPropertyScanner> propertyScanner,
-        Action<IPropertyAssert> assert)
+        Action<IConventionAssert<PropertyInfo>> assert)
     {
         var typeSource = ConventionTargets.FromTypes(typeScanner);
         ForProperties(typeSource, propertyScanner, assert);
@@ -58,7 +59,7 @@ public static class Convention
     public static void ForProperties(
         IConventionTargets<Type> targets,
         Action<IPropertyScanner> propertyScanner,
-        Action<IPropertyAssert> assert)
+        Action<IConventionAssert<PropertyInfo>> assert)
     {
         GuardAgainst.Null(targets);
         GuardAgainst.Null(propertyScanner);

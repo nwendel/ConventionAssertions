@@ -1,17 +1,17 @@
 ﻿namespace ConventionAssertions.Rules;
 
-public class IsAbstractOrSealed : ITypeConvention
+public class IsAbstractOrSealed : IConvention<Type>
 {
-    public void Assert(Type type, ConventionContext context)
+    public void Assert(Type target, ConventionContext context)
     {
-        GuardAgainst.Null(type);
+        GuardAgainst.Null(target);
         GuardAgainst.Null(context);
 
-        if (type.IsAbstract || type.IsSealed)
+        if (target.IsAbstract || target.IsSealed)
         {
             return;
         }
 
-        context.Fail(type, $"must be abstract or sealed");
+        context.Fail(target, $"must be abstract or sealed");
     }
 }

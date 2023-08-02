@@ -3,12 +3,12 @@ using ConventionAssertions.Infrastructure;
 
 namespace ConventionAssertions.Tests.TestHelpers;
 
-public class FailingMethodConvention : IMethodConvention
+public class FailingMethodConvention : IConvention<MethodInfo>
 {
-    public void Assert(MethodInfo method, ConventionContext context)
+    public void Assert(MethodInfo target, ConventionContext context)
     {
         GuardAgainst.Null(context);
 
-        context.Fail(method, "always fails");
+        context.Fail(target, "always fails");
     }
 }

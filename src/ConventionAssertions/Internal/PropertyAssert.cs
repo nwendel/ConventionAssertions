@@ -2,7 +2,7 @@
 
 namespace ConventionAssertions.Internal;
 
-public class PropertyAssert : IPropertyAssert
+public class PropertyAssert : IConventionAssert<PropertyInfo>
 {
     private readonly IConventionTargets<PropertyInfo> _propertySource;
 
@@ -14,13 +14,13 @@ public class PropertyAssert : IPropertyAssert
     }
 
     public void Assert<T>()
-        where T : IPropertyConvention, new()
+        where T : IConvention<PropertyInfo>, new()
     {
         var convention = new T();
         Assert(convention);
     }
 
-    public void Assert(IPropertyConvention convention)
+    public void Assert(IConvention<PropertyInfo> convention)
     {
         GuardAgainst.Null(convention);
 
@@ -60,7 +60,7 @@ public class PropertyAssert : IPropertyAssert
         Assert(convention);
     }
 
-    private sealed class PropertyConventionAction : IPropertyConvention
+    private sealed class PropertyConventionAction : IConvention<PropertyInfo>
     {
         private readonly Action<PropertyInfo, ConventionContext> _action;
 

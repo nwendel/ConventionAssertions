@@ -1,15 +1,15 @@
 ﻿namespace ConventionAssertions.Rules;
 
-public class HasNoPublicConstructors : ITypeConvention
+public class HasNoPublicConstructors : IConvention<Type>
 {
-    public void Assert(Type type, ConventionContext context)
+    public void Assert(Type target, ConventionContext context)
     {
-        GuardAgainst.Null(type);
+        GuardAgainst.Null(target);
         GuardAgainst.Null(context);
 
-        if (type.GetConstructors().Any())
+        if (target.GetConstructors().Any())
         {
-            context.Fail(type, "must not have a public constructor");
+            context.Fail(target, "must not have a public constructor");
         }
     }
 }

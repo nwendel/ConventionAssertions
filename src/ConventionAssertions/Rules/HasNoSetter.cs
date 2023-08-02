@@ -2,17 +2,17 @@
 
 namespace ConventionAssertions.Rules;
 
-public class HasNoSetter : IPropertyConvention
+public class HasNoSetter : IConvention<PropertyInfo>
 {
-    public void Assert(PropertyInfo property, ConventionContext context)
+    public void Assert(PropertyInfo target, ConventionContext context)
     {
-        GuardAgainst.Null(property);
+        GuardAgainst.Null(target);
         GuardAgainst.Null(context);
 
-        var setMethod = property.GetSetMethod();
+        var setMethod = target.GetSetMethod();
         if (setMethod != null)
         {
-            context.Fail(property, "must not have a setter");
+            context.Fail(target, "must not have a setter");
         }
     }
 }

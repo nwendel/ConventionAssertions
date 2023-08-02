@@ -2,7 +2,7 @@
 
 namespace ConventionAssertions.Internal;
 
-public class TypeAssert : ITypeAssert
+public class TypeAssert : IConventionAssert<Type>
 {
     private readonly IConventionTargets<Type> _typeSource;
 
@@ -14,13 +14,13 @@ public class TypeAssert : ITypeAssert
     }
 
     public void Assert<T>()
-        where T : ITypeConvention, new()
+        where T : IConvention<Type>, new()
     {
         var convention = new T();
         Assert(convention);
     }
 
-    public void Assert(ITypeConvention convention)
+    public void Assert(IConvention<Type> convention)
     {
         GuardAgainst.Null(convention);
 
@@ -59,7 +59,7 @@ public class TypeAssert : ITypeAssert
         Assert(convention);
     }
 
-    private sealed class TypeConventionAction : ITypeConvention
+    private sealed class TypeConventionAction : IConvention<Type>
     {
         private readonly Action<Type, ConventionContext> _action;
 

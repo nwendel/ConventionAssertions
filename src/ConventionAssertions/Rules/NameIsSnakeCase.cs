@@ -2,27 +2,27 @@
 
 namespace ConventionAssertions.Rules;
 
-public class NameIsSnakeCase : ITypeConvention, IMethodConvention
+public class NameIsSnakeCase : IConvention<Type>, IConvention<MethodInfo>
 {
-    public void Assert(Type type, ConventionContext context)
+    public void Assert(Type target, ConventionContext context)
     {
-        GuardAgainst.Null(type);
+        GuardAgainst.Null(target);
         GuardAgainst.Null(context);
 
-        if (IsNotSnakeCase(type.Name))
+        if (IsNotSnakeCase(target.Name))
         {
-            context.Fail(type, "is not snake case");
+            context.Fail(target, "is not snake case");
         }
     }
 
-    public void Assert(MethodInfo method, ConventionContext context)
+    public void Assert(MethodInfo target, ConventionContext context)
     {
-        GuardAgainst.Null(method);
+        GuardAgainst.Null(target);
         GuardAgainst.Null(context);
 
-        if (IsNotSnakeCase(method.Name))
+        if (IsNotSnakeCase(target.Name))
         {
-            context.Fail(method, "is not snake case");
+            context.Fail(target, "is not snake case");
         }
     }
 
