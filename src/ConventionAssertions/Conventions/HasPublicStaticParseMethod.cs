@@ -1,6 +1,6 @@
 ﻿using ConventionAssertions.Reflection;
 
-namespace ConventionAssertions.Rules;
+namespace ConventionAssertions.Conventions;
 
 public class HasPublicStaticParseMethod : IConvention<Type>
 {

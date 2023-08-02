@@ -1,4 +1,4 @@
-﻿namespace ConventionAssertions.Rules;
+﻿namespace ConventionAssertions.Conventions;
 
 public class HasNoPublicConstructors : IConvention<Type>
 {

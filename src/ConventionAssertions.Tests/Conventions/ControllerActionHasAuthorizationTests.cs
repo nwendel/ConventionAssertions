@@ -1,9 +1,9 @@
-﻿using ConventionAssertions.Internal;
-using ConventionAssertions.Rules;
+﻿using ConventionAssertions.Conventions;
+using ConventionAssertions.Internal;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ConventionAssertions.Tests.Rules;
+namespace ConventionAssertions.Tests.Conventions;
 
 public class ControllerActionHasAuthorizationTests
 {

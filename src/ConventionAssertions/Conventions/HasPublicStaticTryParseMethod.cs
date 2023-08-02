@@ -1,6 +1,6 @@
 ﻿using ConventionAssertions.Reflection;
 
-namespace ConventionAssertions.Rules;
+namespace ConventionAssertions.Conventions;
 
 // TODO: This rule should be merged with HasPublicStaticTryParseMethod?
 //       Make the rule configurable for scenarios where we only want to check one?

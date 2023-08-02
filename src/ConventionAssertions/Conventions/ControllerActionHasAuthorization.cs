@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ConventionAssertions.Rules;
+namespace ConventionAssertions.Conventions;
 
 // TODO: This adds a AspNetCore reference, perhaps move to a different assembly?
 public class ControllerActionHasAuthorization : IConvention<MethodInfo>
