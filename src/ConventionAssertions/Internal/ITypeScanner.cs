@@ -7,7 +7,7 @@ public interface ITypeScanner : IFluentInterface
 {
     ITypeScannerFilter FromAssemblyContaining<T>();
 
-    ITypeScannerFilter FromTypeSource(ConventionTypeSource typeSource);
+    ITypeScannerFilter FromConventionTargets(IConventionTargets<Type> targets);
 
     ITypeScannerFilter FromDependencyContext(DependencyContext dependencyContext);
 

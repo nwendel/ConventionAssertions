@@ -5,19 +5,25 @@ using TypeFilter = ConventionAssertions.Internal.Filters.TypeFilter;
 
 namespace ConventionAssertions.Internal;
 
-public class TypeScanner : ConventionTypeSource, ITypeScanner, ITypeScannerFilter
+public class TypeScanner :
+    IConventionTargets<Type>,
+    ITypeScanner,
+    ITypeScannerFilter
 {
+    // TODO: How to avoid bang?
+    public IEnumerable<Type> Targets { get; private set; } = null!;
+
     public ITypeScannerFilter FromAssemblyContaining<T>()
     {
-        Types = typeof(T).Assembly.GetTypes();
+        Targets = typeof(T).Assembly.GetTypes();
         return this;
     }
 
-    public ITypeScannerFilter FromTypeSource(ConventionTypeSource typeSource)
+    public ITypeScannerFilter FromConventionTargets(IConventionTargets<Type> targets)
     {
-        GuardAgainst.Null(typeSource);
+        GuardAgainst.Null(targets);
 
-        Types = typeSource.Types;
+        Targets = targets.Targets;
         return this;
     }
 
@@ -29,7 +35,7 @@ public class TypeScanner : ConventionTypeSource, ITypeScanner, ITypeScannerFilte
             .SelectMany(x => x.GetDefaultAssemblyNames(dependencyContext))
             .Select(x => Assembly.Load(x))
             .ToList();
-        Types = assemblies
+        Targets = assemblies
             .SelectMany(x => x.GetTypes())
             .ToList();
         return this;
@@ -49,7 +55,7 @@ public class TypeScanner : ConventionTypeSource, ITypeScanner, ITypeScannerFilte
     {
         GuardAgainst.Null(predicate);
 
-        Types = Types
+        Targets = Targets
             .Select(x => new TypeFilter(x))
             .Where(x => predicate(x))
             .Select(x => x.Type)

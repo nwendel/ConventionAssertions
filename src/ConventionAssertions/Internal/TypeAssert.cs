@@ -4,9 +4,9 @@ namespace ConventionAssertions.Internal;
 
 public class TypeAssert : ITypeAssert
 {
-    private readonly ConventionTypeSource _typeSource;
+    private readonly IConventionTargets<Type> _typeSource;
 
-    public TypeAssert(ConventionTypeSource typeSource)
+    public TypeAssert(IConventionTargets<Type> typeSource)
     {
         GuardAgainst.Null(typeSource);
 
@@ -27,7 +27,7 @@ public class TypeAssert : ITypeAssert
         var context = new ConventionContext();
         var suppressions = AssertHelper.FindSuppressions();
 
-        foreach (var type in _typeSource.Types)
+        foreach (var type in _typeSource.Targets)
         {
             if (suppressions.Contains(type.DisplayName()))
             {

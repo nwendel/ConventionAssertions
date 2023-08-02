@@ -8,17 +8,17 @@ public static class Convention
         Action<ITypeScanner> typeScanner,
         Action<ITypeAssert> assert)
     {
-        var typeSource = ConventionSource.FromTypes(typeScanner);
+        var typeSource = ConventionTargets.FromTypes(typeScanner);
         ForTypes(typeSource, assert);
     }
 
     public static void ForTypes(
-        ConventionTypeSource typeSource,
+        IConventionTargets<Type> targets,
         Action<ITypeAssert> assert)
     {
         GuardAgainst.Null(assert);
 
-        var typeAssert = new TypeAssert(typeSource);
+        var typeAssert = new TypeAssert(targets);
         assert(typeAssert);
     }
 
@@ -27,20 +27,20 @@ public static class Convention
         Action<IMethodScanner> methodScanner,
         Action<IMethodAssert> assert)
     {
-        var typeSource = ConventionSource.FromTypes(typeScanner);
+        var typeSource = ConventionTargets.FromTypes(typeScanner);
         ForMethods(typeSource, methodScanner, assert);
     }
 
     public static void ForMethods(
-        ConventionTypeSource typeSource,
+        IConventionTargets<Type> targets,
         Action<IMethodScanner> methodScanner,
         Action<IMethodAssert> assert)
     {
-        GuardAgainst.Null(typeSource);
+        GuardAgainst.Null(targets);
         GuardAgainst.Null(methodScanner);
         GuardAgainst.Null(assert);
 
-        var methodSource = new MethodScanner(typeSource.Types);
+        var methodSource = new MethodScanner(targets.Targets);
         methodScanner(methodSource);
         var methodAssert = new MethodAssert(methodSource);
         assert(methodAssert);
@@ -51,20 +51,20 @@ public static class Convention
         Action<IPropertyScanner> propertyScanner,
         Action<IPropertyAssert> assert)
     {
-        var typeSource = ConventionSource.FromTypes(typeScanner);
+        var typeSource = ConventionTargets.FromTypes(typeScanner);
         ForProperties(typeSource, propertyScanner, assert);
     }
 
     public static void ForProperties(
-        ConventionTypeSource typeSource,
+        IConventionTargets<Type> targets,
         Action<IPropertyScanner> propertyScanner,
         Action<IPropertyAssert> assert)
     {
-        GuardAgainst.Null(typeSource);
+        GuardAgainst.Null(targets);
         GuardAgainst.Null(propertyScanner);
         GuardAgainst.Null(assert);
 
-        var propertySource = new PropertyScanner(typeSource.Types);
+        var propertySource = new PropertyScanner(targets.Targets);
         propertyScanner(propertySource);
         var propertyAssert = new PropertyAssert(propertySource);
         assert(propertyAssert);

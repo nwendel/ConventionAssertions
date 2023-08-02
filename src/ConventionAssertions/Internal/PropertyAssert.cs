@@ -4,9 +4,9 @@ namespace ConventionAssertions.Internal;
 
 public class PropertyAssert : IPropertyAssert
 {
-    private readonly ConventionPropertySource _propertySource;
+    private readonly IConventionTargets<PropertyInfo> _propertySource;
 
-    public PropertyAssert(ConventionPropertySource propertySource)
+    public PropertyAssert(IConventionTargets<PropertyInfo> propertySource)
     {
         GuardAgainst.Null(propertySource);
 
@@ -27,7 +27,7 @@ public class PropertyAssert : IPropertyAssert
         var context = new ConventionContext();
         var suppressions = AssertHelper.FindSuppressions();
 
-        foreach (var property in _propertySource.Properties)
+        foreach (var property in _propertySource.Targets)
         {
             // TODO: Name? Or is a DisplayName extension needed?
             if (suppressions.Contains(property.Name))

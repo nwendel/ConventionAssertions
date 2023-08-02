@@ -18,7 +18,7 @@ public class ConventionTests_Types
     public void Throws_on_null_type_source()
     {
         var ex = Assert.Throws<ArgumentNullException>(() => Convention.ForTypes(
-            (ConventionTypeSource)null!,
+            (IConventionTargets<Type>)null!,
             x => x.Assert<NothingTypeConvention>()));
         Assert.Equal("typeSource", ex.ParamName);
     }
@@ -27,7 +27,7 @@ public class ConventionTests_Types
     public void Throws_on_null_assert()
     {
         var ex = Assert.Throws<ArgumentNullException>(() => Convention.ForTypes(
-            new DummyTypeSource(),
+            new DummyTypeTargets(),
             null!));
         Assert.Equal("assert", ex.ParamName);
     }
@@ -38,12 +38,12 @@ public class ConventionTests_Types
         var asserted = new List<Type>();
 
         Convention.ForTypes(
-            new DummyTypeSource(),
+            new DummyTypeTargets(),
             x => x.Assert(
                 (type, context) => asserted.Add(type)));
 
         var type = Assert.Single(asserted);
-        Assert.Same(typeof(DummyTypeSource), type);
+        Assert.Same(typeof(DummyTypeTargets), type);
     }
 
     [Fact]

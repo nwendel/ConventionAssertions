@@ -5,9 +5,9 @@ namespace ConventionAssertions.Internal;
 
 public class MethodAssert : IMethodAssert
 {
-    private readonly ConventionMethodSource _methodSource;
+    private readonly IConventionTargets<MethodInfo> _methodSource;
 
-    public MethodAssert(ConventionMethodSource methodSource)
+    public MethodAssert(IConventionTargets<MethodInfo> methodSource)
     {
         GuardAgainst.Null(methodSource);
 
@@ -28,7 +28,7 @@ public class MethodAssert : IMethodAssert
         var context = new ConventionContext();
         var suppressions = AssertHelper.FindSuppressions();
 
-        foreach (var method in _methodSource.Methods)
+        foreach (var method in _methodSource.Targets)
         {
             if (suppressions.Contains(method.DisplayName()))
             {
