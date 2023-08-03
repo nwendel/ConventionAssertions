@@ -1,17 +1,28 @@
-﻿using ConventionAssertions.Internal.Filters;
+﻿using System.Collections;
+using System.Reflection;
+using ConventionAssertions.Internal.Filters;
 
 namespace ConventionAssertions.Internal;
 
-public class PropertyScanner : ConventionPropertySource, IPropertyScanner
+public sealed class PropertyScanner :
+    IConventionTargets<PropertyInfo>,
+    IPropertyScanner
 {
+    private IEnumerable<PropertyInfo> _propertyInfos;
+
     public PropertyScanner(IEnumerable<Type> types)
-        : base(types)
     {
+        GuardAgainst.Null(types);
+
+        // TODO: Non public
+        _propertyInfos = types
+            .SelectMany(x => x.GetProperties())
+            .ToList();
     }
 
     public IPropertyScanner Where(Func<IPropertyFilter, bool> predicate)
     {
-        Properties = Properties
+        _propertyInfos = _propertyInfos
             .Select(x => new PropertyFilter(x))
             .Where(x => predicate(x))
             .Select(x => x.Property)
@@ -19,4 +30,8 @@ public class PropertyScanner : ConventionPropertySource, IPropertyScanner
 
         return this;
     }
+
+    IEnumerator<PropertyInfo> IEnumerable<PropertyInfo>.GetEnumerator() => _propertyInfos.GetEnumerator();
+
+    IEnumerator IEnumerable.GetEnumerator() => _propertyInfos.GetEnumerator();
 }

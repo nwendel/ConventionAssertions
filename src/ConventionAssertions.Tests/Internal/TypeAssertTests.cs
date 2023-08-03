@@ -6,7 +6,7 @@ namespace ConventionAssertions.Tests.Internal;
 
 public class TypeAssertTests
 {
-    private readonly TypeAssert _tested = new(new DummyTypeSource());
+    private readonly ConventionAssert<Type> _tested = new(new DummyTypeTargets());
 
     [Fact]
     public void Can_assert_generic_overload()
@@ -33,7 +33,7 @@ public class TypeAssertTests
     }
 
     [Fact]
-    [SuppressConvention(Target = "ConventionAssertions.Tests.TestHelpers.DummyTypeSource", Justification = "For testing")]
+    [SuppressConvention(Target = "ConventionAssertions.Tests.TestHelpers.DummyTypeTargets", Justification = "For testing")]
     public void Can_suppress_convention()
     {
         _tested.Assert(

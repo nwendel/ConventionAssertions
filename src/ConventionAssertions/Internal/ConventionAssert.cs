@@ -3,41 +3,42 @@ using ConventionAssertions.Reflection;
 
 namespace ConventionAssertions.Internal;
 
-public class MethodAssert : IMethodAssert
+public class ConventionAssert<TTarget> : IConventionAssert<TTarget>
+    where TTarget : MemberInfo
 {
-    private readonly ConventionMethodSource _methodSource;
+    private readonly IConventionTargets<TTarget> _targets;
 
-    public MethodAssert(ConventionMethodSource methodSource)
+    public ConventionAssert(IConventionTargets<TTarget> targets)
     {
-        GuardAgainst.Null(methodSource);
+        GuardAgainst.Null(targets);
 
-        _methodSource = methodSource;
+        _targets = targets;
     }
 
     public void Assert<T>()
-        where T : IMethodConvention, new()
+        where T : IConvention<TTarget>, new()
     {
         var convention = new T();
         Assert(convention);
     }
 
-    public void Assert(IMethodConvention convention)
+    public void Assert(IConvention<TTarget> convention)
     {
         GuardAgainst.Null(convention);
 
         var context = new ConventionContext();
         var suppressions = AssertHelper.FindSuppressions();
 
-        foreach (var method in _methodSource.Methods)
+        foreach (var target in _targets)
         {
-            if (suppressions.Contains(method.DisplayName()))
+            if (suppressions.Contains(target.DisplayName()))
             {
                 continue;
             }
 
             try
             {
-                convention.Assert(method, context);
+                convention.Assert(target, context);
             }
             catch (ConventionFailedException)
             {
@@ -54,26 +55,26 @@ public class MethodAssert : IMethodAssert
         }
     }
 
-    public void Assert(Action<MethodInfo, ConventionContext> assert)
+    public void Assert(Action<TTarget, ConventionContext> assertAction)
     {
-        var convention = new MethodConventionAction(assert);
+        var convention = new ConventionAction(assertAction);
         Assert(convention);
     }
 
-    private sealed class MethodConventionAction : IMethodConvention
+    private sealed class ConventionAction : IConvention<TTarget>
     {
-        private readonly Action<MethodInfo, ConventionContext> _action;
+        private readonly Action<TTarget, ConventionContext> _action;
 
-        public MethodConventionAction(Action<MethodInfo, ConventionContext> action)
+        public ConventionAction(Action<TTarget, ConventionContext> action)
         {
             GuardAgainst.Null(action);
 
             _action = action;
         }
 
-        public void Assert(MethodInfo method, ConventionContext context)
+        public void Assert(TTarget target, ConventionContext context)
         {
-            _action(method, context);
+            _action(target, context);
         }
     }
 }

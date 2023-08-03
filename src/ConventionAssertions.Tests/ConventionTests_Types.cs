@@ -6,44 +6,44 @@ namespace ConventionAssertions.Tests;
 public class ConventionTests_Types
 {
     [Fact]
-    public void Throws_on_null_scanner()
+    public void Throws_on_null_scanner_action()
     {
         var ex = Assert.Throws<ArgumentNullException>(() => Convention.ForTypes(
             (Action<ITypeScanner>)null!,
             x => x.Assert<NothingTypeConvention>()));
-        Assert.Equal("typeScanner", ex.ParamName);
+        Assert.Equal("scannerAction", ex.ParamName);
     }
 
     [Fact]
-    public void Throws_on_null_type_source()
+    public void Throws_on_null_targets()
     {
         var ex = Assert.Throws<ArgumentNullException>(() => Convention.ForTypes(
-            (ConventionTypeSource)null!,
+            (IConventionTargets<Type>)null!,
             x => x.Assert<NothingTypeConvention>()));
-        Assert.Equal("typeSource", ex.ParamName);
+        Assert.Equal("targets", ex.ParamName);
     }
 
     [Fact]
-    public void Throws_on_null_assert()
+    public void Throws_on_null_assert_action()
     {
         var ex = Assert.Throws<ArgumentNullException>(() => Convention.ForTypes(
-            new DummyTypeSource(),
+            new DummyTypeTargets(),
             null!));
-        Assert.Equal("assert", ex.ParamName);
+        Assert.Equal("assertAction", ex.ParamName);
     }
 
     [Fact]
-    public void Can_assert_type_source_single_type()
+    public void Can_assert_targets_single_type()
     {
         var asserted = new List<Type>();
 
         Convention.ForTypes(
-            new DummyTypeSource(),
+            new DummyTypeTargets(),
             x => x.Assert(
                 (type, context) => asserted.Add(type)));
 
         var type = Assert.Single(asserted);
-        Assert.Same(typeof(DummyTypeSource), type);
+        Assert.Same(typeof(DummyTypeTargets), type);
     }
 
     [Fact]

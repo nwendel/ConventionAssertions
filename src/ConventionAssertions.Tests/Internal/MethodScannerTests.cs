@@ -19,8 +19,8 @@ public class MethodScannerTests
     [Fact]
     public void Can_GetMethods()
     {
-        Assert.Contains(_publicMethod, _tested.Methods);
-        Assert.Contains(_anotherPublicMethod, _tested.Methods);
+        Assert.Contains(_publicMethod, _tested);
+        Assert.Contains(_anotherPublicMethod, _tested);
     }
 
     [Fact]
@@ -29,8 +29,8 @@ public class MethodScannerTests
         _tested
             .Where(m => m.Method.Name == nameof(PublicMethod));
 
-        Assert.Contains(_publicMethod, _tested.Methods);
-        Assert.DoesNotContain(_anotherPublicMethod, _tested.Methods);
+        Assert.Contains(_publicMethod, _tested);
+        Assert.DoesNotContain(_anotherPublicMethod, _tested);
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "xUnit1013:Public method should be marked as test", Justification = "Used in testing")]

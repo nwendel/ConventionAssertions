@@ -1,7 +1,7 @@
-﻿using ConventionAssertions.Internal;
-using ConventionAssertions.Rules;
+﻿using ConventionAssertions.Conventions;
+using ConventionAssertions.Internal;
 
-namespace ConventionAssertions.Tests.Rules;
+namespace ConventionAssertions.Tests.Conventions;
 
 public class NameIsSnakeCareTests
 {

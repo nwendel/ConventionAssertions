@@ -1,8 +1,8 @@
-﻿using ConventionAssertions.Internal;
-using ConventionAssertions.Rules;
+﻿using ConventionAssertions.Conventions;
+using ConventionAssertions.Internal;
 using ConventionAssertions.Tests.TestHelpers;
 
-namespace ConventionAssertions.Tests.Rules;
+namespace ConventionAssertions.Tests.Conventions;
 
 public class IsInternalTests
 {

@@ -1,4 +1,5 @@
-﻿using ConventionAssertions.Internal;
+﻿using System.Reflection;
+using ConventionAssertions.Internal;
 using ConventionAssertions.Tests.TestHelpers;
 using Xunit.Sdk;
 
@@ -6,7 +7,7 @@ namespace ConventionAssertions.Tests.Internal;
 
 public class MethodAssertTests
 {
-    private readonly MethodAssert _tested = new(new DummyMethodSource());
+    private readonly ConventionAssert<MethodInfo> _tested = new(new DummyMethodTargets());
 
     [Fact]
     public void Can_assert_generic_overload()
@@ -33,7 +34,7 @@ public class MethodAssertTests
     }
 
     [Fact]
-    [SuppressConvention(Target = "ConventionAssertions.Tests.TestHelpers.DummyMethodSource.SomeMethod()", Justification = "For testing")]
+    [SuppressConvention(Target = "ConventionAssertions.Tests.TestHelpers.DummyMethodTargets.SomeMethod()", Justification = "For testing")]
     public void Can_suppress_convention()
     {
         _tested.Assert(

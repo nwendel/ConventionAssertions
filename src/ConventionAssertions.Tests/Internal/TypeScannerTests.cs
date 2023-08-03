@@ -12,7 +12,7 @@ public class TypeScannerTests
         _tested
             .FromAssemblyContaining<TypeScannerTests>();
 
-        Assert.Contains(typeof(TypeScannerTests), _tested.Types);
+        Assert.Contains(typeof(TypeScannerTests), _tested);
     }
 
     [Fact]
@@ -22,7 +22,7 @@ public class TypeScannerTests
             .FromAssemblyContaining<TypeScannerTests>()
             .Where(t => t.IsAssignableTo<TypeScannerTests>());
 
-        Assert.Single(_tested.Types);
-        Assert.Contains(typeof(TypeScannerTests), _tested.Types);
+        Assert.Single(_tested);
+        Assert.Contains(typeof(TypeScannerTests), _tested);
     }
 }
