@@ -6,7 +6,7 @@ public class ConventionTargetsTests_Types
     public void Throws_on_null_scanner_with_assert()
     {
         var ex = Assert.Throws<ArgumentNullException>(() => ConventionTargets.FromTypes(null!));
-        Assert.Equal("typeScanner", ex.ParamName);
+        Assert.Equal("scannerAction", ex.ParamName);
     }
 
     [Fact]

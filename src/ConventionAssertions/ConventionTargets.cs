@@ -4,12 +4,12 @@ namespace ConventionAssertions;
 
 public static class ConventionTargets
 {
-    public static IConventionTargets<Type> FromTypes(Action<ITypeScanner> typeScanner)
+    public static IConventionTargets<Type> FromTypes(Action<ITypeScanner> scannerAction)
     {
-        GuardAgainst.Null(typeScanner);
+        GuardAgainst.Null(scannerAction);
 
-        var targets = new TypeScanner();
-        typeScanner(targets);
-        return targets;
+        var scanner = new TypeScanner();
+        scannerAction(scanner);
+        return scanner;
     }
 }

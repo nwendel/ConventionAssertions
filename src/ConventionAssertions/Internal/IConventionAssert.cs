@@ -10,5 +10,5 @@ public interface IConventionAssert<TTarget> : IFluentInterface
 
     void Assert(IConvention<TTarget> convention);
 
-    void Assert(Action<TTarget, ConventionContext> assert);
+    void Assert(Action<TTarget, ConventionContext> assertAction);
 }

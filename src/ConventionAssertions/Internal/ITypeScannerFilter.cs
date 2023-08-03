@@ -1,4 +1,6 @@
-﻿namespace ConventionAssertions.Internal.Filters;
+﻿using ConventionAssertions.Internal.Filters;
+
+namespace ConventionAssertions.Internal;
 
 public interface ITypeScannerFilter : IFluentInterface
 {

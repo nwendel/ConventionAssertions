@@ -6,13 +6,13 @@ namespace ConventionAssertions.Internal;
 public class ConventionAssert<TTarget> : IConventionAssert<TTarget>
     where TTarget : MemberInfo
 {
-    private readonly IConventionTargets<TTarget> _typeSource;
+    private readonly IConventionTargets<TTarget> _targets;
 
-    public ConventionAssert(IConventionTargets<TTarget> typeSource)
+    public ConventionAssert(IConventionTargets<TTarget> targets)
     {
-        GuardAgainst.Null(typeSource);
+        GuardAgainst.Null(targets);
 
-        _typeSource = typeSource;
+        _targets = targets;
     }
 
     public void Assert<T>()
@@ -29,7 +29,7 @@ public class ConventionAssert<TTarget> : IConventionAssert<TTarget>
         var context = new ConventionContext();
         var suppressions = AssertHelper.FindSuppressions();
 
-        foreach (var target in _typeSource)
+        foreach (var target in _targets)
         {
             if (suppressions.Contains(target.DisplayName()))
             {
@@ -55,9 +55,9 @@ public class ConventionAssert<TTarget> : IConventionAssert<TTarget>
         }
     }
 
-    public void Assert(Action<TTarget, ConventionContext> assert)
+    public void Assert(Action<TTarget, ConventionContext> assertAction)
     {
-        var convention = new ConventionAction(assert);
+        var convention = new ConventionAction(assertAction);
         Assert(convention);
     }
 

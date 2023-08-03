@@ -12,7 +12,12 @@ public static class AssertHelper
         var frame = new StackTrace().GetFrames()
             .SkipWhile(x => x.GetMethod()?.DeclaringType?.Assembly == typeof(Convention).Assembly)
             .First();
-        var method = frame.GetMethod()!;
+        var method = frame.GetMethod();
+        if (method == null)
+        {
+            throw new InvalidOperationException("No method found");
+        }
+
         var attributes = method.GetCustomAttributes<SuppressConventionAttribute>();
 
         var types = attributes

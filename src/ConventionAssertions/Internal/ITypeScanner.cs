@@ -1,5 +1,4 @@
-﻿using ConventionAssertions.Internal.Filters;
-using Microsoft.Extensions.DependencyModel;
+﻿using Microsoft.Extensions.DependencyModel;
 
 namespace ConventionAssertions.Internal;
 
