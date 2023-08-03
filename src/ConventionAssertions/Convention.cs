@@ -41,7 +41,7 @@ public static class Convention
         GuardAgainst.Null(methodScanner);
         GuardAgainst.Null(assert);
 
-        var methodSource = new MethodScanner(targets.Targets);
+        var methodSource = new MethodScanner(targets);
         methodScanner(methodSource);
         var methodAssert = new ConventionAssert<MethodInfo>(methodSource);
         assert(methodAssert);
@@ -65,7 +65,7 @@ public static class Convention
         GuardAgainst.Null(propertyScanner);
         GuardAgainst.Null(assert);
 
-        var propertySource = new PropertyScanner(targets.Targets);
+        var propertySource = new PropertyScanner(targets);
         propertyScanner(propertySource);
         var propertyAssert = new ConventionAssert<PropertyInfo>(propertySource);
         assert(propertyAssert);

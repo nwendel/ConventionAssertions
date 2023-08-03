@@ -29,7 +29,7 @@ public class ConventionAssert<TTarget> : IConventionAssert<TTarget>
         var context = new ConventionContext();
         var suppressions = AssertHelper.FindSuppressions();
 
-        foreach (var target in _typeSource.Targets)
+        foreach (var target in _typeSource)
         {
             if (suppressions.Contains(target.DisplayName()))
             {

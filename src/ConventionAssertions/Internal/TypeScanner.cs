@@ -1,21 +1,22 @@
-﻿using System.Reflection;
+﻿using System.Collections;
+using System.Reflection;
 using ConventionAssertions.Internal.Filters;
 using Microsoft.Extensions.DependencyModel;
 using TypeFilter = ConventionAssertions.Internal.Filters.TypeFilter;
 
 namespace ConventionAssertions.Internal;
 
-public class TypeScanner :
+public sealed class TypeScanner :
     IConventionTargets<Type>,
     ITypeScanner,
     ITypeScannerFilter
 {
     // TODO: How to avoid bang?
-    public IEnumerable<Type> Targets { get; private set; } = null!;
+    private IEnumerable<Type> _types = null!;
 
     public ITypeScannerFilter FromAssemblyContaining<T>()
     {
-        Targets = typeof(T).Assembly.GetTypes();
+        _types = typeof(T).Assembly.GetTypes();
         return this;
     }
 
@@ -23,7 +24,7 @@ public class TypeScanner :
     {
         GuardAgainst.Null(targets);
 
-        Targets = targets.Targets;
+        _types = targets;
         return this;
     }
 
@@ -35,7 +36,7 @@ public class TypeScanner :
             .SelectMany(x => x.GetDefaultAssemblyNames(dependencyContext))
             .Select(x => Assembly.Load(x))
             .ToList();
-        Targets = assemblies
+        _types = assemblies
             .SelectMany(x => x.GetTypes())
             .ToList();
         return this;
@@ -55,11 +56,15 @@ public class TypeScanner :
     {
         GuardAgainst.Null(predicate);
 
-        Targets = Targets
+        _types = _types
             .Select(x => new TypeFilter(x))
             .Where(x => predicate(x))
             .Select(x => x.Type)
             .ToList();
         return this;
     }
+
+    IEnumerator<Type> IEnumerable<Type>.GetEnumerator() => _types.GetEnumerator();
+
+    IEnumerator IEnumerable.GetEnumerator() => _types.GetEnumerator();
 }

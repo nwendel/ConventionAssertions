@@ -2,8 +2,7 @@
 
 namespace ConventionAssertions;
 
-public interface IConventionTargets<T>
+public interface IConventionTargets<T> : IEnumerable<T>
     where T : MemberInfo
 {
-    IEnumerable<T> Targets { get; }
 }

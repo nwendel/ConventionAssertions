@@ -1,11 +1,17 @@
-﻿namespace ConventionAssertions.Tests.TestHelpers;
+﻿using System.Collections;
 
-public class DummyTypeTargets : IConventionTargets<Type>
+namespace ConventionAssertions.Tests.TestHelpers;
+
+public sealed class DummyTypeTargets : IConventionTargets<Type>
 {
+    private readonly IEnumerable<Type> _types;
+
     public DummyTypeTargets()
     {
-        Targets = new[] { typeof(DummyTypeTargets) };
+        _types = new[] { typeof(DummyTypeTargets) };
     }
 
-    public IEnumerable<Type> Targets { get; private set; }
+    IEnumerator<Type> IEnumerable<Type>.GetEnumerator() => _types.GetEnumerator();
+
+    IEnumerator IEnumerable.GetEnumerator() => _types.GetEnumerator();
 }
