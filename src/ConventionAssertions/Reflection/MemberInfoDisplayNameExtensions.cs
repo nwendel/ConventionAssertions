@@ -12,7 +12,7 @@ public static class MemberInfoDisplayNameExtensions
         {
             Type type => type.DisplayName(),
             MethodInfo methodInfo => methodInfo.DisplayName(),
-            PropertyInfo propertyInfo => propertyInfo.Name, // TODO: This is wrong!
+            PropertyInfo propertyInfo => propertyInfo.DisplayName(),
             _ => throw new NotSupportedException($"DisplayName for {self.GetType().FullName} is not supported"),
         };
         return displayName;
