@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Reflection;
 using ConventionAssertions.Internal.Filters;
 using Microsoft.Extensions.DependencyModel;
 using TypeFilter = ConventionAssertions.Internal.Filters.TypeFilter;

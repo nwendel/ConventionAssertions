@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace ConventionAssertions.Infrastructure.TestFrameworks;
+﻿namespace ConventionAssertions.Infrastructure.TestFrameworks;
 
 internal sealed class XunitTestFramework : IDetectableTestFramework
 {

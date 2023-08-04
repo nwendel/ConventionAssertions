@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace ConventionAssertions.Conventions;
+﻿namespace ConventionAssertions.Conventions;
 
 public class NameIsSnakeCase : IConvention<Type>, IConvention<MethodInfo>
 {

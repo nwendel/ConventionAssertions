@@ -1,5 +1,4 @@
 ﻿using ConventionAssertions.Conventions;
-using ConventionAssertions.Internal;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

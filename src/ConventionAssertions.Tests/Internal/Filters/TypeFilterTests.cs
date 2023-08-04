@@ -1,5 +1,4 @@
 ﻿using ConventionAssertions.Internal.Filters;
-using ConventionAssertions.Tests.TestHelpers;
 
 namespace ConventionAssertions.Tests.Internal.Filters;
 

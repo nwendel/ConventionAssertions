@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using ConventionAssertions.Internal;
+﻿using ConventionAssertions.Internal;
 
 namespace ConventionAssertions;
 

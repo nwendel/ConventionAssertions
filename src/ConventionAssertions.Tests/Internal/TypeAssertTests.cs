@@ -1,6 +1,4 @@
-﻿using ConventionAssertions.Internal;
-using ConventionAssertions.Tests.TestHelpers;
-using Xunit.Sdk;
+﻿using Xunit.Sdk;
 
 namespace ConventionAssertions.Tests.Internal;
 

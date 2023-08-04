@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace ConventionAssertions;
+﻿namespace ConventionAssertions;
 
 public interface IConvention<T>
     where T : MemberInfo

@@ -1,5 +1,4 @@
 ﻿using ConventionAssertions.Conventions;
-using ConventionAssertions.Internal;
 
 namespace ConventionAssertions.Tests.Conventions;
 

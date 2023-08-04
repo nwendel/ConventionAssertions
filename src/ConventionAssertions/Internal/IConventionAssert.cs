@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace ConventionAssertions.Internal;
+﻿namespace ConventionAssertions.Internal;
 
 public interface IConventionAssert<TTarget> : IFluentInterface
     where TTarget : MemberInfo
