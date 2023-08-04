@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace ConventionAssertions.Internal.Filters;
+﻿namespace ConventionAssertions.Internal.Filters;
 
 public abstract class MemberFilter : IMemberFilter
 {

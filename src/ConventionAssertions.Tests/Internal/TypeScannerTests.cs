@@ -1,6 +1,4 @@
-﻿using ConventionAssertions.Internal;
-
-namespace ConventionAssertions.Tests.Internal;
+﻿namespace ConventionAssertions.Tests.Internal;
 
 public class TypeScannerTests
 {

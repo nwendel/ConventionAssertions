@@ -1,6 +1,4 @@
-﻿using ConventionAssertions.Internal;
-
-namespace ConventionAssertions.Tests;
+﻿namespace ConventionAssertions.Tests;
 
 public class ConventionContextTests
 {

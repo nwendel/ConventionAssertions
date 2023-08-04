@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using ConventionAssertions.Reflection;
+﻿using ConventionAssertions.Reflection;
 
 namespace ConventionAssertions.Internal.Filters;
 

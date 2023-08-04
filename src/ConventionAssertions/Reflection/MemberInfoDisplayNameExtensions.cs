@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace ConventionAssertions.Reflection;
+﻿namespace ConventionAssertions.Reflection;
 
 public static class MemberInfoDisplayNameExtensions
 {
