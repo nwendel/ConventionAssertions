@@ -24,6 +24,14 @@ public static class Convention
 
     public static void ForMethods(
         Action<ITypeScanner> typesScanner,
+        Action<IConventionAssert<MethodInfo>> assertAction)
+    {
+        var targetTypes = ConventionTargets.FromTypes(typesScanner);
+        ForMethods(targetTypes, x => x.Where(c => true), assertAction);
+    }
+
+    public static void ForMethods(
+        Action<ITypeScanner> typesScanner,
         Action<IMethodScanner> scanner,
         Action<IConventionAssert<MethodInfo>> assertAction)
     {
@@ -44,6 +52,14 @@ public static class Convention
         scanner(targets);
         var assert = new ConventionAssert<MethodInfo>(targets);
         assertAction(assert);
+    }
+
+    public static void ForProperties(
+        Action<ITypeScanner> typesScanner,
+        Action<IConventionAssert<PropertyInfo>> assert)
+    {
+        var targetTypes = ConventionTargets.FromTypes(typesScanner);
+        ForProperties(targetTypes, x => x.Where(c => true), assert);
     }
 
     public static void ForProperties(
