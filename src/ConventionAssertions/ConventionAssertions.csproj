@@ -14,7 +14,7 @@
   <PropertyGroup>
     <PackageId>ConventionAssertions</PackageId>
     <Title>ConventionAssertions</Title>
-    <Version>0.9.0</Version>
+    <Version>0.9.1</Version>
     <Copyright>Niklas Wendel 2023</Copyright>
     <Authors>Niklas Wendel</Authors>
     <PackageTags></PackageTags>
