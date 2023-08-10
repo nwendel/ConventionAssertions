@@ -41,6 +41,9 @@ public class TypeFilter : ITypeFilter
     public bool IsInSameNamespaceAs<T>()
         => Type.Namespace == typeof(T).Namespace;
 
+    public bool IsNot(params Type[] types)
+        => !types.Any(x => x == Type);
+
     private bool IsAssignableToCore(Type type)
     {
         GuardAgainst.Null(type);

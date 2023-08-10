@@ -22,4 +22,7 @@ public interface ITypeFilter : IFluentInterface
     public bool IsAssignableToAny(params Type[] types);
 
     bool IsInSameNamespaceAs<T>();
+
+    [SuppressMessage("Naming", "CA1716:Identifiers should not match keywords", Justification = "Not sure what else to call it")]
+    bool IsNot(params Type[] types);
 }
