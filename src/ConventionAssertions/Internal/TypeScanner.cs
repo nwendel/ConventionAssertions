@@ -27,28 +27,37 @@ public sealed class TypeScanner :
         return this;
     }
 
-    public ITypeScannerFilter FromDependencyContext(DependencyContext dependencyContext)
-    {
-        GuardAgainst.Null(dependencyContext);
-
-        var assemblies = dependencyContext.RuntimeLibraries
-            .SelectMany(x => x.GetDefaultAssemblyNames(dependencyContext))
-            .Select(x => Assembly.Load(x))
-            .ToList();
-        _types = assemblies
-            .SelectMany(x => x.GetTypes())
-            .ToList();
-        return this;
-    }
-
     public ITypeScannerFilter FromDefaultDependencyContext()
+        => FromDefaultDependencyContext(x => true);
+
+    public ITypeScannerFilter FromDefaultDependencyContext(Func<IAssemblyFilter, bool> predicate)
     {
         if (DependencyContext.Default == null)
         {
             throw new InvalidOperationException("No default dependency context");
         }
 
-        return FromDependencyContext(DependencyContext.Default);
+        return FromDependencyContext(DependencyContext.Default, predicate);
+    }
+
+    public ITypeScannerFilter FromDependencyContext(DependencyContext dependencyContext)
+        => FromDependencyContext(dependencyContext, x => true);
+
+    public ITypeScannerFilter FromDependencyContext(DependencyContext dependencyContext, Func<IAssemblyFilter, bool> predicate)
+    {
+        GuardAgainst.Null(dependencyContext);
+
+        var assemblies = dependencyContext.RuntimeLibraries
+            .SelectMany(x => x.GetDefaultAssemblyNames(dependencyContext))
+            .Select(x => Assembly.Load(x))
+            .Select(x => new AssemblyFilter(x))
+            .Where(x => predicate(x))
+            .Select(x => x.Assembly)
+            .ToList();
+        _types = assemblies
+            .SelectMany(x => x.GetTypes())
+            .ToList();
+        return this;
     }
 
     public ITypeScannerFilter Where(Func<ITypeFilter, bool> predicate)
