@@ -11,7 +11,7 @@ public class AssemblyFilter : IAssemblyFilter
 
     public Assembly Assembly { get; }
 
-    public bool HasNamePart(string namePart)
+    public bool HasNameSegment(string namePart)
     {
         GuardAgainst.NullOrWhiteSpace(namePart);
 
