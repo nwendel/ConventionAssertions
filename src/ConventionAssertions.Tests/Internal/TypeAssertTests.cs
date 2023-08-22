@@ -49,6 +49,10 @@ public class TypeAssertTests
     [Fact]
     public void Asdf()
     {
-        _tested.Assert<HasNamespaceSegment>(x => x.Segment = "Asdf");
+        _tested.Assert<HasNamespaceSegment>(x =>
+        {
+            x.Segment = "TestHelpers";
+            x.SegmentPosition = SegmentPosition.Last;
+        });
     }
 }
