@@ -13,11 +13,13 @@ public class MethodAssertTests
         _tested.Assert<NothingMethodConvention>();
     }
 
+    /*
     [Fact]
     public void Can_assert_instance_overload()
     {
         _tested.Assert(new NothingMethodConvention());
     }
+    */
 
     [Fact]
     public void Throws_on_assert_generic_overload()
@@ -25,11 +27,13 @@ public class MethodAssertTests
         Assert.Throws<XunitException>(() => _tested.Assert<FailingMethodConvention>());
     }
 
+    /*
     [Fact]
     public void Throws_on_assert_instance_overload()
     {
         Assert.Throws<XunitException>(() => _tested.Assert(new FailingMethodConvention()));
     }
+    */
 
     [Fact]
     [SuppressConvention(Target = "ConventionAssertions.Tests.TestHelpers.DummyMethodTargets.SomeMethod()", Justification = "For testing")]

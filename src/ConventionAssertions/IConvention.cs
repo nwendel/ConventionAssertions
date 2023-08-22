@@ -1,7 +1,6 @@
 ﻿namespace ConventionAssertions;
 
-public interface IConvention<T>
-    where T : MemberInfo
+public interface IConvention<TTarget> : IConfigurableConvention<TTarget>
+    where TTarget : MemberInfo
 {
-    void Assert(T target, ConventionContext context);
 }
