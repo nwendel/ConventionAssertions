@@ -3,6 +3,7 @@ using ConventionAssertions.Reflection;
 
 namespace ConventionAssertions;
 
+// TODO: Change to not require 3 overloads?
 public class ConventionContext
 {
     private readonly List<string> _messages = new();

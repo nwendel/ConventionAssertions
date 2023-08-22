@@ -6,7 +6,8 @@ public interface IConventionAssert<TTarget> : IFluentInterface
     void Assert<TConvention>()
         where TConvention : IConvention<TTarget>, new();
 
-    void Assert(IConvention<TTarget> convention);
+    void Assert<TConvention>(Action<TConvention> configure)
+        where TConvention : IConfigurableConvention<TTarget>, new();
 
     void Assert(Action<TTarget, ConventionContext> assertAction);
 }

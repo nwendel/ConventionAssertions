@@ -14,14 +14,31 @@ public class ConventionAssert<TTarget> : IConventionAssert<TTarget>
         _targets = targets;
     }
 
-    public void Assert<T>()
-        where T : IConvention<TTarget>, new()
+    public void Assert<TConvention>()
+        where TConvention : IConvention<TTarget>, new()
     {
-        var convention = new T();
+        var convention = new TConvention();
         Assert(convention);
     }
 
-    public void Assert(IConvention<TTarget> convention)
+    public void Assert<TConvention>(Action<TConvention> configure)
+        where TConvention : IConfigurableConvention<TTarget>, new()
+    {
+        GuardAgainst.Null(configure);
+
+        var convention = new TConvention();
+        configure(convention);
+
+        Assert(convention);
+    }
+
+    public void Assert(Action<TTarget, ConventionContext> assertAction)
+    {
+        var convention = new ConventionAction(assertAction);
+        Assert(convention);
+    }
+
+    private void Assert(IConfigurableConvention<TTarget> convention)
     {
         GuardAgainst.Null(convention);
 
@@ -52,12 +69,6 @@ public class ConventionAssert<TTarget> : IConventionAssert<TTarget>
 
             TestFramework.Throw(message);
         }
-    }
-
-    public void Assert(Action<TTarget, ConventionContext> assertAction)
-    {
-        var convention = new ConventionAction(assertAction);
-        Assert(convention);
     }
 
     private sealed class ConventionAction : IConvention<TTarget>
