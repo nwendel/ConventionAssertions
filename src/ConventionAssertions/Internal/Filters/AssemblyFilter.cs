@@ -11,9 +11,9 @@ public class AssemblyFilter : IAssemblyFilter
 
     public Assembly Assembly { get; }
 
-    public bool HasNameSegment(string namePart)
+    public bool HasNameSegment(string segment)
     {
-        GuardAgainst.NullOrWhiteSpace(namePart);
+        GuardAgainst.NullOrWhiteSpace(segment);
 
         var name = Assembly.GetName().Name;
         if (name == null)
@@ -21,7 +21,7 @@ public class AssemblyFilter : IAssemblyFilter
             return false;
         }
 
-        var nameParts = name.Split('.');
-        return nameParts.Contains(namePart);
+        var segments = name.Split('.');
+        return segments.Contains(segment);
     }
 }

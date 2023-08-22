@@ -4,5 +4,5 @@ public interface IAssemblyFilter
 {
     Assembly Assembly { get; }
 
-    bool HasNameSegment(string namePart);
+    bool HasNameSegment(string segment);
 }
