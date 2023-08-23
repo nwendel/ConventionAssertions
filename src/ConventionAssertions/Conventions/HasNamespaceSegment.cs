@@ -20,7 +20,7 @@ public class HasNamespaceSegment : IConfigurableConvention<Type>
 
         if (@namespace == null)
         {
-            context.Fail(target, "wrong namespace");
+            Fail(target, context);
         }
 
         var segments = @namespace.Split('.');
@@ -33,7 +33,20 @@ public class HasNamespaceSegment : IConfigurableConvention<Type>
 
         if (!success)
         {
-            context.Fail(target, "wrong namespace");
+            Fail(target, context);
         }
+    }
+
+    [DoesNotReturn]
+    private void Fail(Type target, ConventionContext context)
+    {
+        var position = SegmentPosition switch
+        {
+            SegmentPosition.Anywhere => "contains a",
+            SegmentPosition.First => "starts with the",
+            SegmentPosition.Last => "ends with the",
+        };
+
+        context.Fail(target, $"must belong to a namespace which {position} segment {Segment}");
     }
 }
