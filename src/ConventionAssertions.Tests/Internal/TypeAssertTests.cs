@@ -47,6 +47,13 @@ public class TypeAssertTests
     }
 
     [Fact]
+    [SuppressConvention(Target = "ConventionAssertions.Tests.TestHelpers.DummyTypeTargets", Justification = "For testing")]
+    public void Can_suppress_convention2()
+    {
+        _tested.Assert<FailingTypeConvention>();
+    }
+
+    [Fact]
     public void Asdf()
     {
         _tested.Assert<HasNamespaceSegment>(x =>

@@ -8,9 +8,19 @@ public static class AssertHelper
     {
         // TODO: This assumes first method found here has the suppression attributes,
         //       not sure what to do long term
+        var frames = new StackTrace().GetFrames();
+        while (frames.Any(x => x.GetMethod()?.DeclaringType?.Assembly == typeof(Convention).Assembly))
+        {
+            frames = frames[1..];
+        }
+
+        var frame = frames.First();
+
+        /*
         var frame = new StackTrace().GetFrames()
             .SkipWhile(x => x.GetMethod()?.DeclaringType?.Assembly == typeof(Convention).Assembly)
             .First();
+        */
         var method = frame.GetMethod();
         if (method == null)
         {
