@@ -12,4 +12,18 @@ public static class ConventionTargets
         scannerAction(scanner);
         return scanner;
     }
+
+    public static IConventionTargets<MethodInfo> FromMethods(
+        Action<ITypeScanner> typeScannerAction,
+        Action<IMethodScanner> methodScannerAction)
+    {
+        GuardAgainst.Null(typeScannerAction);
+        GuardAgainst.Null(methodScannerAction);
+
+        var typeTargets = FromTypes(typeScannerAction);
+
+        var scanner = new MethodScanner(typeTargets);
+        methodScannerAction(scanner);
+        return scanner;
+    }
 }
