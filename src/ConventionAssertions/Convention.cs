@@ -31,6 +31,17 @@ public static class Convention
     }
 
     public static void ForMethods(
+        IConventionTargets<MethodInfo> targets,
+        Action<IConventionAssert<MethodInfo>> assertAction)
+    {
+        GuardAgainst.Null(targets);
+        GuardAgainst.Null(assertAction);
+
+        var assert = new ConventionAssert<MethodInfo>(targets);
+        assertAction(assert);
+    }
+
+    public static void ForMethods(
         Action<ITypeScanner> typesScanner,
         Action<IMethodScanner> scanner,
         Action<IConventionAssert<MethodInfo>> assertAction)
