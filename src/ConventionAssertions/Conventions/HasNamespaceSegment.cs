@@ -17,7 +17,6 @@ public class HasNamespaceSegment : IConfigurableConvention<Type>
         }
 
         var @namespace = target.Namespace;
-
         if (@namespace == null)
         {
             Fail(target, context);

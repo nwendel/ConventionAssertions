@@ -1,6 +1,8 @@
 ﻿namespace ConventionAssertions.Conventions;
 
-public class NameIsSnakeCase : IConvention<Type>, IConvention<MethodInfo>
+public class NameIsSnakeCase :
+    IConvention<Type>,
+    IConvention<MethodInfo>
 {
     public void Assert(Type target, ConventionContext context)
     {
