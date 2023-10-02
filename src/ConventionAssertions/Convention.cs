@@ -47,6 +47,18 @@ public static class Convention
         assertAction(assert);
     }
 
+    public static void ForMethods(
+        IConventionTargets<MethodInfo> targets,
+        Action<IConventionAssert<MethodInfo>> assertAction)
+    {
+        GuardAgainst.Null(targets);
+        GuardAgainst.Null(assertAction);
+
+        var assert = new ConventionAssert<MethodInfo>(targets);
+
+        assertAction(assert);
+    }
+
     public static void ForProperties(
         Action<ITypeScanner> typeScanner,
         Action<IConventionAssert<PropertyInfo>> assertAction)
