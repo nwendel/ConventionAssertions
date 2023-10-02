@@ -6,10 +6,10 @@ public class ConventionTests_Methods
     public void Throws_on_null_types_scanner()
     {
         var ex = Assert.Throws<ArgumentNullException>(() => Convention.ForMethods(
-            (Action<ITypeScanner>)null!,
+            null!,
             m => { },
             x => x.Assert<NothingMethodConvention>()));
-        Assert.Equal("scannerAction", ex.ParamName);
+        Assert.Equal("typeScanner", ex.ParamName);
     }
 
     [Fact]

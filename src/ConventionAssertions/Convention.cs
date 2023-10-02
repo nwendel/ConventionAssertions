@@ -8,116 +8,73 @@ public static class Convention
         Action<ITypeScanner> scanner,
         Action<IConventionAssert<Type>> assertAction)
     {
-        var targets = ConventionTargets.FromTypes(scanner);
-        ForTypes(targets, assertAction);
-    }
-
-    public static void ForTypes(
-        IConventionTargets<Type> targets,
-        Action<IConventionAssert<Type>> assertAction)
-    {
+        GuardAgainst.Null(scanner);
         GuardAgainst.Null(assertAction);
 
+        var targets = ConventionTargets.FromTypes(scanner);
         var assert = new ConventionAssert<Type>(targets);
         assertAction(assert);
     }
 
     public static void ForMethods(
-        Action<ITypeScanner> typesScanner,
+        Action<ITypeScanner> typeScanner,
         Action<IConventionAssert<MethodInfo>> assertAction)
     {
-        var targetTypes = ConventionTargets.FromTypes(typesScanner);
-        ForMethods(targetTypes, x => x.Where(c => true), assertAction);
-    }
-
-    public static void ForMethods(
-        IConventionTargets<MethodInfo> targets,
-        Action<IConventionAssert<MethodInfo>> assertAction)
-    {
-        GuardAgainst.Null(targets);
+        GuardAgainst.Null(typeScanner);
         GuardAgainst.Null(assertAction);
 
+        var targetTypes = ConventionTargets.FromTypes(typeScanner);
+        var targets = new MethodScanner(targetTypes);
         var assert = new ConventionAssert<MethodInfo>(targets);
+
         assertAction(assert);
     }
 
     public static void ForMethods(
-        Action<ITypeScanner> typesScanner,
+        Action<ITypeScanner> typeScanner,
         Action<IMethodScanner> scanner,
         Action<IConventionAssert<MethodInfo>> assertAction)
     {
-        var targetTypes = ConventionTargets.FromTypes(typesScanner);
-        ForMethods(targetTypes, scanner, assertAction);
-    }
-
-    public static void ForMethods(
-        IConventionTargets<Type> targetTypes,
-        Action<IConventionAssert<MethodInfo>> assertAction)
-    {
-        GuardAgainst.Null(targetTypes);
-        GuardAgainst.Null(assertAction);
-
-        var targets = new MethodScanner(targetTypes);
-        var assert = new ConventionAssert<MethodInfo>(targets);
-        assertAction(assert);
-    }
-
-    public static void ForMethods(
-        IConventionTargets<Type> targetTypes,
-        Action<IMethodScanner> scanner,
-        Action<IConventionAssert<MethodInfo>> assertAction)
-    {
-        GuardAgainst.Null(targetTypes);
+        GuardAgainst.Null(typeScanner);
         GuardAgainst.Null(scanner);
         GuardAgainst.Null(assertAction);
 
+        var targetTypes = ConventionTargets.FromTypes(typeScanner);
         var targets = new MethodScanner(targetTypes);
         scanner(targets);
         var assert = new ConventionAssert<MethodInfo>(targets);
+
         assertAction(assert);
     }
 
     public static void ForProperties(
-        Action<ITypeScanner> typesScanner,
-        Action<IConventionAssert<PropertyInfo>> assert)
-    {
-        var targetTypes = ConventionTargets.FromTypes(typesScanner);
-        ForProperties(targetTypes, x => x.Where(c => true), assert);
-    }
-
-    public static void ForProperties(
-        Action<ITypeScanner> typesScanner,
-        Action<IPropertyScanner> scanner,
-        Action<IConventionAssert<PropertyInfo>> assert)
-    {
-        var targetTypes = ConventionTargets.FromTypes(typesScanner);
-        ForProperties(targetTypes, scanner, assert);
-    }
-
-    public static void ForProperties(
-        IConventionTargets<Type> targetTypes,
+        Action<ITypeScanner> typeScanner,
         Action<IConventionAssert<PropertyInfo>> assertAction)
     {
-        GuardAgainst.Null(targetTypes);
+        GuardAgainst.Null(typeScanner);
         GuardAgainst.Null(assertAction);
 
+        var targetTypes = ConventionTargets.FromTypes(typeScanner);
         var targets = new PropertyScanner(targetTypes);
         var assert = new ConventionAssert<PropertyInfo>(targets);
+
         assertAction(assert);
     }
 
     public static void ForProperties(
-        IConventionTargets<Type> targetTypes,
+        Action<ITypeScanner> typeScanner,
         Action<IPropertyScanner> scanner,
         Action<IConventionAssert<PropertyInfo>> assertAction)
     {
-        GuardAgainst.Null(targetTypes);
+        GuardAgainst.Null(typeScanner);
         GuardAgainst.Null(scanner);
         GuardAgainst.Null(assertAction);
 
+        var targetTypes = ConventionTargets.FromTypes(typeScanner);
         var targets = new PropertyScanner(targetTypes);
         scanner(targets);
         var assert = new ConventionAssert<PropertyInfo>(targets);
+
         assertAction(assert);
     }
 }
