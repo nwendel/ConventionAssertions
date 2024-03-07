@@ -11,9 +11,9 @@ public interface ITypeScanner : IFluentInterface
 
     ITypeScannerFilter FromDefaultDependencyContext();
 
-    ITypeScannerFilter FromDefaultDependencyContext(Func<IAssemblyFilter, bool> predicate);
+    ITypeScannerFilter FromDefaultDependencyContext(Func<IAssemblyNameFilter, bool> predicate);
 
     ITypeScannerFilter FromDependencyContext(DependencyContext dependencyContext);
 
-    ITypeScannerFilter FromDependencyContext(DependencyContext dependencyContext, Func<IAssemblyFilter, bool> predicate);
+    ITypeScannerFilter FromDependencyContext(DependencyContext dependencyContext, Func<IAssemblyNameFilter, bool> predicate);
 }

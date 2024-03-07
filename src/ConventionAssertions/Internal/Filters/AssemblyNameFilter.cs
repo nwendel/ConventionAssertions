@@ -1,21 +1,21 @@
 ﻿namespace ConventionAssertions.Internal.Filters;
 
-public class AssemblyFilter : IAssemblyFilter
+public class AssemblyNameFilter : IAssemblyNameFilter
 {
-    public AssemblyFilter(Assembly assembly)
+    public AssemblyNameFilter(AssemblyName assemblyName)
     {
-        GuardAgainst.Null(assembly);
+        GuardAgainst.Null(assemblyName);
 
-        Assembly = assembly;
+        AssemblyName = assemblyName;
     }
 
-    public Assembly Assembly { get; }
+    public AssemblyName AssemblyName { get; }
 
     public bool HasNameSegment(string segment)
     {
         GuardAgainst.NullOrWhiteSpace(segment);
 
-        var name = Assembly.GetName().Name;
+        var name = AssemblyName.Name;
         if (name == null)
         {
             return false;

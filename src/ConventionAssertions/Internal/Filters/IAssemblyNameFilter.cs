@@ -1,8 +1,8 @@
 ﻿namespace ConventionAssertions.Internal.Filters;
 
-public interface IAssemblyFilter
+public interface IAssemblyNameFilter
 {
-    Assembly Assembly { get; }
+    AssemblyName AssemblyName { get; }
 
     bool HasNameSegment(string segment);
 }
