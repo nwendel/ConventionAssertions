@@ -171,3 +171,6 @@ dotnet_diagnostic.SA1601.severity = none
 
 # S6605: Collection-specific "Exists" method should be used instead of the "Any" extension
 dotnet_diagnostic.S6605.severity = none
+
+# CA1860: Avoid using 'Enumerable.Any()' extension method
+dotnet_diagnostic.CA1860.severity = none
