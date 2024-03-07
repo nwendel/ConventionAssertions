@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
@@ -14,8 +14,8 @@
   <PropertyGroup>
     <PackageId>ConventionAssertions</PackageId>
     <Title>ConventionAssertions</Title>
-    <Version>0.12.1</Version>
-    <Copyright>Niklas Wendel 2023</Copyright>
+    <Version>0.13.0</Version>
+    <Copyright>Niklas Wendel 2023-2024</Copyright>
     <Authors>Niklas Wendel</Authors>
     <PackageTags></PackageTags>
     <PackageProjectUrl>https://github.com/nwendel/ConventionAssertions</PackageProjectUrl>
