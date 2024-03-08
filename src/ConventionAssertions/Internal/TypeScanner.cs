@@ -19,7 +19,7 @@ public sealed class TypeScanner :
         return this;
     }
 
-    public ITypeScannerFilter FromConventionTargets(IConventionTargets<Type> targets)
+    public ITypeScannerFilter FromTargets(IConventionTargets<Type> targets)
     {
         GuardAgainst.Null(targets);
 

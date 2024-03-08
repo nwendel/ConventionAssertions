@@ -45,6 +45,11 @@ public class ConventionAssert<TTarget> : IConventionAssert<TTarget>
         var context = new ConventionContext();
         var suppressions = AssertHelper.FindSuppressions();
 
+        if (!_targets.Any())
+        {
+            TestFramework.Throw($"No targets found for convention.");
+        }
+
         foreach (var target in _targets)
         {
             if (suppressions.Contains(target.DisplayName()))
@@ -65,9 +70,9 @@ public class ConventionAssert<TTarget> : IConventionAssert<TTarget>
         var messages = context.Messages;
         if (messages.Any())
         {
-            var message = string.Join(Environment.NewLine, messages);
+            var messagesText = string.Join(Environment.NewLine, messages);
 
-            TestFramework.Throw(message);
+            TestFramework.Throw($"Found {context.Messages.Count()}.{Environment.NewLine}{messagesText}");
         }
     }
 

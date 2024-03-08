@@ -26,8 +26,7 @@ public class ConventionContext
         GuardAgainst.Null(methodInfo);
         GuardAgainst.NullOrWhiteSpace(message);
 
-        // TODO: Bang here should be removed?
-        _messages.Add($"Method {methodInfo.DeclaringType!.DisplayName()}.{methodInfo.DisplayName()} {message}.");
+        _messages.Add($"Method {methodInfo.DisplayName()} {message}.");
         throw new ConventionFailedException();
     }
 
@@ -37,8 +36,7 @@ public class ConventionContext
         GuardAgainst.Null(propertyInfo);
         GuardAgainst.NullOrWhiteSpace(message);
 
-        // TODO: Bang here should be removed?
-        _messages.Add($"Property {propertyInfo.DeclaringType!.DisplayName()}.{propertyInfo.Name} {message}.");
+        _messages.Add($"Property {propertyInfo.DisplayName()} {message}.");
         throw new ConventionFailedException();
     }
 }
