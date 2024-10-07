@@ -14,14 +14,14 @@ public class ConventionAssert<TTarget> : IConventionAssert<TTarget>
         _targets = targets;
     }
 
-    public void Assert<TConvention>()
+    public void Assert<TConvention>(bool failOnNoTargets = true)
         where TConvention : IConvention<TTarget>, new()
     {
         var convention = new TConvention();
-        Assert(convention);
+        Assert(convention, failOnNoTargets);
     }
 
-    public void Assert<TConvention>(Action<TConvention> configure)
+    public void Assert<TConvention>(Action<TConvention> configure, bool failOnNoTargets = true)
         where TConvention : IConfigurableConvention<TTarget>, new()
     {
         GuardAgainst.Null(configure);
@@ -29,23 +29,23 @@ public class ConventionAssert<TTarget> : IConventionAssert<TTarget>
         var convention = new TConvention();
         configure(convention);
 
-        Assert(convention);
+        Assert(convention, failOnNoTargets);
     }
 
-    public void Assert(Action<TTarget, ConventionContext> assertAction)
+    public void Assert(Action<TTarget, ConventionContext> assertAction, bool failOnNoTargets = true)
     {
         var convention = new ConventionAction(assertAction);
-        Assert(convention);
+        Assert(convention, failOnNoTargets);
     }
 
-    private void Assert(IConfigurableConvention<TTarget> convention)
+    private void Assert(IConfigurableConvention<TTarget> convention, bool failOnNoTargets)
     {
         GuardAgainst.Null(convention);
 
         var context = new ConventionContext();
         var suppressions = AssertHelper.FindSuppressions();
 
-        if (!_targets.Any())
+        if (!_targets.Any() && failOnNoTargets)
         {
             TestFramework.Throw($"No targets found for convention.");
         }
