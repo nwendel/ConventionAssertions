@@ -89,4 +89,16 @@ public static class Convention
 
         assertAction(assert);
     }
+
+    public static void ForProperties(
+        IConventionTargets<PropertyInfo> targets,
+        Action<IConventionAssert<PropertyInfo>> assertAction)
+    {
+        GuardAgainst.Null(targets);
+        GuardAgainst.Null(assertAction);
+
+        var assert = new ConventionAssert<PropertyInfo>(targets);
+
+        assertAction(assert);
+    }
 }
