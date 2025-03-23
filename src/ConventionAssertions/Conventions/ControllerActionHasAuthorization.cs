@@ -26,6 +26,13 @@ public class ControllerActionHasAuthorization : IConvention<MethodInfo>
         {
             context.Fail(target, "no authorization specified for method");
         }
+
+        if (target.DeclaringType != null &&
+            HasAnyAttribute(target.DeclaringType, typeof(AllowAnonymousAttribute)) &&
+            HasAnyAttribute(target, typeof(AuthorizeAttribute)))
+        {
+            context.Fail(target, "method has authorization but controller allows anonymous access");
+        }
     }
 
     private static bool HasAnyAttribute(MemberInfo memberInfo, params Type[] attributeTypes)
