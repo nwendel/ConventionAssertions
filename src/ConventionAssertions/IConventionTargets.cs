@@ -1,6 +1,7 @@
 ﻿namespace ConventionAssertions;
 
-public interface IConventionTargets<T> : IEnumerable<T>
+public interface IConventionTargets<T>
     where T : MemberInfo
 {
+    internal IEnumerable<T> Targets { get; }
 }

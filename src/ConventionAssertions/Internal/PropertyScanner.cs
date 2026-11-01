@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using ConventionAssertions.Internal.Filters;
+﻿using ConventionAssertions.Internal.Filters;
 
 namespace ConventionAssertions.Internal;
 
@@ -19,6 +18,8 @@ public sealed class PropertyScanner :
             .ToList();
     }
 
+    IEnumerable<PropertyInfo> IConventionTargets<PropertyInfo>.Targets => _propertyInfos;
+
     public IPropertyScanner Where(Func<IPropertyFilter, bool> predicate)
     {
         _propertyInfos = _propertyInfos
@@ -29,8 +30,4 @@ public sealed class PropertyScanner :
 
         return this;
     }
-
-    IEnumerator<PropertyInfo> IEnumerable<PropertyInfo>.GetEnumerator() => _propertyInfos.GetEnumerator();
-
-    IEnumerator IEnumerable.GetEnumerator() => _propertyInfos.GetEnumerator();
 }

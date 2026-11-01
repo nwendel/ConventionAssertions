@@ -1,5 +1,6 @@
 ﻿namespace ConventionAssertions.Tests;
 
+[Obsolete("Tests the obsolete Convention.ForTypes overloads")]
 public class ConventionTests_Types
 {
     [Fact]

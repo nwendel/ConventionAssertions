@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using ConventionAssertions.Internal.Filters;
+﻿using ConventionAssertions.Internal.Filters;
 
 namespace ConventionAssertions.Internal;
 
@@ -17,6 +16,8 @@ public sealed class MethodScanner :
             .ToList();
     }
 
+    IEnumerable<MethodInfo> IConventionTargets<MethodInfo>.Targets => _methodInfos;
+
     public IMethodScanner Where(Func<IMethodFilter, bool> predicate)
     {
         _methodInfos = _methodInfos
@@ -27,8 +28,4 @@ public sealed class MethodScanner :
 
         return this;
     }
-
-    IEnumerator<MethodInfo> IEnumerable<MethodInfo>.GetEnumerator() => _methodInfos.GetEnumerator();
-
-    IEnumerator IEnumerable.GetEnumerator() => _methodInfos.GetEnumerator();
 }

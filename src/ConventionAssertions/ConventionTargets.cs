@@ -10,9 +10,10 @@ public static class ConventionTargets
 
         var scanner = new TypeScanner();
         scannerAction(scanner);
-        return scanner;
+        return new ConventionTargetCollection<Type>(((IConventionTargets<Type>)scanner).Targets);
     }
 
+    [Obsolete("Use ConventionTargets.FromTypes(...).Methods(...) instead.")]
     public static IConventionTargets<MethodInfo> FromMethods(
         Action<ITypeScanner> typeScannerAction,
         Action<IMethodScanner> methodScannerAction)
@@ -22,7 +23,7 @@ public static class ConventionTargets
 
         var typeTargets = FromTypes(typeScannerAction);
 
-        var scanner = new MethodScanner(typeTargets);
+        var scanner = new MethodScanner(typeTargets.Targets);
         methodScannerAction(scanner);
         return scanner;
     }

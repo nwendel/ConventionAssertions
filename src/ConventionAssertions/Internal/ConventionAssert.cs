@@ -45,12 +45,12 @@ public class ConventionAssert<TTarget> : IConventionAssert<TTarget>
         var context = new ConventionContext();
         var suppressions = AssertHelper.FindSuppressions();
 
-        if (!_targets.Any() && failOnNoTargets)
+        if (!_targets.Targets.Any() && failOnNoTargets)
         {
             TestFramework.Throw($"No targets found for convention.");
         }
 
-        foreach (var target in _targets)
+        foreach (var target in _targets.Targets)
         {
             if (suppressions.Contains(target.DisplayName()))
             {

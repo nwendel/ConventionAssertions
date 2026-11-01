@@ -16,7 +16,7 @@ public class ConventionTargetsTests_Types
             .FromAssemblyContaining<ConventionTargetsTests_Types>()
             .Where(t => t.Type == typeof(ConventionTargetsTests_Types)));
 
-        var type = Assert.Single(typeSource);
+        var type = Assert.Single(typeSource.Targets);
         Assert.Same(typeof(ConventionTargetsTests_Types), type);
     }
 }
