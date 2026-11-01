@@ -1,6 +1,4 @@
-﻿using System.Collections;
-
-namespace ConventionAssertions.Tests.TestHelpers;
+﻿namespace ConventionAssertions.Tests.TestHelpers;
 
 public sealed class DummyTypeTargets : IConventionTargets<Type>
 {
@@ -12,7 +10,5 @@ public sealed class DummyTypeTargets : IConventionTargets<Type>
         _types = new[] { typeof(DummyTypeTargets) };
     }
 
-    IEnumerator<Type> IEnumerable<Type>.GetEnumerator() => _types.GetEnumerator();
-
-    IEnumerator IEnumerable.GetEnumerator() => _types.GetEnumerator();
+    IEnumerable<Type> IConventionTargets<Type>.Targets => _types;
 }

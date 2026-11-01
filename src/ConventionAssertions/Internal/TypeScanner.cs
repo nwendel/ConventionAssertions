@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using ConventionAssertions.Internal.Filters;
+﻿using ConventionAssertions.Internal.Filters;
 using Microsoft.Extensions.DependencyModel;
 using TypeFilter = ConventionAssertions.Internal.Filters.TypeFilter;
 
@@ -13,6 +12,8 @@ public sealed class TypeScanner :
     // TODO: How to avoid bang?
     private IEnumerable<Type> _types = null!;
 
+    IEnumerable<Type> IConventionTargets<Type>.Targets => _types;
+
     public ITypeScannerFilter FromAssemblyContaining<T>()
     {
         _types = typeof(T).Assembly.GetTypes();
@@ -23,7 +24,7 @@ public sealed class TypeScanner :
     {
         GuardAgainst.Null(targets);
 
-        _types = targets;
+        _types = targets.Targets;
         return this;
     }
 
@@ -70,8 +71,4 @@ public sealed class TypeScanner :
             .ToList();
         return this;
     }
-
-    IEnumerator<Type> IEnumerable<Type>.GetEnumerator() => _types.GetEnumerator();
-
-    IEnumerator IEnumerable.GetEnumerator() => _types.GetEnumerator();
 }
