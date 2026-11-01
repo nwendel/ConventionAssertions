@@ -5,7 +5,6 @@ namespace ConventionAssertions.Tests.Conventions;
 public class IsInternalTests
 {
     private readonly IsInternal _tested = new();
-    private readonly ConventionContext _context = new();
 
     public static IEnumerable<object[]> CanAssertMemberData()
     {
@@ -33,16 +32,18 @@ public class IsInternalTests
     [MemberData(nameof(CanAssertMemberData))]
     public void Can_assert(Type type)
     {
-        _tested.Assert(type, _context);
+        var context = new ConventionContext(type);
+        _tested.Assert(type, context);
 
-        Assert.Empty(_context.Messages);
+        Assert.Empty(context.Messages);
     }
 
     [Theory]
     [MemberData(nameof(ThrowsOnAssertMemberData))]
-    public void Throws_on_assert(Type type)
+    public void Fails_on_assert(Type type)
     {
-        Assert.Throws<ConventionFailedException>(() => _tested.Assert(type, _context));
-        Assert.Single(_context.Messages);
+        var context = new ConventionContext(type);
+        _tested.Assert(type, context);
+        Assert.Single(context.Messages);
     }
 }

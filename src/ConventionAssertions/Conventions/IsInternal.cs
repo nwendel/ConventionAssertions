@@ -10,7 +10,7 @@ public class IsInternal : IConvention<Type>
         var isInternal = target.IsNotPublic || target.IsNestedAssembly;
         if (!isInternal)
         {
-            context.Fail(target, "must be internal");
+            context.Fail("must be internal");
         }
     }
 }

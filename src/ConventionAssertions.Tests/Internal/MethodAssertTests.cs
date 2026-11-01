@@ -37,12 +37,12 @@ public class MethodAssertTests
 
     [Fact]
     [SuppressConvention(Target = "ConventionAssertions.Tests.TestHelpers.DummyMethodTargets.SomeMethod()", Justification = "For testing")]
-    public void Can_suppress_convention()
+    public void Can_suppress_convention_action()
     {
         _tested.Assert(
             (type, context) =>
             {
-                context.Fail(type, "always fails");
+                context.Fail("always fails");
             });
     }
 }

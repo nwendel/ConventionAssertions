@@ -5,21 +5,24 @@ namespace ConventionAssertions.Tests.Conventions;
 public class HasNoPublicConstructorsTests
 {
     private readonly HasNoPublicConstructors _tested = new();
-    private readonly ConventionContext _context = new();
 
     [Fact]
     public void Can_assert()
     {
-        _tested.Assert(typeof(ProtectedConstructor), _context);
+        var target = typeof(ProtectedConstructor);
+        var context = new ConventionContext(target);
+        _tested.Assert(target, context);
 
-        Assert.Empty(_context.Messages);
+        Assert.Empty(context.Messages);
     }
 
     [Fact]
-    public void Can_assert_sealed()
+    public void Fails_on_assert_public_constructor()
     {
-        Assert.Throws<ConventionFailedException>(() => _tested.Assert(typeof(PublicConstructor), _context));
-        Assert.Single(_context.Messages);
+        var target = typeof(PublicConstructor);
+        var context = new ConventionContext(target);
+        _tested.Assert(target, context);
+        Assert.Single(context.Messages);
     }
 
     private class ProtectedConstructor

@@ -37,24 +37,24 @@ public class TypeAssertTests
 
     [Fact]
     [SuppressConvention(Target = "ConventionAssertions.Tests.TestHelpers.DummyTypeTargets", Justification = "For testing")]
-    public void Can_suppress_convention()
+    public void Can_suppress_convention_action()
     {
         _tested.Assert(
             (type, context) =>
             {
-                context.Fail(type, "always fails");
+                context.Fail("always fails");
             });
     }
 
     [Fact]
     [SuppressConvention(Target = "ConventionAssertions.Tests.TestHelpers.DummyTypeTargets", Justification = "For testing")]
-    public void Can_suppress_convention2()
+    public void Can_suppress_convention_generic_overload()
     {
         _tested.Assert<FailingTypeConvention>();
     }
 
     [Fact]
-    public void Asdf()
+    public void Can_assert_configured_convention()
     {
         _tested.Assert<HasNamespaceSegment>(x =>
         {

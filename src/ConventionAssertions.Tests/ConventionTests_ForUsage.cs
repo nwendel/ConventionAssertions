@@ -102,7 +102,7 @@ public class ConventionTests_ForUsage
     {
         if (!property.PropertyType.IsValueType)
         {
-            context.Fail(property, "must be a value type");
+            context.Fail("must be a value type");
         }
     }
 
@@ -110,7 +110,7 @@ public class ConventionTests_ForUsage
     {
         if (method.ReturnType == typeof(void))
         {
-            context.Fail(method, "must return a value");
+            context.Fail("must return a value");
         }
     }
 }

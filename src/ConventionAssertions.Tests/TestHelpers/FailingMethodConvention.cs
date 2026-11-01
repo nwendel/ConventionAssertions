@@ -9,6 +9,6 @@ public class FailingMethodConvention : IConvention<MethodInfo>
     {
         GuardAgainst.Null(context);
 
-        context.Fail(target, "always fails");
+        context.Fail("always fails");
     }
 }

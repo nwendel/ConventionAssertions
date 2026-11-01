@@ -9,7 +9,7 @@ public class HasNoPublicConstructors : IConvention<Type>
 
         if (target.GetConstructors().Any())
         {
-            context.Fail(target, "must not have a public constructor");
+            context.Fail("must not have a public constructor");
         }
     }
 }

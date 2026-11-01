@@ -2,27 +2,44 @@
 
 public class ConventionContextTests
 {
-    private readonly ConventionContext _tested = new();
-
     [Fact]
-    public void Throws_on_fail_null_type()
+    public void Throws_on_create_null_target()
     {
-        var ex = Assert.Throws<ArgumentNullException>(() => _tested.Fail((Type)null!, "message"));
-        Assert.Equal("type", ex.ParamName);
+        var ex = Assert.Throws<ArgumentNullException>(() => new ConventionContext(null!));
+        Assert.Equal("target", ex.ParamName);
     }
 
     [Fact]
     public void Throws_on_fail_null_message()
     {
-        var ex = Assert.Throws<ArgumentNullException>(() => _tested.Fail(typeof(object), null!));
+        var tested = new ConventionContext(typeof(object));
+
+        var ex = Assert.Throws<ArgumentNullException>(() => tested.Fail(null!));
         Assert.Equal("message", ex.ParamName);
     }
 
     [Fact]
-    public void Throws_on_fail()
+    public void Can_fail_type()
     {
-        _ = Assert.Throws<ConventionFailedException>(() => _tested.Fail(typeof(object), "some-message"));
-        var message = Assert.Single(_tested.Messages);
+        var tested = new ConventionContext(typeof(object));
+
+        tested.Fail("some-message");
+
+        var message = Assert.Single(tested.Messages);
         Assert.Equal("Type object some-message.", message);
+    }
+
+    [Fact]
+    public void Can_fail_multiple_times()
+    {
+        var tested = new ConventionContext(typeof(object));
+
+        tested.Fail("first-message");
+        tested.Fail("second-message");
+
+        Assert.Collection(
+            tested.Messages,
+            x => Assert.Equal("Type object first-message.", x),
+            x => Assert.Equal("Type object second-message.", x));
     }
 }

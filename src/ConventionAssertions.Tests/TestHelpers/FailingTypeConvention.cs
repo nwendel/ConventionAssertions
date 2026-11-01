@@ -8,6 +8,6 @@ public class FailingTypeConvention : IConvention<Type>
     {
         GuardAgainst.Null(context);
 
-        context.Fail(target, "always fails");
+        context.Fail("always fails");
     }
 }

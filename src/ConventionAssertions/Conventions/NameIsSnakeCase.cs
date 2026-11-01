@@ -11,7 +11,7 @@ public class NameIsSnakeCase :
 
         if (IsNotSnakeCase(target.Name))
         {
-            context.Fail(target, "is not snake case");
+            context.Fail("is not snake case");
         }
     }
 
@@ -22,7 +22,7 @@ public class NameIsSnakeCase :
 
         if (IsNotSnakeCase(target.Name))
         {
-            context.Fail(target, "is not snake case");
+            context.Fail("is not snake case");
         }
     }
 

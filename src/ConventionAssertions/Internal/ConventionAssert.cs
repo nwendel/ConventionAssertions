@@ -42,7 +42,6 @@ public class ConventionAssert<TTarget> : IConventionAssert<TTarget>
     {
         GuardAgainst.Null(convention);
 
-        var context = new ConventionContext();
         var suppressions = AssertHelper.FindSuppressions();
 
         if (!_targets.Targets.Any() && failOnNoTargets)
@@ -50,6 +49,7 @@ public class ConventionAssert<TTarget> : IConventionAssert<TTarget>
             TestFramework.Throw($"No targets found for convention.");
         }
 
+        var messages = new List<string>();
         foreach (var target in _targets.Targets)
         {
             if (suppressions.Contains(target.DisplayName()))
@@ -57,22 +57,16 @@ public class ConventionAssert<TTarget> : IConventionAssert<TTarget>
                 continue;
             }
 
-            try
-            {
-                convention.Assert(target, context);
-            }
-            catch (ConventionFailedException)
-            {
-                // Ignore this exception
-            }
+            var context = new ConventionContext(target);
+            convention.Assert(target, context);
+            messages.AddRange(context.Messages);
         }
 
-        var messages = context.Messages;
         if (messages.Any())
         {
             var messagesText = string.Join(Environment.NewLine, messages);
 
-            TestFramework.Throw($"Found {context.Messages.Count()}.{Environment.NewLine}{messagesText}");
+            TestFramework.Throw($"Found {messages.Count}.{Environment.NewLine}{messagesText}");
         }
     }
 

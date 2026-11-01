@@ -5,77 +5,83 @@ namespace ConventionAssertions.Tests.Conventions;
 public class HasCustomAttributeTests
 {
     private readonly HasCustomAttribute _tested = new();
-    private readonly ConventionContext _context = new();
 
     [Fact]
-    public void Assert_Type_With_CustomAttribute_Should_Pass()
+    public void Can_assert_type()
     {
         _tested.CustomAttribute = typeof(SomeAttribute);
         var type = typeof(ClassWithTestAttribute);
 
-        _tested.Assert(type, _context);
+        var context = new ConventionContext(type);
+        _tested.Assert(type, context);
 
-        Assert.Empty(_context.Messages);
+        Assert.Empty(context.Messages);
     }
 
     [Fact]
-    public void Assert_Type_Without_CustomAttribute_Should_Fail()
+    public void Fails_on_assert_type()
     {
         _tested.CustomAttribute = typeof(SomeAttribute);
         var type = typeof(ClassWithoutTestAttribute);
 
-        Assert.Throws<ConventionFailedException>(() => _tested.Assert(type, _context));
-        Assert.Single(_context.Messages);
+        var context = new ConventionContext(type);
+        _tested.Assert(type, context);
+        Assert.Single(context.Messages);
     }
 
     [Fact]
-    public void Assert_Method_With_CustomAttribute_Should_Pass()
+    public void Can_assert_method()
     {
         _tested.CustomAttribute = typeof(SomeAttribute);
         var method = typeof(ClassWithTestAttribute).GetMethod(nameof(ClassWithTestAttribute.MethodWithTestAttribute))!;
 
-        _tested.Assert(method, _context);
+        var context = new ConventionContext(method);
+        _tested.Assert(method, context);
 
-        Assert.Empty(_context.Messages);
+        Assert.Empty(context.Messages);
     }
 
     [Fact]
-    public void Assert_Method_Without_CustomAttribute_Should_Fail()
+    public void Fails_on_assert_method()
     {
         _tested.CustomAttribute = typeof(SomeAttribute);
         var method = typeof(ClassWithoutTestAttribute).GetMethod(nameof(ClassWithoutTestAttribute.MethodWithoutTestAttribute))!;
 
-        Assert.Throws<ConventionFailedException>(() => _tested.Assert(method, _context));
-        Assert.Single(_context.Messages);
+        var context = new ConventionContext(method);
+        _tested.Assert(method, context);
+        Assert.Single(context.Messages);
     }
 
     [Fact]
-    public void Assert_Property_With_CustomAttribute_Should_Pass()
+    public void Can_assert_property()
     {
         _tested.CustomAttribute = typeof(SomeAttribute);
         var property = typeof(ClassWithTestAttribute).GetProperty(nameof(ClassWithTestAttribute.PropertyWithTestAttribute))!;
 
-        _tested.Assert(property, _context);
+        var context = new ConventionContext(property);
+        _tested.Assert(property, context);
 
-        Assert.Empty(_context.Messages);
+        Assert.Empty(context.Messages);
     }
 
     [Fact]
-    public void Assert_Property_Without_CustomAttribute_Should_Fail()
+    public void Fails_on_assert_property()
     {
         _tested.CustomAttribute = typeof(SomeAttribute);
         var property = typeof(ClassWithoutTestAttribute).GetProperty(nameof(ClassWithoutTestAttribute.PropertyWithoutTestAttribute))!;
 
-        Assert.Throws<ConventionFailedException>(() => _tested.Assert(property, _context));
-        Assert.Single(_context.Messages);
+        var context = new ConventionContext(property);
+        _tested.Assert(property, context);
+        Assert.Single(context.Messages);
     }
 
     [Fact]
-    public void HasCustomAttributeCore_Throws_When_CustomAttribute_Not_Specified()
+    public void Throws_on_assert_not_configured()
     {
         var method = typeof(ClassWithTestAttribute).GetMethod(nameof(ClassWithTestAttribute.MethodWithTestAttribute))!;
 
-        Assert.Throws<ConventionNotConfiguredException>(() => _tested.Assert(method, _context));
+        var context = new ConventionContext(method);
+        Assert.Throws<ConventionNotConfiguredException>(() => _tested.Assert(method, context));
     }
 
     [Some]

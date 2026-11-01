@@ -5,42 +5,51 @@ namespace ConventionAssertions.Tests.Conventions;
 public class HasPublicStaticParseMethodTests
 {
     private readonly HasPublicStaticParseMethod _tested = new();
-    private readonly ConventionContext _context = new();
 
     [Fact]
     public void Can_assert()
     {
-        _tested.Assert(typeof(int), _context);
+        var target = typeof(int);
+        var context = new ConventionContext(target);
+        _tested.Assert(target, context);
 
-        Assert.Empty(_context.Messages);
+        Assert.Empty(context.Messages);
     }
 
     [Fact]
-    public void Can_assert_not_public()
+    public void Fails_on_assert_not_public()
     {
-        Assert.Throws<ConventionFailedException>(() => _tested.Assert(typeof(NotPublic), _context));
-        Assert.Single(_context.Messages);
+        var target = typeof(NotPublic);
+        var context = new ConventionContext(target);
+        _tested.Assert(target, context);
+        Assert.Single(context.Messages);
     }
 
     [Fact]
-    public void Can_assert_not_static()
+    public void Fails_on_assert_not_static()
     {
-        Assert.Throws<ConventionFailedException>(() => _tested.Assert(typeof(NotStatic), _context));
-        Assert.Single(_context.Messages);
+        var target = typeof(NotStatic);
+        var context = new ConventionContext(target);
+        _tested.Assert(target, context);
+        Assert.Single(context.Messages);
     }
 
     [Fact]
-    public void Can_assert_wrong_argument_type()
+    public void Fails_on_assert_wrong_argument_type()
     {
-        Assert.Throws<ConventionFailedException>(() => _tested.Assert(typeof(WrongArgumentType), _context));
-        Assert.Single(_context.Messages);
+        var target = typeof(WrongArgumentType);
+        var context = new ConventionContext(target);
+        _tested.Assert(target, context);
+        Assert.Single(context.Messages);
     }
 
     [Fact]
-    public void Can_assert_wrong_return_type()
+    public void Fails_on_assert_wrong_return_type()
     {
-        Assert.Throws<ConventionFailedException>(() => _tested.Assert(typeof(WrongReturnType), _context));
-        Assert.Single(_context.Messages);
+        var target = typeof(WrongReturnType);
+        var context = new ConventionContext(target);
+        _tested.Assert(target, context);
+        Assert.Single(context.Messages);
     }
 
     private class NotPublic

@@ -15,7 +15,7 @@ public class HasCustomAttribute :
 
         if (!HasCustomAttributeCore(target))
         {
-            context.Fail(target, $"must have custom attribute {CustomAttribute.FullName}");
+            context.Fail($"must have custom attribute {CustomAttribute.FullName}");
         }
     }
 
@@ -26,7 +26,7 @@ public class HasCustomAttribute :
 
         if (!HasCustomAttributeCore(target))
         {
-            context.Fail(target, $"must have custom attribute {CustomAttribute.FullName}");
+            context.Fail($"must have custom attribute {CustomAttribute.FullName}");
         }
     }
 
@@ -37,7 +37,7 @@ public class HasCustomAttribute :
 
         if (!HasCustomAttributeCore(target))
         {
-            context.Fail(target, $"must have custom attribute {CustomAttribute.FullName}");
+            context.Fail($"must have custom attribute {CustomAttribute.FullName}");
         }
     }
 

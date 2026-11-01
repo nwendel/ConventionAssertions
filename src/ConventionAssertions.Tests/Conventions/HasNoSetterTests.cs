@@ -5,22 +5,23 @@ namespace ConventionAssertions.Tests.Conventions;
 public class HasNoSetterTests
 {
     private readonly HasNoSetter _tested = new();
-    private readonly ConventionContext _context = new();
 
     [Fact]
     public void Can_assert()
     {
         var property = typeof(Something).GetProperty(nameof(Something.NoSetter))!;
-        _tested.Assert(property, _context);
-        Assert.Empty(_context.Messages);
+        var context = new ConventionContext(property);
+        _tested.Assert(property, context);
+        Assert.Empty(context.Messages);
     }
 
     [Fact]
-    public void Throws_on_assert_public_setter()
+    public void Fails_on_assert_public_setter()
     {
         var property = typeof(Something).GetProperty(nameof(Something.PublicSetter))!;
-        Assert.Throws<ConventionFailedException>(() => _tested.Assert(property, _context));
-        Assert.Single(_context.Messages);
+        var context = new ConventionContext(property);
+        _tested.Assert(property, context);
+        Assert.Single(context.Messages);
     }
 
     private class Something

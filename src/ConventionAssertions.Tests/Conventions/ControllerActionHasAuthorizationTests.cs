@@ -7,7 +7,6 @@ namespace ConventionAssertions.Tests.Conventions;
 public class ControllerActionHasAuthorizationTests
 {
     private readonly ControllerActionHasAuthorization _tested = new();
-    private readonly ConventionContext _context = new();
 
     [Fact]
     public void Can_assert_class_authorize()
@@ -16,9 +15,10 @@ public class ControllerActionHasAuthorizationTests
             typeof(AuthorizeController)
             .GetMethod(nameof(AuthorizeController.Method))!;
 
-        _tested.Assert(method, _context);
+        var context = new ConventionContext(method);
+        _tested.Assert(method, context);
 
-        Assert.Empty(_context.Messages);
+        Assert.Empty(context.Messages);
     }
 
     [Fact]
@@ -28,9 +28,10 @@ public class ControllerActionHasAuthorizationTests
             typeof(AnonymousController)
             .GetMethod(nameof(AnonymousController.Method))!;
 
-        _tested.Assert(method, _context);
+        var context = new ConventionContext(method);
+        _tested.Assert(method, context);
 
-        Assert.Empty(_context.Messages);
+        Assert.Empty(context.Messages);
     }
 
     [Fact]
@@ -40,9 +41,10 @@ public class ControllerActionHasAuthorizationTests
             typeof(Controller)
             .GetMethod(nameof(Controller.AuthorizeMethod))!;
 
-        _tested.Assert(method, _context);
+        var context = new ConventionContext(method);
+        _tested.Assert(method, context);
 
-        Assert.Empty(_context.Messages);
+        Assert.Empty(context.Messages);
     }
 
     [Fact]
@@ -52,9 +54,10 @@ public class ControllerActionHasAuthorizationTests
             typeof(Controller)
             .GetMethod(nameof(Controller.AnonymousMethod))!;
 
-        _tested.Assert(method, _context);
+        var context = new ConventionContext(method);
+        _tested.Assert(method, context);
 
-        Assert.Empty(_context.Messages);
+        Assert.Empty(context.Messages);
     }
 
     [Fact]
@@ -64,20 +67,22 @@ public class ControllerActionHasAuthorizationTests
             typeof(Controller)
             .GetMethod(nameof(Controller.NonActionMethod))!;
 
-        _tested.Assert(method, _context);
+        var context = new ConventionContext(method);
+        _tested.Assert(method, context);
 
-        Assert.Empty(_context.Messages);
+        Assert.Empty(context.Messages);
     }
 
     [Fact]
-    public void Throws_on_assert_method_unspecified()
+    public void Fails_on_assert_method_unspecified()
     {
         var method =
             typeof(Controller)
             .GetMethod(nameof(Controller.Method))!;
 
-        Assert.Throws<ConventionFailedException>(() => _tested.Assert(method, _context));
-        Assert.Single(_context.Messages);
+        var context = new ConventionContext(method);
+        _tested.Assert(method, context);
+        Assert.Single(context.Messages);
     }
 
     [Authorize]

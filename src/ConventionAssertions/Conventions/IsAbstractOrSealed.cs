@@ -12,6 +12,6 @@ public class IsAbstractOrSealed : IConvention<Type>
             return;
         }
 
-        context.Fail(target, $"must be abstract or sealed");
+        context.Fail($"must be abstract or sealed");
     }
 }

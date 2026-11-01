@@ -15,4 +15,18 @@ public static class MemberInfoDisplayNameExtensions
         };
         return displayName;
     }
+
+    public static string KindName(this MemberInfo self)
+    {
+        GuardAgainst.Null(self);
+
+        var kindName = self switch
+        {
+            Type => "Type",
+            MethodInfo => "Method",
+            PropertyInfo => "Property",
+            _ => throw new NotSupportedException($"KindName for {self.GetType().FullName} is not supported"),
+        };
+        return kindName;
+    }
 }

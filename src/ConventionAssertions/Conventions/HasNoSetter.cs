@@ -10,7 +10,7 @@ public class HasNoSetter : IConvention<PropertyInfo>
         var setMethod = target.GetSetMethod();
         if (setMethod != null)
         {
-            context.Fail(target, "must not have a setter");
+            context.Fail("must not have a setter");
         }
     }
 }
