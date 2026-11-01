@@ -31,6 +31,7 @@
     <InternalsVisibleTo Include="ConventionAssertions.Tests" />
     <InternalsVisibleTo Include="ConventionAssertions.Tests.XunitFramework" />
     <InternalsVisibleTo Include="ConventionAssertions.Tests.UnknownFramework" />
+    <InternalsVisibleTo Include="ConventionAssertions.AspNetCore" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,15 +40,10 @@
 	</ItemGroup>
 
   <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
-  
-  <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="8.0.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="8.0.0" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>
