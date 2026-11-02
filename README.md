@@ -197,192 +197,62 @@ Convention.For(
 
 ## Built-in conventions
 
-The conventions in the `ConventionAssertions.Conventions` namespace:
+Click a convention for its settings, an example and its exact failure message.
+
+In `ConventionAssertions.Conventions`:
 
 | Convention | Targets | Checks that the target |
 | --- | --- | --- |
-| `IsAbstractOrSealed` | types | is abstract or sealed. |
-| `IsSealed` | types | is sealed. |
-| `IsPublic` | types | is public (top-level `public`, or nested `public`). |
-| `IsInternal` | types | is internal (top-level `internal`, or nested `internal`). |
-| `HasNoPublicConstructors` | types | has no public constructor. |
-| `HasPublicStaticParseMethod` | types | has `public static T Parse(string)`. |
-| `HasPublicStaticTryParseMethod` | types | has `public static bool TryParse(string, out T)`. |
-| `HasNamespaceSegment` | types | has a given segment in its namespace. Configurable (`Segment`, `SegmentPosition`). |
-| `HasNoPropertyOfType` | types | has no public property assignable to a given type, such as `DbContext` on a domain type. Configurable (`PropertyType`). |
-| `HasCustomAttribute` | types, methods, properties | has a given attribute. Configurable (`CustomAttribute`). |
-| `NameHasPrefix` | types, methods, properties | has a name starting with a given prefix. Configurable (`Prefix`). |
-| `NameHasSuffix` | types, methods, properties | has a name ending with a given suffix. Configurable (`Suffix`). |
-| `NameIsSnakeCase` | types, methods | has a `lower_snake_case` name. |
-| `AsyncMethodHasAsyncSuffix` | methods | has a name ending with `Async` if it returns `Task`, `Task<T>`, `ValueTask` or `ValueTask<T>`. Other methods pass. |
-| `VoidMethodIsNotAsync` | methods | is not `async void`. |
-| `HasNoSetter` | properties | has no public setter. |
+| [AsyncMethodHasAsyncSuffix](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/AsyncMethodHasAsyncSuffix.md) | methods | has a name ending with `Async` if it returns a task. |
+| [HasCustomAttribute](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasCustomAttribute.md) | types, methods, properties | has a given attribute (configurable). |
+| [HasNamespaceSegment](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasNamespaceSegment.md) | types | has a given segment in its namespace (configurable). |
+| [HasNoPropertyOfType](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasNoPropertyOfType.md) | types | has no public property of a given type (configurable). |
+| [HasNoPublicConstructors](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasNoPublicConstructors.md) | types | has no public constructor. |
+| [HasNoSetter](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasNoSetter.md) | properties | has no public setter. |
+| [HasPublicStaticParseMethod](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasPublicStaticParseMethod.md) | types | has `public static T Parse(string)`. |
+| [HasPublicStaticTryParseMethod](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasPublicStaticTryParseMethod.md) | types | has `public static bool TryParse(string, out T)`. |
+| [IsAbstractOrSealed](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsAbstractOrSealed.md) | types | is abstract or sealed. |
+| [IsInternal](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsInternal.md) | types | is internal. |
+| [IsPublic](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsPublic.md) | types | is public. |
+| [IsSealed](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsSealed.md) | types | is sealed. |
+| [NameHasPrefix](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/NameHasPrefix.md) | types, methods, properties | has a name starting with a given prefix (configurable). |
+| [NameHasSuffix](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/NameHasSuffix.md) | types, methods, properties | has a name ending with a given suffix (configurable). |
+| [NameIsSnakeCase](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/NameIsSnakeCase.md) | types, methods | has a `lower_snake_case` name. |
+| [VoidMethodIsNotAsync](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/VoidMethodIsNotAsync.md) | methods | is not `async void`. |
 
-For types, `NameHasPrefix` and `NameHasSuffix` ignore the generic arity marker, so `CommandHandler<T>` counts as ending with `Handler`.
-
-The ASP.NET Core package adds, in the `ConventionAssertions.AspNetCore.Conventions` namespace:
+In `ConventionAssertions.AspNetCore.Conventions` (ConventionAssertions.AspNetCore package):
 
 | Convention | Targets | Checks that the target |
 | --- | --- | --- |
-| `ControllerActionHasAuthorization` | methods | is a controller action with an explicit authorization decision: `[Authorize]` or `[AllowAnonymous]` on the action or its controller. Methods marked `[NonAction]` are skipped. An action with `[Authorize]` inside an `[AllowAnonymous]` controller fails, because `[AllowAnonymous]` on the controller overrides it. |
+| [ControllerActionHasAuthorization](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/ControllerActionHasAuthorization.md) | methods | is a controller action with `[Authorize]` or `[AllowAnonymous]` on it or its controller. |
 
-```csharp
-using ConventionAssertions.AspNetCore.Conventions;
-using Microsoft.AspNetCore.Mvc;
-
-[Fact]
-public void Controller_actions_declare_authorization()
-{
-    Convention.For(
-        s => s
-            .FromAssemblyContaining<Program>()
-            .Where(t => t.IsConcrete && t.IsAssignableTo<ControllerBase>())
-            .Methods(m => m.Method.DeclaringType != typeof(ControllerBase)
-                && m.Method.DeclaringType != typeof(Controller)),
-        a => a.Assert<ControllerActionHasAuthorization>());
-}
-```
-
-`ConventionAssertions.Conventions.ControllerActionHasAuthorization` in the core package is obsolete and now always fails, telling you to switch to the one in `ConventionAssertions.AspNetCore`.
-
-### Configurable conventions
-
-Some conventions need settings. Pass a configure action to `Assert`:
+Some conventions need settings. Pass them in a configure action:
 
 ```csharp
 Convention.For(
     _valueObjects,
     a => a.Assert<HasNamespaceSegment>(c => c.Segment = "Domain"));
-
-Convention.For(
-    _valueObjects,
-    a => a.Assert<HasNamespaceSegment>(c =>
-    {
-        c.Segment = "ValueObjects";
-        c.SegmentPosition = SegmentPosition.Last;
-    }));
-
-Convention.For(
-    s => s.FromAssemblyContaining<OrderId>().Where(t => t.IsAssignableTo<IValueObject>()),
-    a => a.Assert<HasCustomAttribute>(c => c.CustomAttribute = typeof(TypeConverterAttribute)));
-
-Convention.For(
-    s => s.FromAssemblyContaining<PlaceOrderHandler>().Where(t => t.IsConcrete && t.IsAssignableTo(typeof(ICommandHandler<>))),
-    a => a.Assert<NameHasSuffix>(c => c.Suffix = "Handler"));
-
-Convention.For(
-    s => s.FromAssemblyContaining<Order>().Where(t => t.IsInSameNamespaceAs<Order>()),
-    a => a.Assert<HasNoPropertyOfType>(c => c.PropertyType = typeof(DbContext)));
 ```
 
-`SegmentPosition` is `Anywhere` (the default), `First` or `Last`. `HasCustomAttribute` matches the exact attribute type, not attributes derived from it. A configurable convention used without its required settings throws `ConventionNotConfiguredException`.
+A configurable convention used without its required settings throws `ConventionNotConfiguredException`.
 
 ## Writing your own conventions
 
-A convention is a class with a parameterless constructor that implements `IConvention<TTarget>`, where `TTarget` is `Type`, `MethodInfo` or `PropertyInfo`. Call `context.Fail` once for each problem you find:
-
-```csharp
-using System.Reflection;
-using ConventionAssertions;
-
-public class ReturnsTask : IConvention<MethodInfo>
-{
-    public void Assert(MethodInfo target, ConventionContext context)
-    {
-        if (!typeof(Task).IsAssignableFrom(target.ReturnType))
-        {
-            context.Fail("must return a Task");
-        }
-    }
-}
-```
+A convention is a small class that implements `IConvention<TTarget>` for `Type`, `MethodInfo` or `PropertyInfo` and calls `context.Fail` for each problem it finds. Conventions with settings implement `IConfigurableConvention<TTarget>`. For a rule only one test needs, you can pass a lambda to `Assert` instead:
 
 ```csharp
 Convention.For(
-    s => s
-        .FromAssemblyContaining<OrderService>()
-        .Where(t => t.IsAssignableTo<ICommandHandler>())
-        .Methods(m => m.Method.Name == "Handle"),
-    a => a.Assert<ReturnsTask>());
-```
-
-The failure message is built from the kind of target, its display name and your text, so `context.Fail("must return a Task")` reads as:
-
-```text
-Method MyApp.Orders.PlaceOrderHandler.Handle(MyApp.Orders.PlaceOrder) must return a Task.
-```
-
-Write the message as the end of that sentence, without a trailing period.
-
-One class can implement the interface for several target kinds, like `NameIsSnakeCase` does for both `Type` and `MethodInfo`.
-
-### Configurable conventions of your own
-
-A convention with settings implements `IConfigurableConvention<TTarget>` instead and exposes the settings as properties. `Assert<T>()` without a configure action only accepts `IConvention<TTarget>`, so a configurable convention can't be used by mistake without its settings. Throw `ConventionNotConfiguredException` if a required setting is missing anyway:
-
-```csharp
-public class HasMaxParameterCount : IConfigurableConvention<MethodInfo>
-{
-    public int? Max { get; set; }
-
-    public void Assert(MethodInfo target, ConventionContext context)
+    _valueObjects.Properties(),
+    a => a.Assert((property, context) =>
     {
-        if (Max == null)
+        if (!property.PropertyType.IsValueType)
         {
-            throw new ConventionNotConfiguredException($"{nameof(Max)} not specified");
+            context.Fail("must be a value type");
         }
-
-        if (target.GetParameters().Length > Max)
-        {
-            context.Fail($"must have at most {Max} parameters");
-        }
-    }
-}
+    }));
 ```
 
-```csharp
-Convention.For(
-    s => s.FromAssemblyContaining<OrderService>().Where(t => t.IsConcrete).Methods(),
-    a => a.Assert<HasMaxParameterCount>(c => c.Max = 4));
-```
-
-## Inline conventions
-
-For a rule that only one test needs, pass a lambda or a method with the same shape as `Assert` instead of writing a class:
-
-```csharp
-[Fact]
-public void Value_object_properties_are_value_types()
-{
-    Convention.For(
-        _valueObjects.Properties(),
-        a => a.Assert((property, context) =>
-        {
-            if (!property.PropertyType.IsValueType)
-            {
-                context.Fail("must be a value type");
-            }
-        }));
-}
-```
-
-```csharp
-[Fact]
-public void Value_object_static_methods_return_value()
-{
-    Convention.For(
-        s => s.FromTargets(_valueObjects).Methods(m => m.Method.IsStatic),
-        a => a.Assert(ReturnsValue));
-}
-
-private static void ReturnsValue(MethodInfo method, ConventionContext context)
-{
-    if (method.ReturnType == typeof(void))
-    {
-        context.Fail("must return a value");
-    }
-}
-```
+See [Writing your own conventions](https://github.com/nwendel/ConventionAssertions/blob/main/docs/writing-conventions.md) for both options in full.
 
 ## When nothing matches: `failOnNoTargets`
 
