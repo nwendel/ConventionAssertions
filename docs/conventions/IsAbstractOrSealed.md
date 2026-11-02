@@ -9,10 +9,10 @@ Checks that a type is abstract or sealed, so nothing outside your design can inh
 ## Example
 
 ```csharp
-Convention.ForTypes(
-    s => s
+Convention.For(
+    ConventionTargets.FromTypes(s => s
         .FromAssemblyContaining<OrderId>()
-        .Where(t => t.IsAssignableTo<IValueObject>() && t.IsClass),
+        .Where(t => t.IsAssignableTo<IValueObject>() && t.IsClass)),
     a => a.Assert<IsAbstractOrSealed>());
 ```
 

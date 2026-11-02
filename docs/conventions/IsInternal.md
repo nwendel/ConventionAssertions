@@ -9,10 +9,10 @@ Checks that a type is internal, for example to keep implementation classes out o
 ## Example
 
 ```csharp
-Convention.ForTypes(
-    s => s
+Convention.For(
+    ConventionTargets.FromTypes(s => s
         .FromDefaultDependencyContext(a => a.HasNameSegment("MyApp"))
-        .Where(t => t.IsConcrete && t.IsAssignableTo<ICommandHandler>()),
+        .Where(t => t.IsConcrete && t.IsAssignableTo<ICommandHandler>())),
     a => a.Assert<IsInternal>());
 ```
 

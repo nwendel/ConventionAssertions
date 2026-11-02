@@ -16,10 +16,10 @@ Checks that a type, method or property has a given attribute.
 ## Example
 
 ```csharp
-Convention.ForTypes(
-    s => s
+Convention.For(
+    ConventionTargets.FromTypes(s => s
         .FromAssemblyContaining<OrderId>()
-        .Where(t => t.IsAssignableTo<IValueObject>()),
+        .Where(t => t.IsAssignableTo<IValueObject>())),
     a => a.Assert<HasCustomAttribute>(c => c.CustomAttribute = typeof(TypeConverterAttribute)));
 ```
 

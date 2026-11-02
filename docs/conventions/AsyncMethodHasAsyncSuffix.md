@@ -9,10 +9,10 @@ Checks that a method which returns an awaitable type has a name ending with `Asy
 ## Example
 
 ```csharp
-Convention.ForMethods(
-    s => s
+Convention.For(
+    ConventionTargets.FromMethods(s => s
         .FromAssemblyContaining<OrderService>()
-        .Where(t => t.IsClass),
+        .Where(t => t.IsClass)),
     a => a.Assert<AsyncMethodHasAsyncSuffix>());
 ```
 

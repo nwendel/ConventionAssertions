@@ -16,10 +16,10 @@ Checks that a type has no public property of a given type, for example that doma
 ## Example
 
 ```csharp
-Convention.ForTypes(
-    s => s
+Convention.For(
+    ConventionTargets.FromTypes(s => s
         .FromAssemblyContaining<Order>()
-        .Where(t => t.IsInSameNamespaceAs<Order>()),
+        .Where(t => t.IsInSameNamespaceAs<Order>())),
     a => a.Assert<HasNoPropertyOfType>(c => c.PropertyType = typeof(DbContext)));
 ```
 

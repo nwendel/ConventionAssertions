@@ -1,13 +1,15 @@
+using System.Reflection;
+
 namespace ConventionAssertions.Tests;
 
-public class ConventionTargetsTests_Members
+public class ConventionTargetsTests_Methods
 {
     private readonly IConventionTargets<Type> _types = ConventionTargets.FromTypes(s => s
-        .FromAssemblyContaining<ConventionTargetsTests_Members>()
+        .FromAssemblyContaining<ConventionTargetsTests_Methods>()
         .Where(t => t.Type == typeof(SampleClass)));
 
     [Fact]
-    public void FromMethods_throws_on_null_types()
+    public void Throws_on_null_types()
     {
         var ex = Assert.Throws<ArgumentNullException>(() => ConventionTargets.FromMethods(
             (Func<ITypeScanner, ITypeScannerFilter>)null!));
@@ -15,7 +17,25 @@ public class ConventionTargetsTests_Members
     }
 
     [Fact]
-    public void FromMethods_includes_declared_methods()
+    public void Throws_on_null_targets()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => ConventionTargets.FromMethods(
+            (IConventionTargets<MethodInfo>)null!,
+            m => m));
+        Assert.Equal("targets", ex.ParamName);
+    }
+
+    [Fact]
+    public void Throws_on_null_methods_with_targets()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => ConventionTargets.FromMethods(
+            new DummyMethodTargets(),
+            null!));
+        Assert.Equal("methods", ex.ParamName);
+    }
+
+    [Fact]
+    public void Includes_declared_methods()
     {
         var names = MethodNames(ConventionTargets.FromMethods(s => s.FromTargets(_types)));
 
@@ -24,7 +44,7 @@ public class ConventionTargetsTests_Members
     }
 
     [Fact]
-    public void FromMethods_includes_inherited_methods()
+    public void Includes_inherited_methods()
     {
         var names = MethodNames(ConventionTargets.FromMethods(s => s.FromTargets(_types)));
 
@@ -32,7 +52,7 @@ public class ConventionTargetsTests_Members
     }
 
     [Fact]
-    public void FromMethods_excludes_object_members_and_accessors()
+    public void Excludes_object_members_and_accessors()
     {
         var names = MethodNames(ConventionTargets.FromMethods(s => s.FromTargets(_types)));
 
@@ -43,7 +63,7 @@ public class ConventionTargetsTests_Members
     }
 
     [Fact]
-    public void FromMethods_can_filter()
+    public void Can_filter()
     {
         var methods = ConventionTargets.FromMethods(
             s => s.FromTargets(_types),
@@ -54,7 +74,7 @@ public class ConventionTargetsTests_Members
     }
 
     [Fact]
-    public void FromMethods_can_filter_more_than_once()
+    public void Can_filter_more_than_once()
     {
         var methods = ConventionTargets.FromMethods(
             s => s.FromTargets(_types),
@@ -67,25 +87,7 @@ public class ConventionTargetsTests_Members
     }
 
     [Fact]
-    public void FromMethods_throws_on_null_targets()
-    {
-        var ex = Assert.Throws<ArgumentNullException>(() => ConventionTargets.FromMethods(
-            (IConventionTargets<System.Reflection.MethodInfo>)null!,
-            m => m));
-        Assert.Equal("targets", ex.ParamName);
-    }
-
-    [Fact]
-    public void FromMethods_throws_on_null_methods_with_targets()
-    {
-        var ex = Assert.Throws<ArgumentNullException>(() => ConventionTargets.FromMethods(
-            new DummyMethodTargets(),
-            null!));
-        Assert.Equal("methods", ex.ParamName);
-    }
-
-    [Fact]
-    public void FromMethods_can_narrow_method_targets()
+    public void Can_narrow_method_targets()
     {
         var shared = ConventionTargets.FromMethods(s => s.FromTargets(_types));
 
@@ -97,47 +99,7 @@ public class ConventionTargetsTests_Members
         Assert.Equal(nameof(SampleClass.Create), method.Name);
     }
 
-    [Fact]
-    public void FromProperties_throws_on_null_types()
-    {
-        var ex = Assert.Throws<ArgumentNullException>(() => ConventionTargets.FromProperties(
-            (Func<ITypeScanner, ITypeScannerFilter>)null!));
-        Assert.Equal("types", ex.ParamName);
-    }
-
-    [Fact]
-    public void FromProperties_includes_public_properties()
-    {
-        var properties = ConventionTargets.FromProperties(s => s.FromTargets(_types));
-
-        var property = Assert.Single(properties.Targets);
-        Assert.Equal(nameof(SampleClass.Value), property.Name);
-    }
-
-    [Fact]
-    public void FromProperties_can_filter()
-    {
-        var properties = ConventionTargets.FromProperties(
-            s => s.FromTargets(_types),
-            p => p.Where(x => x.Property.Name == "Missing"));
-
-        Assert.Empty(properties.Targets);
-    }
-
-    [Fact]
-    public void FromProperties_can_narrow_property_targets()
-    {
-        var shared = ConventionTargets.FromProperties(s => s.FromTargets(_types));
-
-        var properties = ConventionTargets.FromProperties(
-            shared,
-            p => p.Where(x => x.Property.Name == nameof(SampleClass.Value)));
-
-        var property = Assert.Single(properties.Targets);
-        Assert.Equal(nameof(SampleClass.Value), property.Name);
-    }
-
-    private static List<string> MethodNames(IConventionTargets<System.Reflection.MethodInfo> methods)
+    private static List<string> MethodNames(IConventionTargets<MethodInfo> methods)
         => methods.Targets.Select(x => x.Name).ToList();
 
     private class SampleBaseClass

@@ -9,10 +9,10 @@ Checks that a type has a method with the signature `public static T Parse(string
 ## Example
 
 ```csharp
-Convention.ForTypes(
-    s => s
+Convention.For(
+    ConventionTargets.FromTypes(s => s
         .FromAssemblyContaining<OrderId>()
-        .Where(t => t.IsAssignableTo<IValueObject>() && t.IsClass),
+        .Where(t => t.IsAssignableTo<IValueObject>() && t.IsClass)),
     a => a.Assert<HasPublicStaticParseMethod>());
 ```
 

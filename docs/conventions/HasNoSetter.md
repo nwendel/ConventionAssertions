@@ -9,10 +9,10 @@ Checks that a property has no public setter, for example to keep value objects i
 ## Example
 
 ```csharp
-Convention.ForProperties(
-    s => s
+Convention.For(
+    ConventionTargets.FromProperties(s => s
         .FromAssemblyContaining<OrderId>()
-        .Where(t => t.IsAssignableTo<IValueObject>()),
+        .Where(t => t.IsAssignableTo<IValueObject>())),
     a => a.Assert<HasNoSetter>());
 ```
 

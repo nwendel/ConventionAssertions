@@ -9,10 +9,10 @@ Checks that a type is sealed.
 ## Example
 
 ```csharp
-Convention.ForTypes(
-    s => s
+Convention.For(
+    ConventionTargets.FromTypes(s => s
         .FromAssemblyContaining<PlaceOrderHandler>()
-        .Where(t => t.IsConcrete && t.IsAssignableTo(typeof(ICommandHandler<>))),
+        .Where(t => t.IsConcrete && t.IsAssignableTo(typeof(ICommandHandler<>)))),
     a => a.Assert<IsSealed>());
 ```
 

@@ -9,8 +9,8 @@ Checks that a method is not `async void`. Exceptions thrown from an `async void`
 ## Example
 
 ```csharp
-Convention.ForMethods(
-    s => s.FromAssemblyContaining<OrderService>(),
+Convention.For(
+    ConventionTargets.FromMethods(s => s.FromAssemblyContaining<OrderService>()),
     a => a.Assert<VoidMethodIsNotAsync>());
 ```
 

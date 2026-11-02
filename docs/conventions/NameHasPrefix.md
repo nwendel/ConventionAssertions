@@ -16,10 +16,10 @@ Checks that the name of a type, method or property starts with a given prefix.
 ## Example
 
 ```csharp
-Convention.ForTypes(
-    s => s
+Convention.For(
+    ConventionTargets.FromTypes(s => s
         .FromAssemblyContaining<OrderId>()
-        .Where(t => t.IsInterface),
+        .Where(t => t.IsInterface)),
     a => a.Assert<NameHasPrefix>(c => c.Prefix = "I"));
 ```
 

@@ -9,10 +9,10 @@ Checks that a type is public.
 ## Example
 
 ```csharp
-Convention.ForTypes(
-    s => s
+Convention.For(
+    ConventionTargets.FromTypes(s => s
         .FromAssemblyContaining<OrderId>()
-        .Where(t => t.IsAssignableTo<IValueObject>()),
+        .Where(t => t.IsAssignableTo<IValueObject>())),
     a => a.Assert<IsPublic>());
 ```
 

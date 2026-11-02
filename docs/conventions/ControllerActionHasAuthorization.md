@@ -15,12 +15,15 @@ using Microsoft.AspNetCore.Mvc;
 [Fact]
 public void Controller_actions_declare_authorization()
 {
-    Convention.ForMethods(
+    var actions = ConventionTargets.FromMethods(
         s => s
             .FromAssemblyContaining<Program>()
             .Where(t => t.IsConcrete && t.IsAssignableTo<ControllerBase>()),
         m => m.Where(x => x.Method.DeclaringType != typeof(ControllerBase)
-            && x.Method.DeclaringType != typeof(Controller)),
+            && x.Method.DeclaringType != typeof(Controller)));
+
+    Convention.For(
+        actions,
         a => a.Assert<ControllerActionHasAuthorization>());
 }
 ```
