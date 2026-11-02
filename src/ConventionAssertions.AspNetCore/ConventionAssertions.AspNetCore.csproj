@@ -14,8 +14,8 @@
   <PropertyGroup>
     <PackageId>ConventionAssertions.AspNetCore</PackageId>
     <Title>ConventionAssertions.AspNetCore</Title>
-    <Version>0.17.0</Version>
-    <Copyright>Niklas Wendel 2023-2025</Copyright>
+    <Version>0.18.0</Version>
+    <Copyright>Niklas Wendel 2023-2026</Copyright>
     <Authors>Niklas Wendel</Authors>
     <PackageTags></PackageTags>
     <PackageProjectUrl>https://github.com/nwendel/ConventionAssertions</PackageProjectUrl>
