@@ -10,10 +10,14 @@ public class ConventionTests_ForUsage
         .FromAssemblyContaining<ConventionTests_ForUsage>()
         .Where(t => t.IsAssignableTo<IValueObject>() && t.IsClass));
 
+    private readonly IConventionTargets<MethodInfo> _valueObjectMethods = ConventionTargets.FromMethods(s => s
+        .FromAssemblyContaining<ConventionTests_ForUsage>()
+        .Where(t => t.IsAssignableTo<IValueObject>() && t.IsClass));
+
     [Fact]
     public void Value_objects_are_sealed()
     {
-        Convention.For(
+        Convention.ForTypes(
             s => s
                 .FromAssemblyContaining<ConventionTests_ForUsage>()
                 .Where(t => t.IsAssignableTo<IValueObject>() && t.IsClass),
@@ -47,8 +51,8 @@ public class ConventionTests_ForUsage
     [Fact]
     public void Value_object_properties_have_no_setter()
     {
-        Convention.For(
-            s => s.FromTargets(_valueObjects).Properties(),
+        Convention.ForProperties(
+            s => s.FromTargets(_valueObjects),
             a => a.Assert<HasNoSetter>());
     }
 
@@ -56,22 +60,23 @@ public class ConventionTests_ForUsage
     public void Value_object_properties_are_value_types()
     {
         Convention.For(
-            _valueObjects.Properties(),
+            ConventionTargets.FromProperties(s => s.FromTargets(_valueObjects)),
             a => a.Assert(IsValueType));
     }
 
     [Fact]
     public void Value_object_static_methods_return_value()
     {
-        Convention.For(
-            s => s.FromTargets(_valueObjects).Methods(m => m.Method.IsStatic),
+        Convention.ForMethods(
+            s => s.FromTargets(_valueObjects),
+            m => m.Where(x => x.Method.IsStatic),
             a => a.Assert(ReturnsValue));
     }
 
     [Fact]
     public void Can_refine_shared_targets()
     {
-        Convention.For(
+        Convention.ForTypes(
             s => s
                 .FromTargets(_valueObjects)
                 .Where(t => t.Type == typeof(SampleId)),
@@ -82,7 +87,7 @@ public class ConventionTests_ForUsage
     public void Reports_all_violations()
     {
         var ex = Assert.Throws<XunitException>(() => Convention.For(
-            _valueObjects.Methods(),
+            _valueObjectMethods,
             a => a.Assert<NameIsSnakeCase>()));
 
         Assert.StartsWith("Found 2.", ex.Message, StringComparison.Ordinal);
@@ -93,8 +98,9 @@ public class ConventionTests_ForUsage
     [SuppressConvention(Target = "ConventionAssertions.Tests.TestHelpers.SampleId.Parse(string)", Justification = "For testing")]
     public void Can_suppress_violation()
     {
-        Convention.For(
-            _valueObjects.Methods(m => m.Method.Name == nameof(SampleId.Parse)),
+        Convention.ForMethods(
+            s => s.FromTargets(_valueObjects),
+            m => m.Where(x => x.Method.Name == nameof(SampleId.Parse)),
             a => a.Assert<NameIsSnakeCase>());
     }
 

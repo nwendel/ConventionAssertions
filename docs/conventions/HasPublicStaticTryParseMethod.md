@@ -9,7 +9,7 @@ Checks that a type has a method with the signature `public static bool TryParse(
 ## Example
 
 ```csharp
-Convention.For(
+Convention.ForTypes(
     s => s
         .FromAssemblyContaining<OrderId>()
         .Where(t => t.IsAssignableTo<IValueObject>() && t.IsClass),

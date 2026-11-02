@@ -5,18 +5,6 @@ namespace ConventionAssertions;
 public static class Convention
 {
     public static void For<TTarget>(
-        Func<ITypeScanner, IConventionTargets<TTarget>> scanner,
-        Action<IConventionAssert<TTarget>> assertAction)
-        where TTarget : MemberInfo
-    {
-        GuardAgainst.Null(scanner);
-        GuardAgainst.Null(assertAction);
-
-        var targets = scanner(new TypeScanner());
-        For(targets, assertAction);
-    }
-
-    public static void For<TTarget>(
         IConventionTargets<TTarget> targets,
         Action<IConventionAssert<TTarget>> assertAction)
         where TTarget : MemberInfo
@@ -28,53 +16,77 @@ public static class Convention
         assertAction(assert);
     }
 
-    [Obsolete("Use Convention.For(s => s.From...(), a => a.Assert(...)) instead.")]
     public static void ForTypes(
-        Action<ITypeScanner> scanner,
+        Func<ITypeScanner, ITypeScannerFilter> types,
+        Action<IConventionAssert<Type>> assertAction)
+    {
+        GuardAgainst.Null(types);
+        GuardAgainst.Null(assertAction);
+
+        var targets = ConventionTargets.FromTypes(types);
+        For(targets, assertAction);
+    }
+
+    public static void ForMethods(
+        Func<ITypeScanner, ITypeScannerFilter> types,
+        Action<IConventionAssert<MethodInfo>> assertAction)
+    {
+        GuardAgainst.Null(types);
+        GuardAgainst.Null(assertAction);
+
+        var targets = ConventionTargets.FromMethods(types);
+        For(targets, assertAction);
+    }
+
+    public static void ForMethods(
+        Func<ITypeScanner, ITypeScannerFilter> types,
+        Func<IMethodScanner, IMethodScanner> methods,
+        Action<IConventionAssert<MethodInfo>> assertAction)
+    {
+        GuardAgainst.Null(types);
+        GuardAgainst.Null(methods);
+        GuardAgainst.Null(assertAction);
+
+        var targets = ConventionTargets.FromMethods(types, methods);
+        For(targets, assertAction);
+    }
+
+    public static void ForProperties(
+        Func<ITypeScanner, ITypeScannerFilter> types,
+        Action<IConventionAssert<PropertyInfo>> assertAction)
+    {
+        GuardAgainst.Null(types);
+        GuardAgainst.Null(assertAction);
+
+        var targets = ConventionTargets.FromProperties(types);
+        For(targets, assertAction);
+    }
+
+    public static void ForProperties(
+        Func<ITypeScanner, ITypeScannerFilter> types,
+        Func<IPropertyScanner, IPropertyScanner> properties,
+        Action<IConventionAssert<PropertyInfo>> assertAction)
+    {
+        GuardAgainst.Null(types);
+        GuardAgainst.Null(properties);
+        GuardAgainst.Null(assertAction);
+
+        var targets = ConventionTargets.FromProperties(types, properties);
+        For(targets, assertAction);
+    }
+
+    [Obsolete("Use Convention.ForTypes(s => s.From...(), a => a.Assert(...)) instead.")]
+    public static void For(
+        Func<ITypeScanner, ITypeScannerFilter> scanner,
         Action<IConventionAssert<Type>> assertAction)
     {
         GuardAgainst.Null(scanner);
         GuardAgainst.Null(assertAction);
 
-        var targets = ConventionTargets.FromTypes(scanner);
-        var assert = new ConventionAssert<Type>(targets);
-        assertAction(assert);
+        ForTypes(scanner, assertAction);
     }
 
-    [Obsolete("Use Convention.For(s => s.From...().Methods(...), a => a.Assert(...)) instead.")]
-    public static void ForMethods(
-        Action<ITypeScanner> typeScanner,
-        Action<IConventionAssert<MethodInfo>> assertAction)
-    {
-        GuardAgainst.Null(typeScanner);
-        GuardAgainst.Null(assertAction);
-
-        var targetTypes = ConventionTargets.FromTypes(typeScanner);
-        var targets = new MethodScanner(targetTypes.Targets);
-        var assert = new ConventionAssert<MethodInfo>(targets);
-
-        assertAction(assert);
-    }
-
-    [Obsolete("Use Convention.For(s => s.From...().Methods(...), a => a.Assert(...)) instead.")]
-    public static void ForMethods(
-        Action<ITypeScanner> typeScanner,
-        Action<IMethodScanner> scanner,
-        Action<IConventionAssert<MethodInfo>> assertAction)
-    {
-        GuardAgainst.Null(typeScanner);
-        GuardAgainst.Null(scanner);
-        GuardAgainst.Null(assertAction);
-
-        var targetTypes = ConventionTargets.FromTypes(typeScanner);
-        var targets = new MethodScanner(targetTypes.Targets);
-        scanner(targets);
-        var assert = new ConventionAssert<MethodInfo>(targets);
-
-        assertAction(assert);
-    }
-
-    [Obsolete("Use Convention.For(s => s.From...().Methods(...), a => a.Assert(...)) instead.")]
+    [Obsolete("Use Convention.For(targets, a => a.Assert(...)) instead.")]
     public static void ForMethods(
         IConventionTargets<MethodInfo> targets,
         Action<IConventionAssert<MethodInfo>> assertAction)
@@ -82,45 +94,10 @@ public static class Convention
         GuardAgainst.Null(targets);
         GuardAgainst.Null(assertAction);
 
-        var assert = new ConventionAssert<MethodInfo>(targets);
-
-        assertAction(assert);
+        For(targets, assertAction);
     }
 
-    [Obsolete("Use Convention.For(s => s.From...().Properties(...), a => a.Assert(...)) instead.")]
-    public static void ForProperties(
-        Action<ITypeScanner> typeScanner,
-        Action<IConventionAssert<PropertyInfo>> assertAction)
-    {
-        GuardAgainst.Null(typeScanner);
-        GuardAgainst.Null(assertAction);
-
-        var targetTypes = ConventionTargets.FromTypes(typeScanner);
-        var targets = new PropertyScanner(targetTypes.Targets);
-        var assert = new ConventionAssert<PropertyInfo>(targets);
-
-        assertAction(assert);
-    }
-
-    [Obsolete("Use Convention.For(s => s.From...().Properties(...), a => a.Assert(...)) instead.")]
-    public static void ForProperties(
-        Action<ITypeScanner> typeScanner,
-        Action<IPropertyScanner> scanner,
-        Action<IConventionAssert<PropertyInfo>> assertAction)
-    {
-        GuardAgainst.Null(typeScanner);
-        GuardAgainst.Null(scanner);
-        GuardAgainst.Null(assertAction);
-
-        var targetTypes = ConventionTargets.FromTypes(typeScanner);
-        var targets = new PropertyScanner(targetTypes.Targets);
-        scanner(targets);
-        var assert = new ConventionAssert<PropertyInfo>(targets);
-
-        assertAction(assert);
-    }
-
-    [Obsolete("Use Convention.For(s => s.From...().Properties(...), a => a.Assert(...)) instead.")]
+    [Obsolete("Use Convention.For(targets, a => a.Assert(...)) instead.")]
     public static void ForProperties(
         IConventionTargets<PropertyInfo> targets,
         Action<IConventionAssert<PropertyInfo>> assertAction)
@@ -128,8 +105,6 @@ public static class Convention
         GuardAgainst.Null(targets);
         GuardAgainst.Null(assertAction);
 
-        var assert = new ConventionAssert<PropertyInfo>(targets);
-
-        assertAction(assert);
+        For(targets, assertAction);
     }
 }

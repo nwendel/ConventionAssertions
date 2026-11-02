@@ -16,7 +16,7 @@ Checks that the name of a type, method or property ends with a given suffix.
 ## Example
 
 ```csharp
-Convention.For(
+Convention.ForTypes(
     s => s
         .FromAssemblyContaining<PlaceOrderHandler>()
         .Where(t => t.IsConcrete && t.IsAssignableTo(typeof(ICommandHandler<>))),

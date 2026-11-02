@@ -16,7 +16,7 @@ Checks that a type has no public property of a given type, for example that doma
 ## Example
 
 ```csharp
-Convention.For(
+Convention.ForTypes(
     s => s
         .FromAssemblyContaining<Order>()
         .Where(t => t.IsInSameNamespaceAs<Order>()),

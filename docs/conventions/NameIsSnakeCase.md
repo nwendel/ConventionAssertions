@@ -9,11 +9,11 @@ Checks that the name of a type or method is written in `lower_snake_case`. A com
 ## Example
 
 ```csharp
-Convention.For(
+Convention.ForMethods(
     s => s
         .FromAssemblyContaining<OrderTests>()
-        .Where(t => t.Type.Name.EndsWith("Tests", StringComparison.Ordinal))
-        .Methods(m => m.HasCustomAttribute<FactAttribute>()),
+        .Where(t => t.Type.Name.EndsWith("Tests", StringComparison.Ordinal)),
+    m => m.Where(x => x.HasCustomAttribute<FactAttribute>()),
     a => a.Assert<NameIsSnakeCase>());
 ```
 

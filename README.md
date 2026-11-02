@@ -6,7 +6,7 @@ ConventionAssertions is a lightweight way to write your own code conventions for
 [Fact]
 public void Value_objects_are_sealed()
 {
-    Convention.For(
+    Convention.ForTypes(
         s => s
             .FromAssemblyContaining<OrderId>()
             .Where(t => t.IsAssignableTo<IValueObject>() && t.IsClass),
@@ -49,7 +49,7 @@ ConventionAssertions works with any test framework. When xUnit is loaded, a fail
 
 ## Getting started
 
-Every convention test has two parts: **which members to check**, and **which convention to check them against**. Both are given to `Convention.For`:
+Every convention test has two parts: **which members to check**, and **which convention to check them against**. Both are given to `Convention.ForTypes`, `Convention.ForMethods` or `Convention.ForProperties`, depending on what you check:
 
 ```csharp
 using ConventionAssertions;
@@ -60,7 +60,7 @@ public class DomainConventionTests
     [Fact]
     public void Value_objects_have_no_public_constructors()
     {
-        Convention.For(
+        Convention.ForTypes(
             s => s
                 .FromAssemblyContaining<OrderId>()
                 .Where(t => t.IsAssignableTo<IValueObject>() && t.IsClass),
@@ -69,11 +69,11 @@ public class DomainConventionTests
 }
 ```
 
-The first argument receives a type scanner and returns the targets. The second receives an assert object on which you call `Assert` once or more.
+The first argument receives a type scanner and picks the types. The last receives an assert object on which you call `Assert` once or more.
 
 ### Reusing a set of targets
 
-When several tests check the same set of types, build the targets once with `ConventionTargets.FromTypes` and pass them straight to `Convention.For`:
+When several tests check the same set of targets, build them once with `ConventionTargets.FromTypes`, `FromMethods` or `FromProperties`, which take the same scans as `Convention.ForTypes`, `ForMethods` and `ForProperties`, and pass them straight to `Convention.For`:
 
 ```csharp
 public class ValueObjectConventionTests
@@ -103,7 +103,7 @@ public class ValueObjectConventionTests
 A shared set can also be the starting point of a scan and narrowed further with `FromTargets`:
 
 ```csharp
-Convention.For(
+Convention.ForTypes(
     s => s
         .FromTargets(_valueObjects)
         .Where(t => t.Type == typeof(OrderId)),
@@ -127,7 +127,7 @@ The scanner decides which assemblies to load types from. Each of these returns a
 The dependency-context scanners load every assembly they match, including the framework and third-party packages, so you will usually filter them by name. The assembly filter has `HasNameSegment(segment)`, which matches one dot-separated part of the assembly name, and `AssemblyName` for anything else:
 
 ```csharp
-Convention.For(
+Convention.ForTypes(
     s => s
         .FromDefaultDependencyContext(a => a.HasNameSegment("MyApp"))
         .Where(t => t.IsConcrete && t.IsAssignableTo<ICommandHandler>()),
@@ -160,39 +160,55 @@ Convention.For(
 
 ### Methods and properties
 
-Call `.Methods()` or `.Properties()` at the end of a type scan to check the members of those types instead of the types themselves:
+Use `Convention.ForMethods` or `Convention.ForProperties` to check the members of the scanned types instead of the types themselves:
 
 ```csharp
 [Fact]
 public void Value_object_properties_have_no_setter()
 {
-    Convention.For(
-        s => s.FromTargets(_valueObjects).Properties(),
+    Convention.ForProperties(
+        s => s.FromTargets(_valueObjects),
         a => a.Assert<HasNoSetter>());
 }
 ```
 
-Both take an optional predicate:
+To narrow the members, pass a member scan between the type scan and the assert. Its `Where` works like the type `Where` and can be called more than once:
 
 ```csharp
-Convention.For(
+Convention.ForMethods(
     s => s
         .FromAssemblyContaining<OrderId>()
-        .Where(t => t.IsAssignableTo<IValueObject>())
-        .Methods(m => m.Method.IsStatic && m.IsPublic),
+        .Where(t => t.IsAssignableTo<IValueObject>()),
+    m => m.Where(x => x.Method.IsStatic && x.IsPublic),
     a => a.Assert<NameIsSnakeCase>());
 ```
 
 The method filter has `Method` (the `MethodInfo`), `IsPublic` and `HasCustomAttribute<TAttribute>()` / `HasCustomAttribute(attribute => ...)`. The property filter has `Property` (the `PropertyInfo`) and the same two `HasCustomAttribute` overloads.
 
-`Methods()` returns the public methods of each type, including inherited and static ones. It leaves out methods declared on `object` and compiler-generated special methods such as property accessors and operators. `Properties()` returns the public properties of each type, including inherited ones.
+A method scan starts from the public methods of each type, including inherited and static ones. It leaves out methods declared on `object` and compiler-generated special methods such as property accessors and operators. A property scan starts from the public properties of each type, including inherited ones.
 
-`Methods()` and `Properties()` are extension methods on `IConventionTargets<Type>`, so they also work on a shared set outside the scanner:
+A shared set of members is built the same way:
 
 ```csharp
-Convention.For(
-    _valueObjects.Methods(),
-    a => a.Assert<NameIsSnakeCase>());
+private readonly IConventionTargets<MethodInfo> _valueObjectMethods = ConventionTargets.FromMethods(
+    s => s.FromTargets(_valueObjects),
+    m => m.Where(x => x.IsPublic));
+
+[Fact]
+public void Value_object_methods_are_snake_case()
+{
+    Convention.For(
+        _valueObjectMethods,
+        a => a.Assert<NameIsSnakeCase>());
+}
+```
+
+To narrow a shared set of members further, pass it to `FromMethods` or `FromProperties` with a member scan:
+
+```csharp
+private readonly IConventionTargets<MethodInfo> _staticValueObjectMethods = ConventionTargets.FromMethods(
+    _valueObjectMethods,
+    m => m.Where(x => x.Method.IsStatic));
 ```
 
 ## Built-in conventions
@@ -241,8 +257,8 @@ A configurable convention used without its required settings throws `ConventionN
 A convention is a small class that implements `IConvention<TTarget>` for `Type`, `MethodInfo` or `PropertyInfo` and calls `context.Fail` for each problem it finds. Conventions with settings implement `IConfigurableConvention<TTarget>`. For a rule only one test needs, you can pass a lambda to `Assert` instead:
 
 ```csharp
-Convention.For(
-    _valueObjects.Properties(),
+Convention.ForProperties(
+    s => s.FromTargets(_valueObjects),
     a => a.Assert((property, context) =>
     {
         if (!property.PropertyType.IsValueType)
@@ -261,7 +277,7 @@ If a scan finds no targets, the convention fails with `No targets found for conv
 When an empty result is fine, for example a rule for a folder that is empty today, turn the guard off for that assertion:
 
 ```csharp
-Convention.For(
+Convention.ForTypes(
     s => s.FromAssemblyContaining<OrderId>().Where(t => t.HasAttribute<ObsoleteAttribute>()),
     a => a.Assert<IsInternal>(failOnNoTargets: false));
 ```
@@ -288,7 +304,7 @@ public void Value_objects_follow_conventions()
 - **Methods:** the type, method name and parameter types, such as `MyApp.Domain.OrderId.TryParse(string,MyApp.Domain.OrderId)`. Parameter types are separated by a comma with no space.
 - **Properties:** the type and property name, such as `MyApp.Domain.OrderId.Value`.
 
-The attribute is read from the method that calls `Convention.For`, so it must be on the test method itself, not on a helper method that the test calls.
+The attribute is read from the method that calls `Convention`, so it must be on the test method itself, not on a helper method that the test calls.
 
 ## License
 

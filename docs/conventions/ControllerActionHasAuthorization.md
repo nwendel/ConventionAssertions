@@ -15,17 +15,17 @@ using Microsoft.AspNetCore.Mvc;
 [Fact]
 public void Controller_actions_declare_authorization()
 {
-    Convention.For(
+    Convention.ForMethods(
         s => s
             .FromAssemblyContaining<Program>()
-            .Where(t => t.IsConcrete && t.IsAssignableTo<ControllerBase>())
-            .Methods(m => m.Method.DeclaringType != typeof(ControllerBase)
-                && m.Method.DeclaringType != typeof(Controller)),
+            .Where(t => t.IsConcrete && t.IsAssignableTo<ControllerBase>()),
+        m => m.Where(x => x.Method.DeclaringType != typeof(ControllerBase)
+            && x.Method.DeclaringType != typeof(Controller)),
         a => a.Assert<ControllerActionHasAuthorization>());
 }
 ```
 
-The `Methods(...)` predicate leaves out the public methods that controllers inherit from `ControllerBase` and `Controller`.
+The method `Where(...)` leaves out the public methods that controllers inherit from `ControllerBase` and `Controller`.
 
 ## Failure messages
 

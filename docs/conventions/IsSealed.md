@@ -9,7 +9,7 @@ Checks that a type is sealed.
 ## Example
 
 ```csharp
-Convention.For(
+Convention.ForTypes(
     s => s
         .FromAssemblyContaining<PlaceOrderHandler>()
         .Where(t => t.IsConcrete && t.IsAssignableTo(typeof(ICommandHandler<>))),

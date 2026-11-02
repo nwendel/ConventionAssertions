@@ -9,7 +9,7 @@ Checks that a type has no public constructor, for example so value objects can o
 ## Example
 
 ```csharp
-Convention.For(
+Convention.ForTypes(
     s => s
         .FromAssemblyContaining<OrderId>()
         .Where(t => t.IsAssignableTo<IValueObject>() && t.IsClass),

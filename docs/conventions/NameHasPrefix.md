@@ -16,7 +16,7 @@ Checks that the name of a type, method or property starts with a given prefix.
 ## Example
 
 ```csharp
-Convention.For(
+Convention.ForTypes(
     s => s
         .FromAssemblyContaining<OrderId>()
         .Where(t => t.IsInterface),

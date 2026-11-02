@@ -2,9 +2,7 @@
 
 namespace ConventionAssertions.Internal;
 
-public sealed class PropertyScanner :
-    IConventionTargets<PropertyInfo>,
-    IPropertyScanner
+public sealed class PropertyScanner : IPropertyScanner
 {
     private IEnumerable<PropertyInfo> _propertyInfos;
 
@@ -18,10 +16,19 @@ public sealed class PropertyScanner :
             .ToList();
     }
 
-    IEnumerable<PropertyInfo> IConventionTargets<PropertyInfo>.Targets => _propertyInfos;
+    internal PropertyScanner(IConventionTargets<PropertyInfo> targets)
+    {
+        GuardAgainst.Null(targets);
+
+        _propertyInfos = targets.Targets.ToList();
+    }
+
+    internal IEnumerable<PropertyInfo> Properties => _propertyInfos;
 
     public IPropertyScanner Where(Func<IPropertyFilter, bool> predicate)
     {
+        GuardAgainst.Null(predicate);
+
         _propertyInfos = _propertyInfos
             .Select(x => new PropertyFilter(x))
             .Where(x => predicate(x))

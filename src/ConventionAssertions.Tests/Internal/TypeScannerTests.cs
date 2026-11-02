@@ -4,7 +4,7 @@ public class TypeScannerTests
 {
     private readonly TypeScanner _tested = new();
 
-    private IEnumerable<Type> Targets => ((IConventionTargets<Type>)_tested).Targets;
+    private IEnumerable<Type> Targets => _tested.Types;
 
     [Fact]
     public void Can_FromAssemblyContaining()

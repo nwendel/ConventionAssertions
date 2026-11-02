@@ -4,6 +4,7 @@ namespace ConventionAssertions;
 
 public static class ConventionTargetsExtensions
 {
+    [Obsolete("Use ConventionTargets.FromMethods(s => s.FromTargets(...), m => m.Where(...)) or Convention.ForMethods(...) instead.")]
     public static IConventionTargets<MethodInfo> Methods(
         this IConventionTargets<Type> self,
         Func<IMethodFilter, bool>? predicate = null)
@@ -26,6 +27,7 @@ public static class ConventionTargetsExtensions
         return new ConventionTargetCollection<MethodInfo>(methodInfos);
     }
 
+    [Obsolete("Use ConventionTargets.FromProperties(s => s.FromTargets(...), p => p.Where(...)) or Convention.ForProperties(...) instead.")]
     public static IConventionTargets<PropertyInfo> Properties(
         this IConventionTargets<Type> self,
         Func<IPropertyFilter, bool>? predicate = null)

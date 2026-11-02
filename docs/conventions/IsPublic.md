@@ -9,7 +9,7 @@ Checks that a type is public.
 ## Example
 
 ```csharp
-Convention.For(
+Convention.ForTypes(
     s => s
         .FromAssemblyContaining<OrderId>()
         .Where(t => t.IsAssignableTo<IValueObject>()),

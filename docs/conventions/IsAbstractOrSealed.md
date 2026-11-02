@@ -9,7 +9,7 @@ Checks that a type is abstract or sealed, so nothing outside your design can inh
 ## Example
 
 ```csharp
-Convention.For(
+Convention.ForTypes(
     s => s
         .FromAssemblyContaining<OrderId>()
         .Where(t => t.IsAssignableTo<IValueObject>() && t.IsClass),

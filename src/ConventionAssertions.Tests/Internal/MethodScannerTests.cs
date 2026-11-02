@@ -15,13 +15,22 @@ public class MethodScannerTests
         _anotherPublicMethod = typeof(MethodScannerTests).GetMethod(nameof(AnotherPublicMethod))!;
     }
 
-    private IEnumerable<MethodInfo> Targets => ((IConventionTargets<MethodInfo>)_tested).Targets;
+    private IEnumerable<MethodInfo> Targets => _tested.Methods;
 
     [Fact]
     public void Can_GetMethods()
     {
         Assert.Contains(_publicMethod, Targets);
         Assert.Contains(_anotherPublicMethod, Targets);
+    }
+
+    [Fact]
+    public void Excludes_object_members()
+    {
+        var names = Targets.Select(x => x.Name).ToList();
+
+        Assert.DoesNotContain(nameof(ToString), names);
+        Assert.DoesNotContain(nameof(GetHashCode), names);
     }
 
     [Fact]

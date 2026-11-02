@@ -23,11 +23,11 @@ public class ReturnsTask : IConvention<MethodInfo>
 ```
 
 ```csharp
-Convention.For(
+Convention.ForMethods(
     s => s
         .FromAssemblyContaining<OrderService>()
-        .Where(t => t.IsAssignableTo<ICommandHandler>())
-        .Methods(m => m.Method.Name == "Handle"),
+        .Where(t => t.IsAssignableTo<ICommandHandler>()),
+    m => m.Where(x => x.Method.Name == "Handle"),
     a => a.Assert<ReturnsTask>());
 ```
 
@@ -66,8 +66,8 @@ public class HasMaxParameterCount : IConfigurableConvention<MethodInfo>
 ```
 
 ```csharp
-Convention.For(
-    s => s.FromAssemblyContaining<OrderService>().Where(t => t.IsConcrete).Methods(),
+Convention.ForMethods(
+    s => s.FromAssemblyContaining<OrderService>().Where(t => t.IsConcrete),
     a => a.Assert<HasMaxParameterCount>(c => c.Max = 4));
 ```
 
@@ -79,8 +79,8 @@ For a rule that only one test needs, pass a lambda or a method with the same sha
 [Fact]
 public void Value_object_properties_are_value_types()
 {
-    Convention.For(
-        _valueObjects.Properties(),
+    Convention.ForProperties(
+        s => s.FromTargets(_valueObjects),
         a => a.Assert((property, context) =>
         {
             if (!property.PropertyType.IsValueType)
@@ -95,8 +95,9 @@ public void Value_object_properties_are_value_types()
 [Fact]
 public void Value_object_static_methods_return_value()
 {
-    Convention.For(
-        s => s.FromTargets(_valueObjects).Methods(m => m.Method.IsStatic),
+    Convention.ForMethods(
+        s => s.FromTargets(_valueObjects),
+        m => m.Where(x => x.Method.IsStatic),
         a => a.Assert(ReturnsValue));
 }
 

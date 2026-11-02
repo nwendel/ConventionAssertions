@@ -16,7 +16,7 @@ Checks that a type, method or property has a given attribute.
 ## Example
 
 ```csharp
-Convention.For(
+Convention.ForTypes(
     s => s
         .FromAssemblyContaining<OrderId>()
         .Where(t => t.IsAssignableTo<IValueObject>()),

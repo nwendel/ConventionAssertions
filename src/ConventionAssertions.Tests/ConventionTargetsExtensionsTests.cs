@@ -1,5 +1,6 @@
 ﻿namespace ConventionAssertions.Tests;
 
+[Obsolete("Tests the obsolete ConventionTargetsExtensions methods")]
 public class ConventionTargetsExtensionsTests
 {
     private readonly IConventionTargets<Type> _types = ConventionTargets.FromTypes(s => s

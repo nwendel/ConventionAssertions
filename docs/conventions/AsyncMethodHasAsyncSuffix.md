@@ -9,11 +9,10 @@ Checks that a method which returns an awaitable type has a name ending with `Asy
 ## Example
 
 ```csharp
-Convention.For(
+Convention.ForMethods(
     s => s
         .FromAssemblyContaining<OrderService>()
-        .Where(t => t.IsClass)
-        .Methods(),
+        .Where(t => t.IsClass),
     a => a.Assert<AsyncMethodHasAsyncSuffix>());
 ```
 
@@ -27,4 +26,4 @@ Method MyApp.Orders.OrderService.PlaceOrder(MyApp.Orders.PlaceOrder) returns an 
 
 - Awaitable types are `Task`, `Task<T>` and anything derived from `Task`, plus `ValueTask` and `ValueTask<T>`. Methods that return anything else pass.
 - The check looks at the return type, not the `async` keyword, so a non-`async` method that returns a `Task` also needs the suffix.
-- Methods that must keep a fixed name, such as ASP.NET Core controller actions or MediatR's `Handle`, can be filtered out with the `Methods(...)` predicate or suppressed with `[SuppressConvention]`.
+- Methods that must keep a fixed name, such as ASP.NET Core controller actions or MediatR's `Handle`, can be filtered out with a method `Where(...)` or suppressed with `[SuppressConvention]`.

@@ -9,7 +9,7 @@ Checks that a type is internal, for example to keep implementation classes out o
 ## Example
 
 ```csharp
-Convention.For(
+Convention.ForTypes(
     s => s
         .FromDefaultDependencyContext(a => a.HasNameSegment("MyApp"))
         .Where(t => t.IsConcrete && t.IsAssignableTo<ICommandHandler>()),

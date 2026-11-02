@@ -5,14 +5,13 @@ using TypeFilter = ConventionAssertions.Internal.Filters.TypeFilter;
 namespace ConventionAssertions.Internal;
 
 public sealed class TypeScanner :
-    IConventionTargets<Type>,
     ITypeScanner,
     ITypeScannerFilter
 {
     // TODO: How to avoid bang?
     private IEnumerable<Type> _types = null!;
 
-    IEnumerable<Type> IConventionTargets<Type>.Targets => _types;
+    internal IEnumerable<Type> Types => _types;
 
     public ITypeScannerFilter FromAssemblyContaining<T>()
     {
