@@ -2,9 +2,9 @@ using ConventionAssertions.Conventions;
 
 namespace ConventionAssertions.Tests.Conventions;
 
-public class NameHasSuffixTests
+public class HasNameSuffixTests
 {
-    private readonly NameHasSuffix _tested = new() { Suffix = "Handler" };
+    private readonly HasNameSuffix _tested = new() { Suffix = "Handler" };
 
     [Fact]
     public void Can_assert_type()

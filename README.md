@@ -8,21 +8,26 @@ ConventionAssertions is a lightweight .NET 8 library for writing your own code c
 
 ## Example
 
-Scan your app's assembly once and give each convention its own test:
+Pick the methods to check with a scan, and give each convention its own test:
 
 ```csharp
 public class MethodConventionTests
 {
-    private static readonly IConventionTargets<MethodInfo> _appMethods = ConventionTargets.FromMethods(s => s
-        .FromAssemblyContaining<OrderService>());
+    private static readonly IConventionTargets<MethodInfo> _asyncMethods = ConventionTargets.FromMethods(
+        s => s.FromAssemblyContaining<OrderService>(),
+        m => m.Where(x => x.IsAwaitable));
+
+    private static readonly IConventionTargets<MethodInfo> _voidMethods = ConventionTargets.FromMethods(
+        s => s.FromAssemblyContaining<OrderService>(),
+        m => m.Where(x => x.IsVoid));
 
     [Fact]
     public void Async_methods_end_with_Async() =>
-        Convention.For(_appMethods, a => a.Assert<AsyncMethodHasAsyncSuffix>());
+        Convention.For(_asyncMethods, a => a.Assert<HasNameSuffix>(c => c.Suffix = "Async"));
 
     [Fact]
-    public void Methods_are_not_async_void() =>
-        Convention.For(_appMethods, a => a.Assert<VoidMethodIsNotAsync>());
+    public void Void_methods_are_not_async() =>
+        Convention.For(_voidMethods, a => a.Assert<IsNotAsync>());
 }
 ```
 
@@ -30,8 +35,8 @@ A failing convention lists every method that breaks it, not just the first one:
 
 ```text
 Found 2.
-Method MyApp.Services.OrderService.Load(int) returns an awaitable type and must have name ending with Async.
-Method MyApp.Services.CustomerService.Delete(int) returns an awaitable type and must have name ending with Async.
+Method MyApp.Services.OrderService.Load(int) name must end with Async.
+Method MyApp.Services.CustomerService.Delete(int) name must end with Async.
 ```
 
 **Check out the [Quickstart](https://github.com/nwendel/ConventionAssertions/blob/main/docs/quickstart.md) for more examples!**
@@ -51,9 +56,9 @@ In `ConventionAssertions.Conventions`:
 
 | Convention | Targets | Checks that the target |
 | --- | --- | --- |
-| [AsyncMethodHasAsyncSuffix](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/AsyncMethodHasAsyncSuffix.md) | methods | has a name ending with `Async` if it returns a task. |
 | [HasCustomAttribute](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasCustomAttribute.md) | types, methods, properties | has a given attribute (configurable). |
 | [HasNamespaceSegment](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasNamespaceSegment.md) | types | has a given segment in its namespace (configurable). |
+| [HasNameSuffix](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasNameSuffix.md) | types, methods, properties | has a name ending with a given suffix (configurable). |
 | [HasNoPropertyOfType](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasNoPropertyOfType.md) | types | has no public property of a given type (configurable). |
 | [HasNoPublicConstructors](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasNoPublicConstructors.md) | types | has no public constructor. |
 | [HasNoSetter](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasNoSetter.md) | properties | has no public setter. |
@@ -61,12 +66,11 @@ In `ConventionAssertions.Conventions`:
 | [HasPublicStaticTryParseMethod](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasPublicStaticTryParseMethod.md) | types | has `public static bool TryParse(string, out T)`. |
 | [IsAbstractOrSealed](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsAbstractOrSealed.md) | types | is abstract or sealed. |
 | [IsInternal](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsInternal.md) | types | is internal. |
+| [IsNotAsync](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsNotAsync.md) | methods | is not `async`. |
 | [IsPublic](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsPublic.md) | types | is public. |
 | [IsSealed](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsSealed.md) | types | is sealed. |
 | [NameHasPrefix](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/NameHasPrefix.md) | types, methods, properties | has a name starting with a given prefix (configurable). |
-| [NameHasSuffix](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/NameHasSuffix.md) | types, methods, properties | has a name ending with a given suffix (configurable). |
 | [NameIsSnakeCase](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/NameIsSnakeCase.md) | types, methods | has a `lower_snake_case` name. |
-| [VoidMethodIsNotAsync](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/VoidMethodIsNotAsync.md) | methods | is not `async void`. |
 
 In `ConventionAssertions.AspNetCore.Conventions` (the separate, optional ConventionAssertions.AspNetCore package, also for .NET 8):
 

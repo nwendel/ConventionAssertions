@@ -2,13 +2,13 @@ using ConventionAssertions.Conventions;
 
 namespace ConventionAssertions.Tests.Conventions;
 
-public class VoidMethodIsNotAsyncTests
+public class IsNotAsyncTests
 {
-    private readonly VoidMethodIsNotAsync _tested = new();
+    private readonly IsNotAsync _tested = new();
 
     [Theory]
     [InlineData(nameof(Something.NotAsyncVoid))]
-    [InlineData(nameof(Something.AsyncTask))]
+    [InlineData(nameof(Something.NotAsyncTask))]
     public void Can_assert(string methodName)
     {
         var target = typeof(Something).GetMethod(methodName)!;
@@ -18,10 +18,12 @@ public class VoidMethodIsNotAsyncTests
         Assert.Empty(context.Messages);
     }
 
-    [Fact]
-    public void Fails_on_assert_async_void()
+    [Theory]
+    [InlineData(nameof(Something.AsyncVoid))]
+    [InlineData(nameof(Something.AsyncTask))]
+    public void Fails_on_assert(string methodName)
     {
-        var target = typeof(Something).GetMethod(nameof(Something.AsyncVoid))!;
+        var target = typeof(Something).GetMethod(methodName)!;
         var context = new ConventionContext(target);
         _tested.Assert(target, context);
         Assert.Single(context.Messages);
@@ -32,6 +34,8 @@ public class VoidMethodIsNotAsyncTests
         public static void NotAsyncVoid()
         {
         }
+
+        public static Task NotAsyncTask() => Task.CompletedTask;
 
         public static async Task AsyncTask() => await Task.Yield();
 

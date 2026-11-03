@@ -24,12 +24,13 @@ public class MethodConventionTests
     [Fact]
     public void Async_methods_end_with_Async()
     {
-        var appMethods = ConventionTargets.FromMethods(s => s
-            .FromAssemblyContaining<OrderService>());
+        var asyncMethods = ConventionTargets.FromMethods(
+            s => s.FromAssemblyContaining<OrderService>(),
+            m => m.Where(x => x.IsAwaitable));
 
         Convention.For(
-            appMethods,
-            a => a.Assert<AsyncMethodHasAsyncSuffix>());
+            asyncMethods,
+            a => a.Assert<HasNameSuffix>(c => c.Suffix = "Async"));
     }
 }
 ```
@@ -40,8 +41,8 @@ A failing convention reports every violation in one message:
 
 ```text
 Found 2.
-Method MyApp.Services.OrderService.Load(int) returns an awaitable type and must have name ending with Async.
-Method MyApp.Services.CustomerService.Delete(int) returns an awaitable type and must have name ending with Async.
+Method MyApp.Services.OrderService.Load(int) name must end with Async.
+Method MyApp.Services.CustomerService.Delete(int) name must end with Async.
 ```
 
 ### Reusing a set of targets
@@ -156,7 +157,7 @@ private static readonly IConventionTargets<MethodInfo> StaticValueObjectMethods 
     m => m.Where(x => x.Method.IsStatic && x.IsPublic));
 ```
 
-The method filter has `Method` (the `MethodInfo`), `IsPublic` and `HasCustomAttribute<TAttribute>()` / `HasCustomAttribute(attribute => ...)`. The property filter has `Property` (the `PropertyInfo`) and the same two `HasCustomAttribute` overloads.
+The method filter has `Method` (the `MethodInfo`), `IsPublic`, `IsAwaitable` (returns `Task`, `Task<T>`, `ValueTask` or `ValueTask<T>`), `IsVoid` and `HasCustomAttribute<TAttribute>()` / `HasCustomAttribute(attribute => ...)`. The property filter has `Property` (the `PropertyInfo`) and the same two `HasCustomAttribute` overloads.
 
 A method scan starts from the public methods of each type, including inherited and static ones. It leaves out methods declared on `object` and compiler-generated special methods such as property accessors and operators. A property scan starts from the public properties of each type, including inherited ones.
 

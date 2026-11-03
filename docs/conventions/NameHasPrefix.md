@@ -34,4 +34,4 @@ Type MyApp.Domain.ValueObject name must start with I.
 - The comparison is case-sensitive.
 - Only the type's own name is checked, not its namespace. For generic types the arity marker is ignored, so `IRepository<T>` is checked as `IRepository`.
 - Leaving `Prefix` unset or empty throws `ConventionNotConfiguredException`.
-- The matching check for the end of a name is [NameHasSuffix](NameHasSuffix.md).
+- The matching check for the end of a name is [HasNameSuffix](HasNameSuffix.md).
