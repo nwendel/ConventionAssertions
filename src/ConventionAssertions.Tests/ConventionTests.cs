@@ -1,12 +1,12 @@
-using System.Reflection;
+﻿using System.Reflection;
 using Xunit.Sdk;
 
 namespace ConventionAssertions.Tests;
 
-public class ConventionTests_For
+public class ConventionTests
 {
     private static readonly IConventionTargets<Type> TwoTypes = ConventionTargets.FromTypes(s => s
-        .FromAssemblyContaining<ConventionTests_For>()
+        .FromAssemblyContaining<ConventionTests>()
         .Where(t => t.Type == typeof(SampleId) || t.Type == typeof(PublicClass)));
 
     [Fact]
@@ -60,12 +60,12 @@ public class ConventionTests_For
 
         Convention.For(
             ConventionTargets.FromTypes(s => s
-                .FromAssemblyContaining<ConventionTests_For>()
-                .Where(t => t.Type == typeof(ConventionTests_For))),
+                .FromAssemblyContaining<ConventionTests>()
+                .Where(t => t.Type == typeof(ConventionTests))),
             a => a.Assert((type, context) => asserted.Add(type)));
 
         var type = Assert.Single(asserted);
-        Assert.Same(typeof(ConventionTests_For), type);
+        Assert.Same(typeof(ConventionTests), type);
     }
 
     [Fact]
@@ -73,7 +73,7 @@ public class ConventionTests_For
     {
         Assert.Throws<XunitException>(() => Convention.For(
             ConventionTargets.FromTypes(s => s
-                .FromAssemblyContaining<ConventionTests_For>()
+                .FromAssemblyContaining<ConventionTests>()
                 .Where(t => false)),
             a => a.Assert<NothingTypeConvention>()));
     }
