@@ -19,18 +19,17 @@ Every convention test has two parts: **which members to check**, and **which con
 using ConventionAssertions;
 using ConventionAssertions.Conventions;
 
-public class DomainConventionTests
+public class MethodConventionTests
 {
     [Fact]
-    public void Value_objects_have_no_public_constructors()
+    public void Async_methods_end_with_Async()
     {
-        var valueObjects = ConventionTargets.FromTypes(s => s
-            .FromAssemblyContaining<OrderId>()
-            .Where(t => t.IsAssignableTo<IValueObject>() && t.IsClass));
+        var appMethods = ConventionTargets.FromMethods(s => s
+            .FromAssemblyContaining<OrderService>());
 
         Convention.For(
-            valueObjects,
-            a => a.Assert<HasNoPublicConstructors>());
+            appMethods,
+            a => a.Assert<AsyncMethodHasAsyncSuffix>());
     }
 }
 ```
@@ -41,8 +40,8 @@ A failing convention reports every violation in one message:
 
 ```text
 Found 2.
-Type MyApp.Domain.OrderId must be abstract or sealed.
-Type MyApp.Domain.CustomerId must be abstract or sealed.
+Method MyApp.Services.OrderService.Load(int) returns an awaitable type and must have name ending with Async.
+Method MyApp.Services.CustomerService.Delete(int) returns an awaitable type and must have name ending with Async.
 ```
 
 ### Reusing a set of targets

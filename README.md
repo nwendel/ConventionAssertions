@@ -8,33 +8,30 @@ ConventionAssertions is a lightweight .NET 8 library for writing your own code c
 
 ## Example
 
-Scan an assembly, filter it down to the types you care about, and check them against several conventions at once:
+Scan your app's assembly once and give each convention its own test:
 
 ```csharp
-[Fact]
-public void Value_objects_follow_conventions()
+public class MethodConventionTests
 {
-    var valueObjects = ConventionTargets.FromTypes(s => s
-        .FromAssemblyContaining<OrderId>()
-        .Where(t => t.IsAssignableTo<IValueObject>() && t.IsConcrete));
+    private static readonly IConventionTargets<MethodInfo> _appMethods = ConventionTargets.FromMethods(s => s
+        .FromAssemblyContaining<OrderService>());
 
-    Convention.For(
-        valueObjects,
-        a =>
-        {
-            a.Assert<IsSealed>();
-            a.Assert<HasNoPublicConstructors>();
-            a.Assert<HasPublicStaticParseMethod>();
-        });
+    [Fact]
+    public void Async_methods_end_with_Async() =>
+        Convention.For(_appMethods, a => a.Assert<AsyncMethodHasAsyncSuffix>());
+
+    [Fact]
+    public void Methods_are_not_async_void() =>
+        Convention.For(_appMethods, a => a.Assert<VoidMethodIsNotAsync>());
 }
 ```
 
-A failing convention lists every type that breaks it, not just the first one:
+A failing convention lists every method that breaks it, not just the first one:
 
 ```text
 Found 2.
-Type MyApp.Domain.OrderId must be sealed.
-Type MyApp.Domain.CustomerId must be sealed.
+Method MyApp.Services.OrderService.Load(int) returns an awaitable type and must have name ending with Async.
+Method MyApp.Services.CustomerService.Delete(int) returns an awaitable type and must have name ending with Async.
 ```
 
 **Check out the [Quickstart](https://github.com/nwendel/ConventionAssertions/blob/main/docs/quickstart.md) for more examples!**
