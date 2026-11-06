@@ -51,30 +51,6 @@ public class TypeFilter : ITypeFilter
     {
         GuardAgainst.Null(type);
 
-        if (type.IsGenericTypeDefinition)
-        {
-            if (type.IsInterface)
-            {
-                return AssignableToGenericInterface(type);
-            }
-
-            return Type.TryGetGenericAncestorClass(type, out _);
-        }
-
-        return Type.IsAssignableTo(type);
-    }
-
-    private bool AssignableToGenericInterface(Type type)
-    {
-        var interfaces = Type.GetInterfaces();
-        foreach (var @interface in interfaces)
-        {
-            if (@interface.IsGenericType && @interface.GetGenericTypeDefinition() == type)
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return Type.IsAssignableToOpenOrClosed(type);
     }
 }

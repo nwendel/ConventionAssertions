@@ -70,6 +70,7 @@ In `ConventionAssertions.Conventions`:
 | [HasPublicStaticParseMethod](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasPublicStaticParseMethod.md) | types | has `public static T Parse(string)`. |
 | [HasPublicStaticTryParseMethod](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasPublicStaticTryParseMethod.md) | types | has `public static bool TryParse(string, out T)`. |
 | [IsAbstractOrSealed](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsAbstractOrSealed.md) | types | is abstract or sealed. |
+| [IsAssignableTo](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsAssignableTo.md) | types | is assignable to a given type, including open generic types (configurable). |
 | [IsInternal](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsInternal.md) | types | is internal. |
 | [IsNotAsync](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsNotAsync.md) | methods | is not `async`. |
 | [IsPublic](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsPublic.md) | types | is public. |
