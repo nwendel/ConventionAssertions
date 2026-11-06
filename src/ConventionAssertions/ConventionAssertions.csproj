@@ -14,7 +14,7 @@
   <PropertyGroup>
     <PackageId>ConventionAssertions</PackageId>
     <Title>ConventionAssertions</Title>
-    <Version>0.20.0</Version>
+    <Version>0.21.0</Version>
     <Copyright>Niklas Wendel 2023-2026</Copyright>
     <Authors>Niklas Wendel</Authors>
     <Description>A lightweight way to write your own code conventions for types, methods and properties as small, reusable C# classes, and check them from your unit tests.</Description>
