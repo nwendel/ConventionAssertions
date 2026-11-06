@@ -5,6 +5,10 @@ namespace ConventionAssertions.Tests.Internal.Filters;
 
 public class TypeFilterTests
 {
+    private interface ISomething
+    {
+    }
+
     [Fact]
     public void Can_is_assignable_to_open_generic_class_true()
     {
@@ -93,6 +97,49 @@ public class TypeFilterTests
     }
 
     [Fact]
+    public void Can_is_static_true()
+    {
+        var tested = new TypeFilter(typeof(StaticClass));
+
+        Assert.True(tested.IsStatic);
+    }
+
+    [Theory]
+    [InlineData(typeof(SealedClass))]
+    [InlineData(typeof(AbstractClass))]
+    [InlineData(typeof(ISomething))]
+    public void Can_is_static_false(Type type)
+    {
+        var tested = new TypeFilter(type);
+
+        Assert.False(tested.IsStatic);
+    }
+
+    [Theory]
+    [InlineData(typeof(AbstractClass), true)]
+    [InlineData(typeof(ISomething), true)]
+    [InlineData(typeof(StaticClass), false)]
+    [InlineData(typeof(SealedClass), false)]
+    public void Can_is_abstract(Type type, bool expected)
+    {
+        var tested = new TypeFilter(type);
+
+        Assert.Equal(expected, tested.IsAbstract);
+    }
+
+    [Theory]
+    [InlineData(typeof(SealedClass), true)]
+    [InlineData(typeof(StaticClass), false)]
+    [InlineData(typeof(AbstractClass), false)]
+    [InlineData(typeof(ISomething), false)]
+    public void Can_is_concrete(Type type, bool expected)
+    {
+        var tested = new TypeFilter(type);
+
+        Assert.Equal(expected, tested.IsConcrete);
+    }
+
+    [Fact]
     public void Can_is_visible_true()
     {
         var tested = new TypeFilter(typeof(PublicClass));
@@ -130,5 +177,17 @@ public class TypeFilterTests
         var tested = new TypeFilter(PublicDeclaringClass.NestedPrivateType);
 
         Assert.False(tested.IsVisible);
+    }
+
+    private static class StaticClass
+    {
+    }
+
+    private sealed class SealedClass
+    {
+    }
+
+    private abstract class AbstractClass
+    {
     }
 }

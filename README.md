@@ -76,6 +76,7 @@ In `ConventionAssertions.Conventions`:
 | [IsNotAssignableTo](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsNotAssignableTo.md) | types | is not assignable to a given type, including open generic types (configurable). |
 | [IsPublic](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsPublic.md) | types | is public. |
 | [IsSealed](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsSealed.md) | types | is sealed. |
+| [IsStatic](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsStatic.md) | types | is a static class. |
 | [NameIsSnakeCase](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/NameIsSnakeCase.md) | types, methods | has a `lower_snake_case` name. |
 
 In `ConventionAssertions.AspNetCore.Conventions` (the separate, optional ConventionAssertions.AspNetCore package, also for .NET 8):

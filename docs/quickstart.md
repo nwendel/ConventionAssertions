@@ -122,8 +122,9 @@ Convention.For(
 | `Type` | (The `System.Type` itself, for anything not covered below.) |
 | `IsClass` | is a class. |
 | `IsInterface` | is an interface. |
-| `IsAbstract` | is abstract (interfaces count as abstract). |
-| `IsConcrete` | is not abstract. |
+| `IsAbstract` | is abstract (interfaces count as abstract, static classes don't). |
+| `IsConcrete` | is not abstract, so interfaces, abstract classes and static classes are left out. |
+| `IsStatic` | is a static class. |
 | `IsVisible` | is visible outside its assembly: public, and for nested types every declaring type is public too. |
 | `HasAttribute<TAttribute>()` | has the attribute `TAttribute`. |
 | `IsAssignableTo<T>()`, `IsAssignableTo(type)` | is assignable to the given type. Open generic types work too, such as `typeof(IRepository<>)` or `typeof(EntityBase<>)`. |

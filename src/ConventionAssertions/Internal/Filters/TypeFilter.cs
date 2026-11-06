@@ -15,7 +15,7 @@ public class TypeFilter : ITypeFilter
     public Type Type { get; }
 
     public bool IsAbstract
-        => Type.IsAbstract;
+        => Type.IsAbstract && !Type.IsStatic();
 
     public bool IsClass
         => Type.IsClass;
@@ -25,6 +25,9 @@ public class TypeFilter : ITypeFilter
 
     public bool IsInterface
         => Type.IsInterface;
+
+    public bool IsStatic
+        => Type.IsStatic();
 
     public bool IsVisible
         => Type.IsVisible;
