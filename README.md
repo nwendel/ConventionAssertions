@@ -56,6 +56,7 @@ In `ConventionAssertions.Conventions`:
 
 | Convention | Targets | Checks that the target |
 | --- | --- | --- |
+| [DoesNotExposeTypes](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/DoesNotExposeTypes.md) | methods, properties | doesn't expose any of a set of types, in its signature or nested in the types it exposes (configurable). |
 | [HasCustomAttribute](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasCustomAttribute.md) | types, methods, properties | has a given attribute (configurable). |
 | [HasNamespaceSegment](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasNamespaceSegment.md) | types | has a given segment in its namespace (configurable). |
 | [HasNamePrefix](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasNamePrefix.md) | types, methods, properties | has a name starting with a given prefix (configurable). |
