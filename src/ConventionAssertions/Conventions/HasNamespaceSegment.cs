@@ -1,4 +1,6 @@
-﻿namespace ConventionAssertions.Conventions;
+﻿using ConventionAssertions.Reflection;
+
+namespace ConventionAssertions.Conventions;
 
 public class HasNamespaceSegment : IConfigurableConvention<Type>
 {
@@ -16,22 +18,7 @@ public class HasNamespaceSegment : IConfigurableConvention<Type>
             throw new ConventionNotConfiguredException($"{nameof(Segment)} not specified");
         }
 
-        var @namespace = target.Namespace;
-        if (@namespace == null)
-        {
-            Fail(context);
-            return;
-        }
-
-        var segments = @namespace.Split('.');
-        var success = SegmentPosition switch
-        {
-            SegmentPosition.Anywhere => segments.Contains(Segment),
-            SegmentPosition.First => segments.First() == Segment,
-            SegmentPosition.Last => segments.Last() == Segment,
-        };
-
-        if (!success)
+        if (!target.HasNamespaceSegment(Segment, SegmentPosition))
         {
             Fail(context);
         }

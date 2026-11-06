@@ -129,6 +129,7 @@ Convention.For(
 | `IsAssignableTo<T>()`, `IsAssignableTo(type)` | is assignable to the given type. Open generic types work too, such as `typeof(IRepository<>)` or `typeof(EntityBase<>)`. |
 | `IsAssignableToAny(types...)` | is assignable to at least one of the given types. |
 | `IsInSameNamespaceAs<T>()` | is in exactly the same namespace as `T`. |
+| `HasNamespaceSegment(segment)`, `HasNamespaceSegment(segment, position)` | has the segment as one whole dot-separated part of its namespace, anywhere or at the given `SegmentPosition` (`First` or `Last`). Matches the same way as the [HasNamespaceSegment](conventions/HasNamespaceSegment.md) convention. |
 | `IsNot(types...)` | is none of the given types. |
 
 ```csharp

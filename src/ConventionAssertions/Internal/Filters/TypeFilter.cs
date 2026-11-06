@@ -1,4 +1,5 @@
-﻿using ConventionAssertions.Reflection;
+﻿using ConventionAssertions.Conventions;
+using ConventionAssertions.Reflection;
 
 namespace ConventionAssertions.Internal.Filters;
 
@@ -43,6 +44,12 @@ public class TypeFilter : ITypeFilter
 
     public bool IsInSameNamespaceAs<T>()
         => Type.Namespace == typeof(T).Namespace;
+
+    public bool HasNamespaceSegment(string segment)
+        => Type.HasNamespaceSegment(segment, SegmentPosition.Anywhere);
+
+    public bool HasNamespaceSegment(string segment, SegmentPosition segmentPosition)
+        => Type.HasNamespaceSegment(segment, segmentPosition);
 
     public bool IsNot(params Type[] types)
         => !types.Any(x => x == Type);

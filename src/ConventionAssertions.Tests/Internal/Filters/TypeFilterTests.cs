@@ -1,4 +1,5 @@
-﻿using ConventionAssertions.Internal.Filters;
+﻿using ConventionAssertions.Conventions;
+using ConventionAssertions.Internal.Filters;
 
 namespace ConventionAssertions.Tests.Internal.Filters;
 
@@ -34,6 +35,61 @@ public class TypeFilterTests
         var tested = new TypeFilter(typeof(object));
 
         Assert.False(tested.IsAssignableTo(typeof(IGeneric<>)));
+    }
+
+    [Theory]
+    [InlineData("ConventionAssertions")]
+    [InlineData("Tests")]
+    [InlineData("TestHelpers")]
+    public void Can_has_namespace_segment_true(string segment)
+    {
+        var tested = new TypeFilter(typeof(PublicClass));
+
+        Assert.True(tested.HasNamespaceSegment(segment));
+    }
+
+    [Theory]
+    [InlineData("Test")]
+    [InlineData("testhelpers")]
+    [InlineData("ConventionAssertions.Tests")]
+    public void Can_has_namespace_segment_false(string segment)
+    {
+        var tested = new TypeFilter(typeof(PublicClass));
+
+        Assert.False(tested.HasNamespaceSegment(segment));
+    }
+
+    [Theory]
+    [InlineData("ConventionAssertions", SegmentPosition.First, true)]
+    [InlineData("ConventionAssertions", SegmentPosition.Last, false)]
+    [InlineData("TestHelpers", SegmentPosition.Last, true)]
+    [InlineData("TestHelpers", SegmentPosition.First, false)]
+    [InlineData("Tests", SegmentPosition.Anywhere, true)]
+    [InlineData("Tests", SegmentPosition.First, false)]
+    public void Can_has_namespace_segment_position(string segment, SegmentPosition segmentPosition, bool expected)
+    {
+        var tested = new TypeFilter(typeof(PublicClass));
+
+        Assert.Equal(expected, tested.HasNamespaceSegment(segment, segmentPosition));
+    }
+
+    [Fact]
+    public void Can_has_namespace_segment_global_namespace_false()
+    {
+        // Anonymous types are in the global namespace
+        var tested = new TypeFilter(new { Value = 1 }.GetType());
+
+        Assert.False(tested.HasNamespaceSegment("ConventionAssertions"));
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData(" ")]
+    public void Throws_on_has_namespace_segment_null_or_whitespace(string? segment)
+    {
+        var tested = new TypeFilter(typeof(PublicClass));
+
+        Assert.Throws<ArgumentNullException>(() => tested.HasNamespaceSegment(segment!));
     }
 
     [Fact]
