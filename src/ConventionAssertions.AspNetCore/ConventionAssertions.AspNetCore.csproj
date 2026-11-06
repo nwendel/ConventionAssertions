@@ -14,7 +14,7 @@
   <PropertyGroup>
     <PackageId>ConventionAssertions.AspNetCore</PackageId>
     <Title>ConventionAssertions.AspNetCore</Title>
-    <Version>0.21.1</Version>
+    <Version>0.22.0</Version>
     <Copyright>Niklas Wendel 2023-2026</Copyright>
     <Authors>Niklas Wendel</Authors>
     <Description>ASP.NET Core conventions for ConventionAssertions, such as checking that controller actions have [Authorize] or [AllowAnonymous].</Description>

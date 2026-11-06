@@ -73,6 +73,7 @@ In `ConventionAssertions.Conventions`:
 | [IsAssignableTo](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsAssignableTo.md) | types | is assignable to a given type, including open generic types (configurable). |
 | [IsInternal](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsInternal.md) | types | is internal. |
 | [IsNotAsync](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsNotAsync.md) | methods | is not `async`. |
+| [IsNotAssignableTo](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsNotAssignableTo.md) | types | is not assignable to a given type, including open generic types (configurable). |
 | [IsPublic](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsPublic.md) | types | is public. |
 | [IsSealed](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsSealed.md) | types | is sealed. |
 | [NameIsSnakeCase](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/NameIsSnakeCase.md) | types, methods | has a `lower_snake_case` name. |

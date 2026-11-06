@@ -14,14 +14,14 @@ public class ConventionAssert<TTarget> : IConventionAssert<TTarget>
         _targets = targets;
     }
 
-    public void Assert<TConvention>(bool failOnNoTargets = true)
+    public void Assert<TConvention>(bool failOnNoTargets = true, string? because = null)
         where TConvention : IConvention<TTarget>, new()
     {
         var convention = new TConvention();
-        Assert(convention, failOnNoTargets);
+        Assert(convention, failOnNoTargets, because);
     }
 
-    public void Assert<TConvention>(Action<TConvention> configure, bool failOnNoTargets = true)
+    public void Assert<TConvention>(Action<TConvention> configure, bool failOnNoTargets = true, string? because = null)
         where TConvention : IConfigurableConvention<TTarget>, new()
     {
         GuardAgainst.Null(configure);
@@ -29,18 +29,22 @@ public class ConventionAssert<TTarget> : IConventionAssert<TTarget>
         var convention = new TConvention();
         configure(convention);
 
-        Assert(convention, failOnNoTargets);
+        Assert(convention, failOnNoTargets, because);
     }
 
-    public void Assert(Action<TTarget, ConventionContext> assertAction, bool failOnNoTargets = true)
+    public void Assert(Action<TTarget, ConventionContext> assertAction, bool failOnNoTargets = true, string? because = null)
     {
         var convention = new ConventionAction(assertAction);
-        Assert(convention, failOnNoTargets);
+        Assert(convention, failOnNoTargets, because);
     }
 
-    private void Assert(IConfigurableConvention<TTarget> convention, bool failOnNoTargets)
+    private void Assert(IConfigurableConvention<TTarget> convention, bool failOnNoTargets, string? because)
     {
         GuardAgainst.Null(convention);
+        if (because != null)
+        {
+            GuardAgainst.NullOrWhiteSpace(because);
+        }
 
         var suppressions = AssertHelper.FindSuppressions();
 
@@ -57,7 +61,7 @@ public class ConventionAssert<TTarget> : IConventionAssert<TTarget>
                 continue;
             }
 
-            var context = ConventionContext.Create(target);
+            var context = ConventionContext.Create(target, because);
             convention.Assert(target, context);
             messages.AddRange(context.Messages);
         }

@@ -247,6 +247,24 @@ Convention.For(
 
 Every `Assert` overload takes `failOnNoTargets`, including the configurable and inline ones.
 
+## Saying why: `because`
+
+Every `Assert` overload also takes an optional `because`. It is added to the end of each failure message from that assertion, so the failure can say what to do instead:
+
+```csharp
+Convention.For(
+    _controllers,
+    a => a.Assert<IsNotAssignableTo>(
+        c => c.Type = typeof(Controller),
+        because: "use ControllerBase instead"));
+```
+
+```text
+Type MyApp.Api.OrdersController must not be assignable to Microsoft.AspNetCore.Mvc.Controller, use ControllerBase instead.
+```
+
+Leaving `because` out keeps the messages as they are. An empty or whitespace-only `because` throws `ArgumentNullException`.
+
 ## Suppressing a violation
 
 To accept a known violation, put `[SuppressConvention]` on the test method with the display name of the target and a reason. The attribute can be repeated:

@@ -36,3 +36,4 @@ Type MyApp.Meetings.Domain.MeetingNote must be assignable to MyApp.Meetings.Doma
 - Matching is the same as the `IsAssignableTo` type filter: a type passes when it implements the interface or derives from the class, directly or through a base class.
 - An open generic interface matches any constructed form of it, so `typeof(IRepository<>)` matches a type implementing `IRepository<Order>`. An open generic class matches when it is anywhere among the base classes.
 - Leaving `Type` unset throws `ConventionNotConfiguredException`.
+- The negative counterpart is [IsNotAssignableTo](IsNotAssignableTo.md).
