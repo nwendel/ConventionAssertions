@@ -30,4 +30,28 @@ public class MethodFilter : MemberFilter, IMethodFilter
     public bool IsVoid => Method.ReturnType == typeof(void);
 
     protected override MemberInfo Member => Method;
+
+    public bool HasAnyNamePrefix(params string[] prefixes)
+    {
+        GuardAgainst.Null(prefixes);
+        GuardAgainst.Condition(
+            prefixes.Length == 0,
+            "At least one prefix must be specified",
+            nameof(prefixes));
+
+        return prefixes.Any(HasNamePrefix);
+    }
+
+    private bool HasNamePrefix(string prefix)
+    {
+        GuardAgainst.NullOrWhiteSpace(prefix);
+
+        var name = Method.Name;
+        if (!name.StartsWith(prefix, StringComparison.Ordinal))
+        {
+            return false;
+        }
+
+        return name.Length == prefix.Length || !char.IsLower(name[prefix.Length]);
+    }
 }

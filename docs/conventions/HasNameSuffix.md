@@ -34,4 +34,4 @@ Type MyApp.Orders.PlaceOrder name must end with Handler.
 - The comparison is case-sensitive.
 - Only the type's own name is checked, not its namespace. For generic types the arity marker is ignored, so `CommandHandler<T>` is checked as `CommandHandler` and passes.
 - Leaving `Suffix` unset or empty throws `ConventionNotConfiguredException`.
-- The matching check for the start of a name is [NameHasPrefix](NameHasPrefix.md). For the `Async` suffix on async methods, scan with a method `Where(x => x.IsAwaitable)` and set `Suffix` to `Async`.
+- The matching check for the start of a name is [HasNamePrefix](HasNamePrefix.md). For the `Async` suffix on async methods, scan with a method `Where(x => x.IsAwaitable)` and set `Suffix` to `Async`.

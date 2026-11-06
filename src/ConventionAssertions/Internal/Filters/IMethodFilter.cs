@@ -9,4 +9,6 @@ public interface IMethodFilter : IMemberFilter
     bool IsAwaitable { get; }
 
     bool IsVoid { get; }
+
+    bool HasAnyNamePrefix(params string[] prefixes);
 }

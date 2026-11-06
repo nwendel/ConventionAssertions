@@ -1,6 +1,6 @@
 namespace ConventionAssertions.Conventions;
 
-public class NameHasPrefix :
+public class HasNamePrefix :
     IConfigurableConvention<Type>,
     IConfigurableConvention<MethodInfo>,
     IConfigurableConvention<PropertyInfo>

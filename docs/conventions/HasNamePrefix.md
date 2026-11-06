@@ -1,4 +1,4 @@
-# NameHasPrefix
+# HasNamePrefix
 
 Checks that the name of a type, method or property starts with a given prefix.
 
@@ -20,7 +20,7 @@ Convention.For(
     ConventionTargets.FromTypes(s => s
         .FromAssemblyContaining<OrderId>()
         .Where(t => t.IsInterface)),
-    a => a.Assert<NameHasPrefix>(c => c.Prefix = "I"));
+    a => a.Assert<HasNamePrefix>(c => c.Prefix = "I"));
 ```
 
 ## Failure message

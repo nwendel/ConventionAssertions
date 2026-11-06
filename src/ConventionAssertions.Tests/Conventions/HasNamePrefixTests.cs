@@ -2,9 +2,9 @@ using ConventionAssertions.Conventions;
 
 namespace ConventionAssertions.Tests.Conventions;
 
-public class NameHasPrefixTests
+public class HasNamePrefixTests
 {
-    private readonly NameHasPrefix _tested = new() { Prefix = "Some" };
+    private readonly HasNamePrefix _tested = new() { Prefix = "Some" };
 
     [Fact]
     public void Can_assert_type()

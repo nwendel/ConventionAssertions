@@ -2,7 +2,7 @@ using ConventionAssertions.Reflection;
 
 namespace ConventionAssertions.Conventions;
 
-public class HasNoPropertyOfType : IConfigurableConvention<Type>
+public class HasNoPropertyAssignableTo : IConfigurableConvention<Type>
 {
     public Type? PropertyType { get; set; }
 
@@ -20,7 +20,7 @@ public class HasNoPropertyOfType : IConfigurableConvention<Type>
             .Where(x => PropertyType.IsAssignableFrom(x.PropertyType));
         foreach (var property in properties)
         {
-            context.Fail($"must not have property {property.Name} of type {PropertyType.DisplayName()}");
+            context.Fail($"must not have property {property.Name} assignable to {PropertyType.DisplayName()}");
         }
     }
 }

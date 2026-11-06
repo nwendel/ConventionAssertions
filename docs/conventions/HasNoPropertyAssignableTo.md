@@ -1,6 +1,6 @@
-# HasNoPropertyOfType
+# HasNoPropertyAssignableTo
 
-Checks that a type has no public property of a given type, for example that domain types don't hold a `DbContext` or an `HttpClient`.
+Checks that a type has no public property assignable to a given type, for example that domain types don't hold a `DbContext` or an `HttpClient`.
 
 - **Package:** ConventionAssertions
 - **Namespace:** `ConventionAssertions.Conventions`
@@ -11,7 +11,7 @@ Checks that a type has no public property of a given type, for example that doma
 
 | Setting | Required | Description |
 | --- | --- | --- |
-| `PropertyType` | yes | The type that properties must not have. |
+| `PropertyType` | yes | The type that properties must not be assignable to. |
 
 ## Example
 
@@ -20,7 +20,7 @@ Convention.For(
     ConventionTargets.FromTypes(s => s
         .FromAssemblyContaining<Order>()
         .Where(t => t.IsInSameNamespaceAs<Order>())),
-    a => a.Assert<HasNoPropertyOfType>(c => c.PropertyType = typeof(DbContext)));
+    a => a.Assert<HasNoPropertyAssignableTo>(c => c.PropertyType = typeof(DbContext)));
 ```
 
 ## Failure message
@@ -28,7 +28,7 @@ Convention.For(
 One line for each offending property:
 
 ```text
-Type MyApp.Domain.Order must not have property Db of type Microsoft.EntityFrameworkCore.DbContext.
+Type MyApp.Domain.Order must not have property Db assignable to Microsoft.EntityFrameworkCore.DbContext.
 ```
 
 ## Notes

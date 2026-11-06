@@ -58,10 +58,13 @@ In `ConventionAssertions.Conventions`:
 | --- | --- | --- |
 | [HasCustomAttribute](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasCustomAttribute.md) | types, methods, properties | has a given attribute (configurable). |
 | [HasNamespaceSegment](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasNamespaceSegment.md) | types | has a given segment in its namespace (configurable). |
+| [HasNamePrefix](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasNamePrefix.md) | types, methods, properties | has a name starting with a given prefix (configurable). |
 | [HasNameSuffix](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasNameSuffix.md) | types, methods, properties | has a name ending with a given suffix (configurable). |
-| [HasNoPropertyOfType](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasNoPropertyOfType.md) | types | has no public property of a given type (configurable). |
+| [HasNoParameterAssignableTo](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasNoParameterAssignableTo.md) | methods | has no parameter assignable to a given type (configurable). |
+| [HasNoPropertyAssignableTo](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasNoPropertyAssignableTo.md) | types | has no public property assignable to a given type (configurable). |
 | [HasNoPublicConstructors](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasNoPublicConstructors.md) | types | has no public constructor. |
 | [HasNoSetter](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasNoSetter.md) | properties | has no public setter. |
+| [HasParameterAssignableTo](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasParameterAssignableTo.md) | methods | has a parameter assignable to a given type, optionally an exact number of them (configurable). |
 | [HasPublicStaticParseMethod](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasPublicStaticParseMethod.md) | types | has `public static T Parse(string)`. |
 | [HasPublicStaticTryParseMethod](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasPublicStaticTryParseMethod.md) | types | has `public static bool TryParse(string, out T)`. |
 | [IsAbstractOrSealed](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsAbstractOrSealed.md) | types | is abstract or sealed. |
@@ -69,7 +72,6 @@ In `ConventionAssertions.Conventions`:
 | [IsNotAsync](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsNotAsync.md) | methods | is not `async`. |
 | [IsPublic](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsPublic.md) | types | is public. |
 | [IsSealed](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsSealed.md) | types | is sealed. |
-| [NameHasPrefix](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/NameHasPrefix.md) | types, methods, properties | has a name starting with a given prefix (configurable). |
 | [NameIsSnakeCase](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/NameIsSnakeCase.md) | types, methods | has a `lower_snake_case` name. |
 
 In `ConventionAssertions.AspNetCore.Conventions` (the separate, optional ConventionAssertions.AspNetCore package, also for .NET 8):

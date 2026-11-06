@@ -2,9 +2,9 @@ using ConventionAssertions.Conventions;
 
 namespace ConventionAssertions.Tests.Conventions;
 
-public class HasNoPropertyOfTypeTests
+public class HasNoPropertyAssignableToTests
 {
-    private readonly HasNoPropertyOfType _tested = new() { PropertyType = typeof(DateTime) };
+    private readonly HasNoPropertyAssignableTo _tested = new() { PropertyType = typeof(DateTime) };
 
     [Fact]
     public void Can_assert()

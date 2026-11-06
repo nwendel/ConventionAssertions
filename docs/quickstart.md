@@ -157,7 +157,7 @@ private static readonly IConventionTargets<MethodInfo> StaticValueObjectMethods 
     m => m.Where(x => x.Method.IsStatic && x.IsPublic));
 ```
 
-The method filter has `Method` (the `MethodInfo`), `IsPublic`, `IsAwaitable` (returns `Task`, `Task<T>`, `ValueTask` or `ValueTask<T>`), `IsVoid` and `HasCustomAttribute<TAttribute>()` / `HasCustomAttribute(attribute => ...)`. The property filter has `Property` (the `PropertyInfo`) and the same two `HasCustomAttribute` overloads.
+The method filter has `Method` (the `MethodInfo`), `IsPublic`, `IsAwaitable` (returns `Task`, `Task<T>`, `ValueTask` or `ValueTask<T>`), `IsVoid`, `HasAnyNamePrefix("Get", "Find")` (true when the name starts with one of the prefixes as a whole word, so `GetById` matches but `Getaway` does not) and `HasCustomAttribute<TAttribute>()` / `HasCustomAttribute(attribute => ...)`. The property filter has `Property` (the `PropertyInfo`) and the same two `HasCustomAttribute` overloads.
 
 A method scan starts from the public methods of each type, including inherited and static ones. It leaves out methods declared on `object` and compiler-generated special methods such as property accessors and operators. A property scan starts from the public properties of each type, including inherited ones.
 

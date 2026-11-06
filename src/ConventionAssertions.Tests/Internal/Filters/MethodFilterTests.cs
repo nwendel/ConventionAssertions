@@ -54,6 +54,61 @@ public class MethodFilterTests
         Assert.False(tested.IsVoid);
     }
 
+    [Theory]
+    [InlineData(nameof(Something.Get))]
+    [InlineData(nameof(Something.GetById))]
+    [InlineData(nameof(Something.FindAll))]
+    public void Can_has_any_name_prefix_true(string methodName)
+    {
+        var tested = new MethodFilter(typeof(Something).GetMethod(methodName)!);
+
+        Assert.True(tested.HasAnyNamePrefix("Get", "Find"));
+    }
+
+    [Theory]
+    [InlineData(nameof(Something.Getaway))]
+    [InlineData(nameof(Something.Finder))]
+    [InlineData(nameof(Something.Save))]
+    [InlineData(nameof(Something.ForGet))]
+    public void Can_has_any_name_prefix_false(string methodName)
+    {
+        var tested = new MethodFilter(typeof(Something).GetMethod(methodName)!);
+
+        Assert.False(tested.HasAnyNamePrefix("Get", "Find"));
+    }
+
+    [Fact]
+    public void Can_has_any_name_prefix_match_is_case_sensitive()
+    {
+        var tested = new MethodFilter(typeof(Something).GetMethod(nameof(Something.GetById))!);
+
+        Assert.False(tested.HasAnyNamePrefix("get"));
+    }
+
+    [Fact]
+    public void Throws_on_has_any_name_prefix_without_prefixes()
+    {
+        var tested = new MethodFilter(typeof(Something).GetMethod(nameof(Something.Get))!);
+
+        Assert.Throws<ArgumentException>(() => tested.HasAnyNamePrefix());
+    }
+
+    [Fact]
+    public void Throws_on_has_any_name_prefix_null()
+    {
+        var tested = new MethodFilter(typeof(Something).GetMethod(nameof(Something.Get))!);
+
+        Assert.Throws<ArgumentNullException>(() => tested.HasAnyNamePrefix(null!));
+    }
+
+    [Fact]
+    public void Throws_on_has_any_name_prefix_whitespace()
+    {
+        var tested = new MethodFilter(typeof(Something).GetMethod(nameof(Something.Get))!);
+
+        Assert.Throws<ArgumentNullException>(() => tested.HasAnyNamePrefix(" "));
+    }
+
     private class Something
     {
         public static Task Task() => System.Threading.Tasks.Task.CompletedTask;
@@ -67,6 +122,34 @@ public class MethodFilterTests
         public static int Int() => 0;
 
         public static void Void()
+        {
+        }
+
+        public static void Get()
+        {
+        }
+
+        public static void GetById()
+        {
+        }
+
+        public static void FindAll()
+        {
+        }
+
+        public static void Getaway()
+        {
+        }
+
+        public static void Finder()
+        {
+        }
+
+        public static void Save()
+        {
+        }
+
+        public static void ForGet()
         {
         }
     }
