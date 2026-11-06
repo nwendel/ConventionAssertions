@@ -210,6 +210,14 @@ Convention.For(
     a => a.Assert<HasNoAssemblyReferenceWithNameSegment>(c => c.Segment = "Legacy"));
 ```
 
+The assembly name filter can also be passed as a second lambda, which reads well for a shared set of assemblies:
+
+```csharp
+private static readonly IConventionTargets<Assembly> Modules = ConventionTargets.FromAssemblies(
+    a => a.FromDefaultDependencyContext(),
+    x => x.HasNamePrefix("MyApp.Orders") && !x.HasNameSegment("Tests"));
+```
+
 A failing assembly convention names the assembly by its simple name, such as `Assembly MyApp.Orders.Api must not reference ...`, and `[SuppressConvention]` matches that name too.
 
 ## Configuring conventions

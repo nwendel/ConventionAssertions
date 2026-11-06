@@ -1,4 +1,5 @@
 ﻿using ConventionAssertions.Internal;
+using ConventionAssertions.Internal.Filters;
 
 namespace ConventionAssertions;
 
@@ -9,6 +10,16 @@ public static class ConventionTargets
         GuardAgainst.Null(assemblies);
 
         return new ConventionTargetCollection<Assembly>(ScanAssemblies(assemblies));
+    }
+
+    public static IConventionTargets<Assembly> FromAssemblies(
+        Func<IAssemblyScanner, IAssemblyScannerFilter> assemblies,
+        Func<IAssemblyNameFilter, bool> predicate)
+    {
+        GuardAgainst.Null(assemblies);
+        GuardAgainst.Null(predicate);
+
+        return new ConventionTargetCollection<Assembly>(ScanAssemblies(x => assemblies(x).Where(predicate)));
     }
 
     public static IConventionTargets<Type> FromTypes(
