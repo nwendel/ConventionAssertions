@@ -43,7 +43,7 @@ Method MyApp.Services.CustomerService.Delete(int) name must end with Async.
 
 ## Features at a glance
 
-- Checks types, methods and properties, all as plain `Type`, `MethodInfo` and `PropertyInfo`.
+- Checks types, methods, properties and assemblies, all as plain `Type`, `MethodInfo`, `PropertyInfo` and `Assembly`.
 - Conventions are small classes you write once and reuse, or a lambda inline for a one-off rule ([writing your own](https://github.com/nwendel/ConventionAssertions/blob/main/docs/writing-conventions.md)).
 - Every violation in one failure, not just the first one.
 - A scan that matches nothing fails by default, so a typo in a filter can't make a test pass silently.
@@ -60,6 +60,7 @@ In `ConventionAssertions.Conventions`:
 | [HasNamespaceSegment](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasNamespaceSegment.md) | types | has a given segment in its namespace (configurable). |
 | [HasNamePrefix](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasNamePrefix.md) | types, methods, properties | has a name starting with a given prefix (configurable). |
 | [HasNameSuffix](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasNameSuffix.md) | types, methods, properties | has a name ending with a given suffix (configurable). |
+| [HasNoAssemblyReferenceWithNameSegment](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasNoAssemblyReferenceWithNameSegment.md) | assemblies | references no assembly, directly or indirectly, with a given segment in its name (configurable). |
 | [HasNoParameterAssignableTo](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasNoParameterAssignableTo.md) | methods | has no parameter assignable to a given type (configurable). |
 | [HasNoPropertyAssignableTo](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasNoPropertyAssignableTo.md) | types | has no public property assignable to a given type (configurable). |
 | [HasNoPublicConstructors](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasNoPublicConstructors.md) | types | has no public constructor. |

@@ -35,4 +35,44 @@ public class TypeFilterTests
 
         Assert.False(tested.IsAssignableTo(typeof(IGeneric<>)));
     }
+
+    [Fact]
+    public void Can_is_visible_true()
+    {
+        var tested = new TypeFilter(typeof(PublicClass));
+
+        Assert.True(tested.IsVisible);
+    }
+
+    [Fact]
+    public void Can_is_visible_nested_true()
+    {
+        var tested = new TypeFilter(PublicDeclaringClass.NestedPublicType);
+
+        Assert.True(tested.IsVisible);
+    }
+
+    [Fact]
+    public void Can_is_visible_false()
+    {
+        var tested = new TypeFilter(typeof(InternalClass));
+
+        Assert.False(tested.IsVisible);
+    }
+
+    [Fact]
+    public void Can_is_visible_nested_in_internal_false()
+    {
+        var tested = new TypeFilter(InternalDeclaringClass.NestedPublicType);
+
+        Assert.False(tested.IsVisible);
+    }
+
+    [Fact]
+    public void Can_is_visible_nested_non_public_false()
+    {
+        var tested = new TypeFilter(PublicDeclaringClass.NestedPrivateType);
+
+        Assert.False(tested.IsVisible);
+    }
 }

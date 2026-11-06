@@ -1,7 +1,7 @@
 ﻿namespace ConventionAssertions;
 
 internal sealed class ConventionTargetCollection<T> : IConventionTargets<T>
-    where T : MemberInfo
+    where T : notnull
 {
     private readonly List<T> _items;
 

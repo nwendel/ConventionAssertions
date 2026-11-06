@@ -12,6 +12,8 @@ public interface ITypeFilter : IFluentInterface
 
     bool IsInterface { get; }
 
+    bool IsVisible { get; }
+
     bool HasAttribute<T>()
         where T : Attribute;
 

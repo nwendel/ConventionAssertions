@@ -11,6 +11,15 @@ public static class ConventionTargets
         return new ConventionTargetCollection<Type>(ScanTypes(types));
     }
 
+    public static IConventionTargets<Assembly> FromAssemblies(Func<IAssemblyScanner, IAssemblyScannerFilter> assemblies)
+    {
+        GuardAgainst.Null(assemblies);
+
+        var scanner = assemblies(new AssemblyScanner()) as AssemblyScanner
+            ?? throw new InvalidOperationException("The assembly scan must return the scanner it was given.");
+        return new ConventionTargetCollection<Assembly>(scanner.Assemblies);
+    }
+
     public static IConventionTargets<MethodInfo> FromMethods(
         Func<ITypeScanner, ITypeScannerFilter> types,
         Func<IMethodScanner, IMethodScanner>? methods = null)

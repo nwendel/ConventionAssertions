@@ -3,7 +3,7 @@
 namespace ConventionAssertions.Internal;
 
 public class ConventionAssert<TTarget> : IConventionAssert<TTarget>
-    where TTarget : MemberInfo
+    where TTarget : notnull
 {
     private readonly IConventionTargets<TTarget> _targets;
 
@@ -52,12 +52,12 @@ public class ConventionAssert<TTarget> : IConventionAssert<TTarget>
         var messages = new List<string>();
         foreach (var target in _targets.Targets)
         {
-            if (suppressions.Contains(target.DisplayName()))
+            if (suppressions.Contains(TargetDisplayName.DisplayName(target)))
             {
                 continue;
             }
 
-            var context = new ConventionContext(target);
+            var context = ConventionContext.Create(target);
             convention.Assert(target, context);
             messages.AddRange(context.Messages);
         }

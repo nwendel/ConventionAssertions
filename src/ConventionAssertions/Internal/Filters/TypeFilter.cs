@@ -25,6 +25,9 @@ public class TypeFilter : ITypeFilter
     public bool IsInterface
         => Type.IsInterface;
 
+    public bool IsVisible
+        => Type.IsVisible;
+
     public bool HasAttribute<T>()
         where T : Attribute
         => Type.GetCustomAttribute<T>() != null;

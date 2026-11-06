@@ -1,12 +1,32 @@
-﻿namespace ConventionAssertions.Tests;
+﻿using System.Reflection;
+
+namespace ConventionAssertions.Tests;
 
 public class ConventionContextTests
 {
     [Fact]
     public void Throws_on_create_null_target()
     {
-        var ex = Assert.Throws<ArgumentNullException>(() => new ConventionContext(null!));
+        var ex = Assert.Throws<ArgumentNullException>(() => new ConventionContext((MemberInfo)null!));
         Assert.Equal("target", ex.ParamName);
+    }
+
+    [Fact]
+    public void Throws_on_create_null_assembly_target()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => new ConventionContext((Assembly)null!));
+        Assert.Equal("target", ex.ParamName);
+    }
+
+    [Fact]
+    public void Can_fail_assembly()
+    {
+        var tested = new ConventionContext(typeof(Convention).Assembly);
+
+        tested.Fail("some-message");
+
+        var message = Assert.Single(tested.Messages);
+        Assert.Equal("Assembly ConventionAssertions some-message.", message);
     }
 
     [Fact]

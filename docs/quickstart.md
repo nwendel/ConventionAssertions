@@ -96,7 +96,14 @@ The scanner decides which assemblies to load types from. Each of these returns a
 | `FromDefaultDependencyContext(a => ...)` | The same, limited to the assemblies that match the predicate. |
 | `FromDependencyContext(context)` / `FromDependencyContext(context, a => ...)` | The same, for a `DependencyContext` you supply. |
 
-The dependency-context scanners load every assembly they match, including the framework and third-party packages, so you will usually filter them by name. The assembly filter has `HasNameSegment(segment)`, which matches one dot-separated part of the assembly name, and `AssemblyName` for anything else:
+The dependency-context scanners load every assembly they match, including the framework and third-party packages, so you will usually filter them by name. The assembly filter has:
+
+| Filter | True when the assembly name |
+| --- | --- |
+| `AssemblyName` | (The `System.Reflection.AssemblyName` itself, for anything not covered below.) |
+| `HasNamePrefix(prefix)` | starts with the prefix on a segment boundary, so `HasNamePrefix("MyApp.Orders")` matches `MyApp.Orders` and `MyApp.Orders.Domain` but not `MyApp.OrdersLegacy`. |
+| `HasNameSegment(segment)` | has the segment as one whole dot-separated part. |
+| `HasAnyNameSegment(segments...)` | has at least one of the segments. |
 
 ```csharp
 Convention.For(
@@ -117,6 +124,7 @@ Convention.For(
 | `IsInterface` | is an interface. |
 | `IsAbstract` | is abstract (interfaces count as abstract). |
 | `IsConcrete` | is not abstract. |
+| `IsVisible` | is visible outside its assembly: public, and for nested types every declaring type is public too. |
 | `HasAttribute<TAttribute>()` | has the attribute `TAttribute`. |
 | `IsAssignableTo<T>()`, `IsAssignableTo(type)` | is assignable to the given type. Open generic types work too, such as `typeof(IRepository<>)` or `typeof(EntityBase<>)`. |
 | `IsAssignableToAny(types...)` | is assignable to at least one of the given types. |
@@ -179,6 +187,19 @@ Convention.For(
     ConventionTargets.FromMethods(s => s.FromTargets(ValueObjects)),
     a => a.Assert<NameIsSnakeCase>());
 ```
+
+### Assemblies
+
+Use `ConventionTargets.FromAssemblies` to check assemblies themselves, for example what they reference. It has the same scanners as the type scan, `FromAssemblyContaining<T>()`, `FromDefaultDependencyContext()`, `FromDefaultDependencyContext(a => ...)` and `FromDependencyContext(...)`, but each one returns the assemblies instead of their types. Its `Where` takes the same assembly filter and can be called more than once:
+
+```csharp
+Convention.For(
+    ConventionTargets.FromAssemblies(s => s
+        .FromDefaultDependencyContext(a => a.HasNamePrefix("MyApp.Orders") && !a.HasNameSegment("Tests"))),
+    a => a.Assert<HasNoAssemblyReferenceWithNameSegment>(c => c.Segment = "Legacy"));
+```
+
+A failing assembly convention names the assembly by its simple name, such as `Assembly MyApp.Orders.Api must not reference ...`, and `[SuppressConvention]` matches that name too.
 
 ## Configuring conventions
 

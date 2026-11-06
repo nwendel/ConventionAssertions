@@ -1,7 +1,7 @@
 ﻿namespace ConventionAssertions;
 
 public interface IConventionTargets<T>
-    where T : MemberInfo
+    where T : notnull
 {
     internal IEnumerable<T> Targets { get; }
 }

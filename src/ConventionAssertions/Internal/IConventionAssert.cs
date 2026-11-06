@@ -1,7 +1,7 @@
 ﻿namespace ConventionAssertions.Internal;
 
 public interface IConventionAssert<TTarget> : IFluentInterface
-    where TTarget : MemberInfo
+    where TTarget : notnull
 {
     void Assert<TConvention>(bool failOnNoTargets = true)
         where TConvention : IConvention<TTarget>, new();
