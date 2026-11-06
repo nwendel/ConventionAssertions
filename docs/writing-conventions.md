@@ -24,9 +24,8 @@ public class ReturnsTask : IConvention<MethodInfo>
 
 ```csharp
 var handleMethods = ConventionTargets.FromMethods(
-    s => s
-        .FromAssemblyContaining<OrderService>()
-        .Where(t => t.IsAssignableTo<ICommandHandler>()),
+    a => a.FromAssemblyContaining<OrderService>(),
+    t => t.Where(x => x.IsAssignableTo<ICommandHandler>()),
     m => m.Where(x => x.Method.Name == "Handle"));
 
 Convention.For(
@@ -70,7 +69,7 @@ public class HasMaxParameterCount : IConfigurableConvention<MethodInfo>
 
 ```csharp
 Convention.For(
-    ConventionTargets.FromMethods(s => s.FromAssemblyContaining<OrderService>().Where(t => t.IsConcrete)),
+    ConventionTargets.FromMethods(a => a.FromAssemblyContaining<OrderService>(), t => t.Where(x => x.IsConcrete)),
     a => a.Assert<HasMaxParameterCount>(c => c.Max = 4));
 ```
 

@@ -14,12 +14,12 @@ Pick the methods to check with a scan, and give each convention its own test:
 public class MethodConventionTests
 {
     private static readonly IConventionTargets<MethodInfo> _asyncMethods = ConventionTargets.FromMethods(
-        s => s.FromAssemblyContaining<OrderService>(),
-        m => m.Where(x => x.IsAwaitable));
+        a => a.FromAssemblyContaining<OrderService>(),
+        methods: m => m.Where(x => x.IsAwaitable));
 
     private static readonly IConventionTargets<MethodInfo> _voidMethods = ConventionTargets.FromMethods(
-        s => s.FromAssemblyContaining<OrderService>(),
-        m => m.Where(x => x.IsVoid));
+        a => a.FromAssemblyContaining<OrderService>(),
+        methods: m => m.Where(x => x.IsVoid));
 
     [Fact]
     public void Async_methods_end_with_Async() =>

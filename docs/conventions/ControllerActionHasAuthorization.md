@@ -16,9 +16,8 @@ using Microsoft.AspNetCore.Mvc;
 public void Controller_actions_declare_authorization()
 {
     var actions = ConventionTargets.FromMethods(
-        s => s
-            .FromAssemblyContaining<Program>()
-            .Where(t => t.IsConcrete && t.IsAssignableTo<ControllerBase>()),
+        a => a.FromAssemblyContaining<Program>(),
+        t => t.Where(x => x.IsConcrete && x.IsAssignableTo<ControllerBase>()),
         m => m.Where(x => x.Method.DeclaringType != typeof(ControllerBase)
             && x.Method.DeclaringType != typeof(Controller)));
 

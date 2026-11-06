@@ -133,17 +133,17 @@ public class DoesNotExposeTypesTests
     [Fact]
     public void Throws_on_assert_no_types()
     {
-        _tested.Types = ConventionTargets.FromTypes(s => s
-            .FromAssemblyContaining<DoesNotExposeTypesTests>()
-            .Where(t => false));
+        _tested.Types = ConventionTargets.FromTypes(
+            a => a.FromAssemblyContaining<DoesNotExposeTypesTests>(),
+            t => t.Where(x => false));
 
         Assert.Throws<ConventionNotConfiguredException>(() => AssertMethod(nameof(Something.ReturnsNothing)));
     }
 
     private static IConventionTargets<Type> TypesOf(Type type)
-        => ConventionTargets.FromTypes(s => s
-            .FromAssemblyContaining<DoesNotExposeTypesTests>()
-            .Where(t => t.Type == type));
+        => ConventionTargets.FromTypes(
+            a => a.FromAssemblyContaining<DoesNotExposeTypesTests>(),
+            t => t.Where(x => x.Type == type));
 
     private ConventionContext AssertMethod(string methodName)
     {

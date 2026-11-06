@@ -4,16 +4,36 @@ namespace ConventionAssertions.Tests;
 
 public class ConventionTargetsTests_Properties
 {
-    private readonly IConventionTargets<Type> _types = ConventionTargets.FromTypes(s => s
-        .FromAssemblyContaining<ConventionTargetsTests_Properties>()
-        .Where(t => t.Type == typeof(SampleClass)));
+    private readonly IConventionTargets<Type> _types = ConventionTargets.FromTypes(
+        a => a.FromAssemblyContaining<ConventionTargetsTests_Properties>(),
+        t => t.Where(x => x.Type == typeof(SampleClass)));
 
     [Fact]
-    public void Throws_on_null_types()
+    public void Throws_on_null_assemblies()
     {
         var ex = Assert.Throws<ArgumentNullException>(() => ConventionTargets.FromProperties(
-            (Func<ITypeScanner, ITypeScannerFilter>)null!));
+            (Func<IAssemblyScanner, IAssemblyScannerFilter>)null!));
+        Assert.Equal("assemblies", ex.ParamName);
+    }
+
+    [Fact]
+    public void Throws_on_null_type_targets()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => ConventionTargets.FromProperties(
+            (IConventionTargets<Type>)null!));
         Assert.Equal("types", ex.ParamName);
+    }
+
+    [Fact]
+    public void Can_scan_assemblies_types_and_properties()
+    {
+        var properties = ConventionTargets.FromProperties(
+            a => a.FromAssemblyContaining<ConventionTargetsTests_Properties>(),
+            t => t.Where(x => x.Type == typeof(SampleClass)),
+            p => p.Where(x => x.Property.Name == nameof(SampleClass.Count)));
+
+        var property = Assert.Single(properties.Targets);
+        Assert.Equal(nameof(SampleClass.Count), property.Name);
     }
 
     [Fact]
@@ -28,7 +48,7 @@ public class ConventionTargetsTests_Properties
     [Fact]
     public void Throws_on_null_properties_with_targets()
     {
-        var targets = ConventionTargets.FromProperties(s => s.FromTargets(_types));
+        var targets = ConventionTargets.FromProperties(_types);
 
         var ex = Assert.Throws<ArgumentNullException>(() => ConventionTargets.FromProperties(
             targets,
@@ -39,7 +59,7 @@ public class ConventionTargetsTests_Properties
     [Fact]
     public void Includes_declared_properties()
     {
-        var names = PropertyNames(ConventionTargets.FromProperties(s => s.FromTargets(_types)));
+        var names = PropertyNames(ConventionTargets.FromProperties(_types));
 
         Assert.Contains(nameof(SampleClass.Value), names);
         Assert.Contains(nameof(SampleClass.Count), names);
@@ -48,7 +68,7 @@ public class ConventionTargetsTests_Properties
     [Fact]
     public void Includes_inherited_properties()
     {
-        var names = PropertyNames(ConventionTargets.FromProperties(s => s.FromTargets(_types)));
+        var names = PropertyNames(ConventionTargets.FromProperties(_types));
 
         Assert.Contains(nameof(SampleBaseClass.Name), names);
     }
@@ -57,7 +77,7 @@ public class ConventionTargetsTests_Properties
     public void Can_filter()
     {
         var properties = ConventionTargets.FromProperties(
-            s => s.FromTargets(_types),
+            _types,
             p => p.Where(x => x.Property.Name == nameof(SampleClass.Value)));
 
         var property = Assert.Single(properties.Targets);
@@ -68,7 +88,7 @@ public class ConventionTargetsTests_Properties
     public void Can_filter_more_than_once()
     {
         var properties = ConventionTargets.FromProperties(
-            s => s.FromTargets(_types),
+            _types,
             p => p
                 .Where(x => x.Property.PropertyType == typeof(int))
                 .Where(x => x.Property.Name == nameof(SampleClass.Count)));
@@ -80,7 +100,7 @@ public class ConventionTargetsTests_Properties
     [Fact]
     public void Can_narrow_property_targets()
     {
-        var shared = ConventionTargets.FromProperties(s => s.FromTargets(_types));
+        var shared = ConventionTargets.FromProperties(_types);
 
         var properties = ConventionTargets.FromProperties(
             shared,

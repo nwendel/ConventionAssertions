@@ -12,6 +12,8 @@ public interface ITypeFilter : IFluentInterface
 
     bool IsConcrete { get; }
 
+    bool IsEnum { get; }
+
     bool IsInterface { get; }
 
     bool IsStatic { get; }

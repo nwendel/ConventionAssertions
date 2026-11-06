@@ -12,9 +12,9 @@ Classes that hold extension methods, named `*Extensions`, must be static:
 
 ```csharp
 Convention.For(
-    ConventionTargets.FromTypes(s => s
-        .FromAssemblyContaining<OrderService>()
-        .Where(t => t.IsClass && t.Type.Name.EndsWith("Extensions", StringComparison.Ordinal))),
+    ConventionTargets.FromTypes(
+        a => a.FromAssemblyContaining<OrderService>(),
+        t => t.Where(x => x.IsClass && x.Type.Name.EndsWith("Extensions", StringComparison.Ordinal))),
     a => a.Assert<IsStatic>());
 ```
 

@@ -19,9 +19,9 @@ Every concrete type in the domain namespace must implement `IEntity`:
 
 ```csharp
 Convention.For(
-    ConventionTargets.FromTypes(s => s
-        .FromAssemblyContaining<MeetingTemplate>()
-        .Where(t => t.IsConcrete && t.IsInSameNamespaceAs<MeetingTemplate>())),
+    ConventionTargets.FromTypes(
+        a => a.FromAssemblyContaining<MeetingTemplate>(),
+        t => t.Where(x => x.IsConcrete && x.IsInSameNamespaceAs<MeetingTemplate>())),
     a => a.Assert<IsAssignableTo>(c => c.Type = typeof(IEntity)));
 ```
 

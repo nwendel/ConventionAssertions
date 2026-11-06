@@ -20,8 +20,9 @@ The Amni.Appointments assemblies, leaving out the test projects, must not refere
 
 ```csharp
 Convention.For(
-    ConventionTargets.FromAssemblies(x => x
-        .FromDefaultDependencyContext(a => a.HasNamePrefix("Amni.Appointments") && !a.HasNameSegment("Tests"))),
+    ConventionTargets.FromAssemblies(a => a
+        .FromDefaultDependencyContext()
+        .Where(x => x.HasNamePrefix("Amni.Appointments") && !x.HasNameSegment("Tests"))),
     a => a.Assert<HasNoAssemblyReferenceWithNameSegment>(c => c.Segment = "Blaappen"));
 ```
 

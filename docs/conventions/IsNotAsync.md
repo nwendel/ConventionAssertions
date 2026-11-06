@@ -13,8 +13,8 @@ Methods must not be `async void`, because exceptions thrown from an `async void`
 ```csharp
 Convention.For(
     ConventionTargets.FromMethods(
-        s => s.FromAssemblyContaining<OrderService>(),
-        m => m.Where(x => x.IsVoid)),
+        a => a.FromAssemblyContaining<OrderService>(),
+        methods: m => m.Where(x => x.IsVoid)),
     a => a.Assert<IsNotAsync>());
 ```
 

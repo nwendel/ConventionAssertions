@@ -5,9 +5,9 @@ namespace ConventionAssertions.Tests;
 
 public class ConventionTests
 {
-    private static readonly IConventionTargets<Type> TwoTypes = ConventionTargets.FromTypes(s => s
-        .FromAssemblyContaining<ConventionTests>()
-        .Where(t => t.Type == typeof(SampleId) || t.Type == typeof(PublicClass)));
+    private static readonly IConventionTargets<Type> TwoTypes = ConventionTargets.FromTypes(
+        a => a.FromAssemblyContaining<ConventionTests>(),
+        t => t.Where(x => x.Type == typeof(SampleId) || x.Type == typeof(PublicClass)));
 
     [Fact]
     public void Throws_on_null_targets()
@@ -59,9 +59,9 @@ public class ConventionTests
         var asserted = new List<Type>();
 
         Convention.For(
-            ConventionTargets.FromTypes(s => s
-                .FromAssemblyContaining<ConventionTests>()
-                .Where(t => t.Type == typeof(ConventionTests))),
+            ConventionTargets.FromTypes(
+                a => a.FromAssemblyContaining<ConventionTests>(),
+                t => t.Where(x => x.Type == typeof(ConventionTests))),
             a => a.Assert((type, context) => asserted.Add(type)));
 
         var type = Assert.Single(asserted);
@@ -72,9 +72,9 @@ public class ConventionTests
     public void Throws_on_no_targets()
     {
         Assert.Throws<XunitException>(() => Convention.For(
-            ConventionTargets.FromTypes(s => s
-                .FromAssemblyContaining<ConventionTests>()
-                .Where(t => false)),
+            ConventionTargets.FromTypes(
+                a => a.FromAssemblyContaining<ConventionTests>(),
+                t => t.Where(x => false)),
             a => a.Assert<NothingTypeConvention>()));
     }
 

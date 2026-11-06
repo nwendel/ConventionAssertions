@@ -17,9 +17,9 @@ Checks that a type has no public property assignable to a given type, for exampl
 
 ```csharp
 Convention.For(
-    ConventionTargets.FromTypes(s => s
-        .FromAssemblyContaining<Order>()
-        .Where(t => t.IsInSameNamespaceAs<Order>())),
+    ConventionTargets.FromTypes(
+        a => a.FromAssemblyContaining<Order>(),
+        t => t.Where(x => x.IsInSameNamespaceAs<Order>())),
     a => a.Assert<HasNoPropertyAssignableTo>(c => c.PropertyType = typeof(DbContext)));
 ```
 

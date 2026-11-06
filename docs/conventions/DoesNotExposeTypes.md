@@ -18,17 +18,17 @@ Checks that a method or property doesn't expose any of a set of types, for examp
 The public services of the module must not expose its entities:
 
 ```csharp
-private static readonly IConventionTargets<Type> Entities = ConventionTargets.FromTypes(s => s
-    .FromAssemblyContaining<MeetingTemplate>()
-    .Where(t => t.IsConcrete && t.IsAssignableTo<IEntity>()));
+private static readonly IConventionTargets<Type> Entities = ConventionTargets.FromTypes(
+    a => a.FromAssemblyContaining<MeetingTemplate>(),
+    t => t.Where(x => x.IsConcrete && x.IsAssignableTo<IEntity>()));
 
 [Fact]
 public void Services_do_not_expose_entities()
 {
     Convention.For(
-        ConventionTargets.FromMethods(s => s
-            .FromAssemblyContaining<IMeetingTemplateService>()
-            .Where(t => t.IsInterface && t.IsVisible)),
+        ConventionTargets.FromMethods(
+            a => a.FromAssemblyContaining<IMeetingTemplateService>(),
+            t => t.Where(x => x.IsInterface && x.IsVisible)),
         a => a.Assert<DoesNotExposeTypes>(c => c.Types = Entities));
 }
 ```

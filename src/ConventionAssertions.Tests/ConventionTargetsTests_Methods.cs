@@ -4,16 +4,47 @@ namespace ConventionAssertions.Tests;
 
 public class ConventionTargetsTests_Methods
 {
-    private readonly IConventionTargets<Type> _types = ConventionTargets.FromTypes(s => s
-        .FromAssemblyContaining<ConventionTargetsTests_Methods>()
-        .Where(t => t.Type == typeof(SampleClass)));
+    private readonly IConventionTargets<Type> _types = ConventionTargets.FromTypes(
+        a => a.FromAssemblyContaining<ConventionTargetsTests_Methods>(),
+        t => t.Where(x => x.Type == typeof(SampleClass)));
 
     [Fact]
-    public void Throws_on_null_types()
+    public void Throws_on_null_assemblies()
     {
         var ex = Assert.Throws<ArgumentNullException>(() => ConventionTargets.FromMethods(
-            (Func<ITypeScanner, ITypeScannerFilter>)null!));
+            (Func<IAssemblyScanner, IAssemblyScannerFilter>)null!));
+        Assert.Equal("assemblies", ex.ParamName);
+    }
+
+    [Fact]
+    public void Throws_on_null_type_targets()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => ConventionTargets.FromMethods(
+            (IConventionTargets<Type>)null!));
         Assert.Equal("types", ex.ParamName);
+    }
+
+    [Fact]
+    public void Can_scan_assemblies_types_and_methods()
+    {
+        var methods = ConventionTargets.FromMethods(
+            a => a.FromAssemblyContaining<ConventionTargetsTests_Methods>(),
+            t => t.Where(x => x.Type == typeof(SampleClass)),
+            m => m.Where(x => x.Method.IsStatic));
+
+        var method = Assert.Single(methods.Targets);
+        Assert.Equal(nameof(SampleClass.Create), method.Name);
+    }
+
+    [Fact]
+    public void Can_scan_assemblies_and_methods_without_type_scan()
+    {
+        var methods = ConventionTargets.FromMethods(
+            a => a.FromAssemblyContaining<ConventionTargetsTests_Methods>(),
+            methods: m => m.Where(x => x.Method.Name == nameof(SampleClass.Increment)));
+
+        var method = Assert.Single(methods.Targets);
+        Assert.Equal(nameof(SampleClass.Increment), method.Name);
     }
 
     [Fact]
@@ -37,7 +68,7 @@ public class ConventionTargetsTests_Methods
     [Fact]
     public void Includes_declared_methods()
     {
-        var names = MethodNames(ConventionTargets.FromMethods(s => s.FromTargets(_types)));
+        var names = MethodNames(ConventionTargets.FromMethods(_types));
 
         Assert.Contains(nameof(SampleClass.Increment), names);
         Assert.Contains(nameof(SampleClass.Create), names);
@@ -46,7 +77,7 @@ public class ConventionTargetsTests_Methods
     [Fact]
     public void Includes_inherited_methods()
     {
-        var names = MethodNames(ConventionTargets.FromMethods(s => s.FromTargets(_types)));
+        var names = MethodNames(ConventionTargets.FromMethods(_types));
 
         Assert.Contains(nameof(SampleBaseClass.Reset), names);
     }
@@ -54,7 +85,7 @@ public class ConventionTargetsTests_Methods
     [Fact]
     public void Excludes_object_members_and_accessors()
     {
-        var names = MethodNames(ConventionTargets.FromMethods(s => s.FromTargets(_types)));
+        var names = MethodNames(ConventionTargets.FromMethods(_types));
 
         Assert.DoesNotContain(nameof(ToString), names);
         Assert.DoesNotContain(nameof(GetHashCode), names);
@@ -66,7 +97,7 @@ public class ConventionTargetsTests_Methods
     public void Can_filter()
     {
         var methods = ConventionTargets.FromMethods(
-            s => s.FromTargets(_types),
+            _types,
             m => m.Where(x => x.Method.Name == nameof(SampleClass.Increment)));
 
         var method = Assert.Single(methods.Targets);
@@ -77,7 +108,7 @@ public class ConventionTargetsTests_Methods
     public void Can_filter_more_than_once()
     {
         var methods = ConventionTargets.FromMethods(
-            s => s.FromTargets(_types),
+            _types,
             m => m
                 .Where(x => x.Method.IsStatic)
                 .Where(x => x.Method.Name == nameof(SampleClass.Create)));
@@ -89,7 +120,7 @@ public class ConventionTargetsTests_Methods
     [Fact]
     public void Can_narrow_method_targets()
     {
-        var shared = ConventionTargets.FromMethods(s => s.FromTargets(_types));
+        var shared = ConventionTargets.FromMethods(_types);
 
         var methods = ConventionTargets.FromMethods(
             shared,

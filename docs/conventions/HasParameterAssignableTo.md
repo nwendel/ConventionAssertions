@@ -21,9 +21,8 @@ Mutating methods, those not named `Get*` or `Find*`, must take exactly one `Acto
 ```csharp
 Convention.For(
     ConventionTargets.FromMethods(
-        s => s
-            .FromAssemblyContaining<IOrderService>()
-            .Where(t => t.IsInterface),
+        a => a.FromAssemblyContaining<IOrderService>(),
+        t => t.Where(x => x.IsInterface),
         m => m.Where(x => !x.HasAnyNamePrefix("Get", "Find"))),
     a => a.Assert<HasParameterAssignableTo>(c =>
     {

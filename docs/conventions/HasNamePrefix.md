@@ -17,9 +17,9 @@ Checks that the name of a type, method or property starts with a given prefix.
 
 ```csharp
 Convention.For(
-    ConventionTargets.FromTypes(s => s
-        .FromAssemblyContaining<OrderId>()
-        .Where(t => t.IsInterface)),
+    ConventionTargets.FromTypes(
+        a => a.FromAssemblyContaining<OrderId>(),
+        t => t.Where(x => x.IsInterface)),
     a => a.Assert<HasNamePrefix>(c => c.Prefix = "I"));
 ```
 

@@ -10,9 +10,9 @@ Checks that a type has no public constructor, for example so value objects can o
 
 ```csharp
 Convention.For(
-    ConventionTargets.FromTypes(s => s
-        .FromAssemblyContaining<OrderId>()
-        .Where(t => t.IsAssignableTo<IValueObject>() && t.IsClass)),
+    ConventionTargets.FromTypes(
+        a => a.FromAssemblyContaining<OrderId>(),
+        t => t.Where(x => x.IsAssignableTo<IValueObject>() && x.IsClass)),
     a => a.Assert<HasNoPublicConstructors>());
 ```
 

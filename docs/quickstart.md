@@ -25,8 +25,8 @@ public class MethodConventionTests
     public void Async_methods_end_with_Async()
     {
         var asyncMethods = ConventionTargets.FromMethods(
-            s => s.FromAssemblyContaining<OrderService>(),
-            m => m.Where(x => x.IsAwaitable));
+            a => a.FromAssemblyContaining<OrderService>(),
+            methods: m => m.Where(x => x.IsAwaitable));
 
         Convention.For(
             asyncMethods,
@@ -35,7 +35,7 @@ public class MethodConventionTests
 }
 ```
 
-`ConventionTargets.FromTypes`, `FromMethods` and `FromProperties` receive a type scanner and return the targets. `Convention.For` receives the targets and an assert object on which you call `Assert` once or more.
+`ConventionTargets.FromTypes`, `FromMethods` and `FromProperties` take one lambda for each level of the scan: first the assemblies, then the types in them, then (for `FromMethods` and `FromProperties`) their members. Every lambda after the assembly one is optional, so `methods:` names the member scan when the type scan is left out. `Convention.For` receives the targets and an assert object on which you call `Assert` once or more.
 
 A failing convention reports every violation in one message:
 
@@ -52,9 +52,9 @@ When several tests check the same set of targets, build them once in a field and
 ```csharp
 public class ValueObjectConventionTests
 {
-    private static readonly IConventionTargets<Type> ValueObjects = ConventionTargets.FromTypes(s => s
-        .FromAssemblyContaining<OrderId>()
-        .Where(t => t.IsAssignableTo<IValueObject>() && t.IsClass));
+    private static readonly IConventionTargets<Type> ValueObjects = ConventionTargets.FromTypes(
+        a => a.FromAssemblyContaining<OrderId>(),
+        t => t.Where(x => x.IsAssignableTo<IValueObject>() && x.IsClass));
 
     [Fact]
     public void Value_objects_are_sealed()
@@ -74,29 +74,27 @@ public class ValueObjectConventionTests
 }
 ```
 
-A shared set can also be the starting point of a scan and narrowed further with `FromTargets`:
+A shared set can also be the starting point of a scan and narrowed further, by passing it instead of the assembly lambda:
 
 ```csharp
-private static readonly IConventionTargets<Type> OrderIds = ConventionTargets.FromTypes(s => s
-    .FromTargets(ValueObjects)
-    .Where(t => t.Type == typeof(OrderId)));
+private static readonly IConventionTargets<Type> OrderIds = ConventionTargets.FromTypes(
+    ValueObjects,
+    t => t.Where(x => x.Type == typeof(OrderId)));
 ```
 
 ## Choosing targets
 
-### Scanners
+### Assemblies
 
-The scanner decides which assemblies to load types from. Each of these returns a filterable list of types:
+The assembly lambda decides which assemblies to scan. Start it with one of these:
 
-| Scanner | Types it starts from |
+| Source | Assemblies it starts from |
 | --- | --- |
-| `FromAssemblyContaining<T>()` | Every type in the assembly that contains `T`. |
-| `FromTargets(targets)` | The types in an existing `IConventionTargets<Type>`, for example one made with `ConventionTargets.FromTypes`. |
-| `FromDefaultDependencyContext()` | Every type in every assembly in the test project's dependency context (its `.deps.json`). |
-| `FromDefaultDependencyContext(a => ...)` | The same, limited to the assemblies that match the predicate. |
-| `FromDependencyContext(context)` / `FromDependencyContext(context, a => ...)` | The same, for a `DependencyContext` you supply. |
+| `FromAssemblyContaining<T>()` | The assembly that contains `T`. |
+| `FromDefaultDependencyContext()` | Every assembly in the test project's dependency context (its `.deps.json`). |
+| `FromDependencyContext(context)` | The same, for a `DependencyContext` you supply. |
 
-The dependency-context scanners load every assembly they match, including the framework and third-party packages, so you will usually filter them by name. The assembly filter has:
+The dependency context includes the framework and every package, so you will usually narrow it by name with `Where`. `Where` can be called more than once, and it only looks at assembly names, so assemblies it leaves out are never loaded and their types are never read. The assembly filter has:
 
 | Filter | True when the assembly name |
 | --- | --- |
@@ -107,21 +105,24 @@ The dependency-context scanners load every assembly they match, including the fr
 
 ```csharp
 Convention.For(
-    ConventionTargets.FromTypes(s => s
-        .FromDefaultDependencyContext(a => a.HasNameSegment("MyApp"))
-        .Where(t => t.IsConcrete && t.IsAssignableTo<ICommandHandler>())),
+    ConventionTargets.FromTypes(
+        a => a.FromDefaultDependencyContext().Where(x => x.HasNamePrefix("MyApp") && !x.HasNameSegment("Tests")),
+        t => t.Where(x => x.IsConcrete && x.IsAssignableTo<ICommandHandler>())),
     a => a.Assert<IsInternal>());
 ```
 
+An existing `IConventionTargets<Assembly>`, made with `ConventionTargets.FromAssemblies`, can be passed instead of the assembly lambda.
+
 ### Type filters
 
-`Where` narrows the types. It can be called more than once, and each call narrows the result of the previous one. The predicate receives a type filter:
+The type lambda is optional; without it every type in the assemblies is a target. Its `Where` narrows the types. It can be called more than once, and each call narrows the result of the previous one. The predicate receives a type filter:
 
 | Filter | True when the type |
 | --- | --- |
 | `Type` | (The `System.Type` itself, for anything not covered below.) |
 | `IsClass` | is a class. |
 | `IsInterface` | is an interface. |
+| `IsEnum` | is an enum. |
 | `IsAbstract` | is abstract (interfaces count as abstract, static classes don't). |
 | `IsConcrete` | is not abstract, so interfaces, abstract classes and static classes are left out. |
 | `IsStatic` | is a static class. |
@@ -134,19 +135,19 @@ Convention.For(
 | `IsNot(types...)` | is none of the given types. |
 
 ```csharp
-.Where(t => t
+t => t.Where(x => x
     .IsConcrete &&
-    t.IsAssignableTo(typeof(IRepository<>)) &&
-    t.IsNot(typeof(InMemoryRepository<>)))
+    x.IsAssignableTo(typeof(IRepository<>)) &&
+    x.IsNot(typeof(InMemoryRepository<>)))
 ```
 
 ### Methods and properties
 
-Use `ConventionTargets.FromMethods` or `ConventionTargets.FromProperties` to check the members of the scanned types instead of the types themselves:
+Use `ConventionTargets.FromMethods` or `ConventionTargets.FromProperties` to check the members of a set of types instead of the types themselves:
 
 ```csharp
 private static readonly IConventionTargets<PropertyInfo> ValueObjectProperties = ConventionTargets.FromProperties(
-    s => s.FromTargets(ValueObjects));
+    ValueObjects);
 
 [Fact]
 public void Value_object_properties_have_no_setter()
@@ -157,13 +158,20 @@ public void Value_object_properties_have_no_setter()
 }
 ```
 
-To narrow the members, pass a member scan after the type scan. Its `Where` works like the type `Where` and can be called more than once:
+To narrow the members, pass a member scan after the types. Its `Where` works like the type `Where` and can be called more than once:
 
 ```csharp
 private static readonly IConventionTargets<MethodInfo> StaticValueObjectMethods = ConventionTargets.FromMethods(
-    s => s
-        .FromAssemblyContaining<OrderId>()
-        .Where(t => t.IsAssignableTo<IValueObject>()),
+    ValueObjects,
+    m => m.Where(x => x.Method.IsStatic && x.IsPublic));
+```
+
+For a scan written in one place, `FromMethods` and `FromProperties` also take the assembly, type and member lambdas together:
+
+```csharp
+private static readonly IConventionTargets<MethodInfo> StaticValueObjectMethods = ConventionTargets.FromMethods(
+    a => a.FromAssemblyContaining<OrderId>(),
+    t => t.Where(x => x.IsAssignableTo<IValueObject>()),
     m => m.Where(x => x.Method.IsStatic && x.IsPublic));
 ```
 
@@ -175,7 +183,7 @@ To narrow a shared set of members further, pass it to `FromMethods` or `FromProp
 
 ```csharp
 private static readonly IConventionTargets<MethodInfo> ValueObjectMethods = ConventionTargets.FromMethods(
-    s => s.FromTargets(ValueObjects));
+    ValueObjects);
 
 private static readonly IConventionTargets<MethodInfo> StaticValueObjectMethods = ConventionTargets.FromMethods(
     ValueObjectMethods,
@@ -186,18 +194,19 @@ For a one-off check, the targets can also be built inline:
 
 ```csharp
 Convention.For(
-    ConventionTargets.FromMethods(s => s.FromTargets(ValueObjects)),
+    ConventionTargets.FromMethods(ValueObjects),
     a => a.Assert<NameIsSnakeCase>());
 ```
 
-### Assemblies
+### Checking assemblies
 
-Use `ConventionTargets.FromAssemblies` to check assemblies themselves, for example what they reference. It has the same scanners as the type scan, `FromAssemblyContaining<T>()`, `FromDefaultDependencyContext()`, `FromDefaultDependencyContext(a => ...)` and `FromDependencyContext(...)`, but each one returns the assemblies instead of their types. Its `Where` takes the same assembly filter and can be called more than once:
+Use `ConventionTargets.FromAssemblies` to check assemblies themselves, for example what they reference. It takes the same assembly lambda as the type scan, and the assemblies are the targets:
 
 ```csharp
 Convention.For(
-    ConventionTargets.FromAssemblies(s => s
-        .FromDefaultDependencyContext(a => a.HasNamePrefix("MyApp.Orders") && !a.HasNameSegment("Tests"))),
+    ConventionTargets.FromAssemblies(a => a
+        .FromDefaultDependencyContext()
+        .Where(x => x.HasNamePrefix("MyApp.Orders") && !x.HasNameSegment("Tests"))),
     a => a.Assert<HasNoAssemblyReferenceWithNameSegment>(c => c.Segment = "Legacy"));
 ```
 
@@ -243,7 +252,7 @@ When an empty result is fine, for example a rule for a folder that is empty toda
 
 ```csharp
 Convention.For(
-    ConventionTargets.FromTypes(s => s.FromAssemblyContaining<OrderId>().Where(t => t.HasAttribute<ObsoleteAttribute>())),
+    ConventionTargets.FromTypes(a => a.FromAssemblyContaining<OrderId>(), t => t.Where(x => x.HasAttribute<ObsoleteAttribute>())),
     a => a.Assert<IsInternal>(failOnNoTargets: false));
 ```
 

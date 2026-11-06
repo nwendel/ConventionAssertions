@@ -17,9 +17,9 @@ Checks that a type, method or property has a given attribute.
 
 ```csharp
 Convention.For(
-    ConventionTargets.FromTypes(s => s
-        .FromAssemblyContaining<OrderId>()
-        .Where(t => t.IsAssignableTo<IValueObject>())),
+    ConventionTargets.FromTypes(
+        a => a.FromAssemblyContaining<OrderId>(),
+        t => t.Where(x => x.IsAssignableTo<IValueObject>())),
     a => a.Assert<HasCustomAttribute>(c => c.CustomAttribute = typeof(TypeConverterAttribute)));
 ```
 

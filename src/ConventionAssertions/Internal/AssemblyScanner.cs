@@ -7,30 +7,31 @@ public sealed class AssemblyScanner :
     IAssemblyScanner,
     IAssemblyScannerFilter
 {
-    private List<Assembly> _assemblies = new();
+    // Assemblies are kept by name and only loaded once every Where has run,
+    // so filtering on the name never loads an assembly that is filtered out
+    private List<(AssemblyName Name, Assembly? Assembly)> _assemblies = new();
 
-    internal IEnumerable<Assembly> Assemblies => _assemblies;
+    internal IEnumerable<Assembly> Assemblies => _assemblies
+        .Select(x => x.Assembly ?? Assembly.Load(x.Name))
+        .ToList();
 
     public IAssemblyScannerFilter FromAssemblyContaining<T>()
     {
-        _assemblies = new List<Assembly> { typeof(T).Assembly };
+        var assembly = typeof(T).Assembly;
+        _assemblies = new() { (assembly.GetName(), assembly) };
         return this;
     }
 
     public IAssemblyScannerFilter FromDefaultDependencyContext()
-        => FromDefaultDependencyContext(x => true);
-
-    public IAssemblyScannerFilter FromDefaultDependencyContext(Func<IAssemblyNameFilter, bool> predicate)
-        => FromDependencyContext(DependencyContextAssemblies.Default, predicate);
+        => FromDependencyContext(DependencyContextAssemblies.Default);
 
     public IAssemblyScannerFilter FromDependencyContext(DependencyContext dependencyContext)
-        => FromDependencyContext(dependencyContext, x => true);
-
-    public IAssemblyScannerFilter FromDependencyContext(DependencyContext dependencyContext, Func<IAssemblyNameFilter, bool> predicate)
     {
         GuardAgainst.Null(dependencyContext);
 
-        _assemblies = DependencyContextAssemblies.Load(dependencyContext, predicate);
+        _assemblies = DependencyContextAssemblies.GetAssemblyNames(dependencyContext)
+            .Select(x => (x, (Assembly?)null))
+            .ToList();
         return this;
     }
 
@@ -39,7 +40,7 @@ public sealed class AssemblyScanner :
         GuardAgainst.Null(predicate);
 
         _assemblies = _assemblies
-            .Where(x => predicate(new AssemblyNameFilter(x.GetName())))
+            .Where(x => predicate(new AssemblyNameFilter(x.Name)))
             .ToList();
         return this;
     }

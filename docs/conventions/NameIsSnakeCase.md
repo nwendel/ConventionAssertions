@@ -10,9 +10,8 @@ Checks that the name of a type or method is written in `lower_snake_case`. A com
 
 ```csharp
 var testMethods = ConventionTargets.FromMethods(
-    s => s
-        .FromAssemblyContaining<OrderTests>()
-        .Where(t => t.Type.Name.EndsWith("Tests", StringComparison.Ordinal)),
+    a => a.FromAssemblyContaining<OrderTests>(),
+    t => t.Where(x => x.Type.Name.EndsWith("Tests", StringComparison.Ordinal)),
     m => m.Where(x => x.HasCustomAttribute<FactAttribute>()));
 
 Convention.For(

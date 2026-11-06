@@ -5,6 +5,11 @@ namespace ConventionAssertions.Tests.Internal.Filters;
 
 public class TypeFilterTests
 {
+    private enum SomeEnum
+    {
+        None,
+    }
+
     private interface ISomething
     {
     }
@@ -94,6 +99,26 @@ public class TypeFilterTests
         var tested = new TypeFilter(typeof(PublicClass));
 
         Assert.Throws<ArgumentNullException>(() => tested.HasNamespaceSegment(segment!));
+    }
+
+    [Fact]
+    public void Can_is_enum_true()
+    {
+        var tested = new TypeFilter(typeof(SomeEnum));
+
+        Assert.True(tested.IsEnum);
+    }
+
+    [Theory]
+    [InlineData(typeof(SealedClass))]
+    [InlineData(typeof(ISomething))]
+    [InlineData(typeof(int))]
+    [InlineData(typeof(Enum))]
+    public void Can_is_enum_false(Type type)
+    {
+        var tested = new TypeFilter(type);
+
+        Assert.False(tested.IsEnum);
     }
 
     [Fact]

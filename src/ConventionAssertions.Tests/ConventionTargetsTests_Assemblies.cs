@@ -15,7 +15,7 @@ public class ConventionTargetsTests_Assemblies
     [Fact]
     public void Can_create_assembly_source()
     {
-        var assemblySource = ConventionTargets.FromAssemblies(s => s
+        var assemblySource = ConventionTargets.FromAssemblies(a => a
             .FromAssemblyContaining<ConventionTargetsTests_Assemblies>());
 
         var assembly = Assert.Single(assemblySource.Targets);
@@ -26,7 +26,7 @@ public class ConventionTargetsTests_Assemblies
     public void Can_assert_assembly_targets()
     {
         Convention.For(
-            ConventionTargets.FromAssemblies(s => s.FromAssemblyContaining<ConventionTargetsTests_Assemblies>()),
+            ConventionTargets.FromAssemblies(a => a.FromAssemblyContaining<ConventionTargetsTests_Assemblies>()),
             a => a.Assert<HasNoAssemblyReferenceWithNameSegment>(c => c.Segment = "Blaappen"));
     }
 
@@ -34,7 +34,7 @@ public class ConventionTargetsTests_Assemblies
     public void Throws_on_assert_assembly_targets()
     {
         var ex = Assert.Throws<XunitException>(() => Convention.For(
-            ConventionTargets.FromAssemblies(s => s.FromAssemblyContaining<ConventionTargetsTests_Assemblies>()),
+            ConventionTargets.FromAssemblies(a => a.FromAssemblyContaining<ConventionTargetsTests_Assemblies>()),
             a => a.Assert<HasNoAssemblyReferenceWithNameSegment>(c =>
             {
                 c.Segment = "ConventionAssertions";
@@ -52,7 +52,7 @@ public class ConventionTargetsTests_Assemblies
     public void Can_suppress_assembly_target()
     {
         Convention.For(
-            ConventionTargets.FromAssemblies(s => s.FromAssemblyContaining<ConventionTargetsTests_Assemblies>()),
+            ConventionTargets.FromAssemblies(a => a.FromAssemblyContaining<ConventionTargetsTests_Assemblies>()),
             a => a.Assert((assembly, context) => context.Fail("always fails")));
     }
 }

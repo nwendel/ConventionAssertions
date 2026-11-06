@@ -23,6 +23,9 @@ public class TypeFilter : ITypeFilter
     public bool IsConcrete
         => !Type.IsAbstract;
 
+    public bool IsEnum
+        => Type.IsEnum;
+
     public bool IsInterface
         => Type.IsInterface;
 
