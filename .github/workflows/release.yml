@@ -6,7 +6,10 @@
 # The package version comes from the tag (without the leading "v") via MinVer; a final check makes sure
 # the packed version matches the tag.
 #
-# Requires the repository secret NUGET_API_KEY (a nuget.org API key with push rights for both packages).
+# Publishes with nuget.org Trusted Publishing (OIDC), so no long-lived API key is stored. Requires:
+# - a Trusted Publishing policy on nuget.org for repository nwendel/ConventionAssertions and workflow file release.yml
+#   (owned by an account with push rights for both packages)
+# - the repository secret NUGET_USER: the nuget.org profile name (not email) of that account
 name: Release
 
 on:
@@ -18,6 +21,7 @@ on:
 
 permissions:
   contents: read
+  id-token: write # needed for nuget.org Trusted Publishing
 
 concurrency:
   group: release
@@ -91,8 +95,15 @@ jobs:
             artifacts/*.snupkg
           if-no-files-found: error
 
+      - name: NuGet login (Trusted Publishing)
+        id: nuget-login
+        uses: NuGet/login@v1
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
       - name: Publish to NuGet
         # Pushing the .nupkg also pushes the matching .snupkg symbol package next to it.
+        # The API key is a short-lived one issued by the login step above.
         run: dotnet nuget push "artifacts/*.nupkg" --source https://api.nuget.org/v3/index.json --api-key "$NUGET_API_KEY" --skip-duplicate
         env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+          NUGET_API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}

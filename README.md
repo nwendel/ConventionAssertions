@@ -2,7 +2,7 @@
 
 Code conventions for .NET, checked from your unit tests.
 
-![Build](https://github.com/nwendel/conventionassertions/actions/workflows/build.yml/badge.svg) [![Coverage](https://codecov.io/gh/nwendel/ConventionAssertions/branch/main/graph/badge.svg?token=BMNOSIWUMV)](https://codecov.io/gh/nwendel/ConventionAssertions)
+[![CI](https://github.com/nwendel/ConventionAssertions/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/nwendel/ConventionAssertions/actions/workflows/ci.yml) [![Coverage](https://codecov.io/gh/nwendel/ConventionAssertions/branch/main/graph/badge.svg?token=BMNOSIWUMV)](https://codecov.io/gh/nwendel/ConventionAssertions)
 
 ConventionAssertions is a lightweight .NET 8 library for writing your own code conventions for types, methods and properties as small, reusable C# classes, and checking them from your unit tests. You pick the members to check with a scan, and every violation is reported in one failure.
 
