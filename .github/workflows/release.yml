@@ -8,8 +8,8 @@
 #
 # Publishes with nuget.org Trusted Publishing (OIDC), so no long-lived API key is stored. Requires:
 # - a Trusted Publishing policy on nuget.org for repository nwendel/ConventionAssertions and workflow file release.yml
-#   (owned by an account with push rights for both packages)
-# - the repository secret NUGET_USER: the nuget.org profile name (not email) of that account
+#   (owned by an account with push rights for both packages); if the policy names an environment, it must be "nuget"
+# - the secret NUGET_USER in the GitHub environment "nuget": the nuget.org profile name (not email) of that account
 name: Release
 
 on:
@@ -35,6 +35,7 @@ env:
 jobs:
   release:
     runs-on: ubuntu-latest
+    environment: nuget # holds the NUGET_USER secret
 
     steps:
       - name: Require a tag
