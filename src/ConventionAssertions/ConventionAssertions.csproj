@@ -14,7 +14,6 @@
   <PropertyGroup>
     <PackageId>ConventionAssertions</PackageId>
     <Title>ConventionAssertions</Title>
-    <Version>0.24.1</Version>
     <Copyright>Niklas Wendel 2023-2026</Copyright>
     <Authors>Niklas Wendel</Authors>
     <Description>A lightweight way to write your own code conventions for types, methods and properties as small, reusable C# classes, and check them from your unit tests.</Description>
@@ -41,16 +40,16 @@
 	</ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="coverlet.collector" Version="6.0.1">
+    <PackageReference Include="coverlet.collector">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="8.0.0" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="StyleCop.Analyzers.Unstable" Version="1.2.0.556">
+    <PackageReference Include="StyleCop.Analyzers.Unstable">
 	    <PrivateAssets>all</PrivateAssets>
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>

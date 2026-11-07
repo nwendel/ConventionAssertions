@@ -43,7 +43,7 @@ Method MyApp.Services.CustomerService.Delete(int) name must end with Async.
 
 ## Features at a glance
 
-- Checks types, methods, properties and assemblies, all as plain `Type`, `MethodInfo`, `PropertyInfo` and `Assembly`.
+- Checks types, methods, properties and assemblies, all as plain Type, MethodInfo, PropertyInfo and Assembly.
 - Conventions are small classes you write once and reuse, or a lambda inline for a one-off rule ([writing your own](https://github.com/nwendel/ConventionAssertions/blob/main/docs/writing-conventions.md)).
 - Every violation in one failure, not just the first one.
 - A scan that matches nothing fails by default, so a typo in a filter can't make a test pass silently.
@@ -52,7 +52,7 @@ Method MyApp.Services.CustomerService.Delete(int) name must end with Async.
 
 ## Built-in conventions
 
-In `ConventionAssertions.Conventions`:
+In the ConventionAssertions.Conventions namespace:
 
 | Convention | Targets | Checks that the target |
 | --- | --- | --- |
@@ -67,23 +67,23 @@ In `ConventionAssertions.Conventions`:
 | [HasNoPublicConstructors](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasNoPublicConstructors.md) | types | has no public constructor. |
 | [HasNoSetter](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasNoSetter.md) | properties | has no public setter. |
 | [HasParameterAssignableTo](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasParameterAssignableTo.md) | methods | has a parameter assignable to a given type, optionally an exact number of them (configurable). |
-| [HasPublicStaticParseMethod](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasPublicStaticParseMethod.md) | types | has `public static T Parse(string)`. |
-| [HasPublicStaticTryParseMethod](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasPublicStaticTryParseMethod.md) | types | has `public static bool TryParse(string, out T)`. |
+| [HasPublicStaticParseMethod](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasPublicStaticParseMethod.md) | types | has a public static T Parse(string) method. |
+| [HasPublicStaticTryParseMethod](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/HasPublicStaticTryParseMethod.md) | types | has a public static bool TryParse(string, out T) method. |
 | [IsAbstractOrSealed](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsAbstractOrSealed.md) | types | is abstract or sealed. |
 | [IsAssignableTo](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsAssignableTo.md) | types | is assignable to a given type, including open generic types (configurable). |
 | [IsInternal](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsInternal.md) | types | is internal. |
-| [IsNotAsync](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsNotAsync.md) | methods | is not `async`. |
+| [IsNotAsync](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsNotAsync.md) | methods | is not async. |
 | [IsNotAssignableTo](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsNotAssignableTo.md) | types | is not assignable to a given type, including open generic types (configurable). |
 | [IsPublic](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsPublic.md) | types | is public. |
 | [IsSealed](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsSealed.md) | types | is sealed. |
 | [IsStatic](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/IsStatic.md) | types | is a static class. |
-| [NameIsSnakeCase](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/NameIsSnakeCase.md) | types, methods | has a `lower_snake_case` name. |
+| [NameIsSnakeCase](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/NameIsSnakeCase.md) | types, methods | has a lower_snake_case name. |
 
-In `ConventionAssertions.AspNetCore.Conventions` (the separate, optional ConventionAssertions.AspNetCore package, also for .NET 8):
+In the ConventionAssertions.AspNetCore.Conventions namespace (the separate, optional ConventionAssertions.AspNetCore package, also for .NET 8):
 
 | Convention | Targets | Checks that the target |
 | --- | --- | --- |
-| [ControllerActionHasAuthorization](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/ControllerActionHasAuthorization.md) | methods | is a controller action with `[Authorize]` or `[AllowAnonymous]` on it or its controller. |
+| [ControllerActionHasAuthorization](https://github.com/nwendel/ConventionAssertions/blob/main/docs/conventions/ControllerActionHasAuthorization.md) | methods | is a controller action with an Authorize or AllowAnonymous attribute on it or its controller. |
 
 ## License
 

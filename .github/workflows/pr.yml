@@ -1,0 +1,47 @@
+# Builds and tests every pull request against main.
+name: PR
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+env:
+  SOLUTION_FILE: src/ConventionAssertions.sln
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # MinVer needs the full history and tags
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore
+        run: dotnet restore $SOLUTION_FILE
+
+      - name: Build
+        run: dotnet build $SOLUTION_FILE --no-restore --configuration Release -p:ContinuousIntegrationBuild=true
+
+      - name: Test
+        run: dotnet test $SOLUTION_FILE --no-build --configuration Release --verbosity normal --collect:"XPlat Code Coverage"
+
+      - name: Code coverage
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
