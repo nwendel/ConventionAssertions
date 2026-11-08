@@ -35,7 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
-		<AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
+		<AdditionalFiles Include="..\..\stylecop.json" Link="stylecop.json" />
     <None Include="..\..\README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 

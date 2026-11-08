@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  SOLUTION_FILE: src/ConventionAssertions.sln
+  SOLUTION_FILE: ConventionAssertions.slnx
   DOTNET_NOLOGO: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
 
@@ -30,7 +30,10 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: 8.0.x
+          # The .slnx solution format needs SDK 9.0.200 or later; the 8.0 runtime is still needed to run the net8.0 tests.
+          dotnet-version: |
+            8.0.x
+            10.0.x
 
       - name: Restore
         run: dotnet restore $SOLUTION_FILE
